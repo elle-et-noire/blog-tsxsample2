@@ -5,10 +5,10 @@ import remarkRehype from 'remark-rehype'
 import gfm from "remark-gfm";
 import html from "remark-html";
 import rehypeStringify from "rehype-stringify"
-import rehypeMathjax from "rehype-mathjax"
-import rehypeMathjaxChtml from "rehype-mathjax/chtml.js"
-import remarkMath from "remark-math"
-import rehypeDocument from "rehype-document"
+// import rehypeMathjax from "rehype-mathjax"
+// import rehypeMathjaxChtml from "rehype-mathjax/chtml.js"
+// import remarkMath from "remark-math"
+// import rehypeDocument from "rehype-document"
 import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
