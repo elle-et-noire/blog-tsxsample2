@@ -1,9 +1,6 @@
-# jamband/blog
+# uooo/blog
 
 My personal blog.
 
-[https://jamband.github.io/blog/](https://jamband.github.io/blog/)
+[https://elle-et-noire.github.io/blog-tsxsample2/](https://elle-et-noire.github.io/blog-tsxsample2/)
 
-## License
-
-jamband/blog is licensed under the MIT license.
