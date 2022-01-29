@@ -150,10 +150,10 @@ export const markdownToHtml = async (file: string) => {
       indent: 2,
       indentInitial: true
     })
-    // .process(file.replaceAll("\\,", "\\\\,") + mathjaxScript.replaceAll("\\", "\\\\"));
-  .process(file.replaceAll("\\,", "\\\\,"));
+    .process(file.replace(/\\,/g, "\\\\,") + mathjaxScript.replace(/\\/g, "\\\\"));
+  // .process(file.replaceAll("\\,", "\\\\,"));
   // console.log(file.replaceAll("\\,", "\\\\,") + mathjaxScript.replaceAll("\\", "\\\\"));
-  console.log(file.replaceAll("\\,", "\\\\,"));
+  // console.log(file.replaceAll("\\,", "\\\\,"));
 
   return result.toString();
 };
