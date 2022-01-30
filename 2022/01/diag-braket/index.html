@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="ja"><head><meta property="og:type" content="website"/><meta property="og:site_name" content="lumieres/legeres"/><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/><title>可換な演算子の同時対角化可能性 · lumieres/legeres</title><meta name="description" content="対角化可能な演算子 \(A,B\) が可換なら \(A,B\) は同時対角化可能である。"/><meta property="og:title" content="可換な演算子の同時対角化可能性 ･ lumieres/legeres"/><meta property="og:description" content="対角化可能な演算子 \(A,B\) が可換なら \(A,B\) は同時対角化可能である。"/><meta property="og:url" content="https://elle-et-noire.github.io/blog-tsxsample2/2022/01/diag-braket"/><meta name="next-head-count" content="7"/><link rel="preload" href="/blog-tsxsample2/_next/static/css/966f2184015dba7b.css" as="style"/><link rel="stylesheet" href="/blog-tsxsample2/_next/static/css/966f2184015dba7b.css" data-n-g=""/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="/blog-tsxsample2/_next/static/chunks/polyfills-5cd94c89d3acac5f.js"></script><script src="/blog-tsxsample2/_next/static/chunks/webpack-9b6fc359924a2402.js" defer=""></script><script src="/blog-tsxsample2/_next/static/chunks/framework-6e4ba497ae0c8a3f.js" defer=""></script><script src="/blog-tsxsample2/_next/static/chunks/main-b3b3e04c8cdcd10e.js" defer=""></script><script src="/blog-tsxsample2/_next/static/chunks/pages/_app-5e9b2f1eb60e7b0c.js" defer=""></script><script src="/blog-tsxsample2/_next/static/chunks/919-231013f5e47261ba.js" defer=""></script><script src="/blog-tsxsample2/_next/static/chunks/pages/%5Byear%5D/%5Bmonth%5D/%5Bslug%5D-3d0d7b5b21b5a35b.js" defer=""></script><script src="/blog-tsxsample2/_next/static/xoRMOk3aqg96Xj9oXevR6/_buildManifest.js" defer=""></script><script src="/blog-tsxsample2/_next/static/xoRMOk3aqg96Xj9oXevR6/_ssgManifest.js" defer=""></script><script src="/blog-tsxsample2/_next/static/xoRMOk3aqg96Xj9oXevR6/_middlewareManifest.js" defer=""></script></head><body><div id="__next" data-reactroot=""><div class="flex flex-col min-h-screen"><header><nav class="fixed w-full py-3 z-20 text-center font-semibold bg-gray-800" aria-label="Header navigation"><a class="px-5 py-3 no-underline font-mono tracking-tight" href="/blog-tsxsample2/"><span class="text-xs text-gray-100 duration-1000">lumieres<!-- -->/</span><span class="text-pink-500 opacity-80 duration-1000">legeres</span></a></nav></header><main class="flex-grow container mx-auto pt-28 pb-10"><div class="style_initial__lfW24" role="status"></div><div><article><header class="mb-8"><h1 class="mb-10">可換な演算子の同時対角化可能性</h1><div class="italic text-right text-sm text-gray-400"><time dateTime="2022-01-30">Jan 30, 2022</time></div></header><div class="post">
+<p>対角化可能な演算子 \(A,B\) が可換なら \(A,B\) は同時対角化可能である。</p>
+<h2>証明</h2>
+<p>$A$ の相異なる固有値を $\qty{a\underscore{i}}\underscore{i}$ とし、$a\underscore{i}$ に対応する固有空間への射影演算子を $\mathcal{P}\underscore{i}$ とする。同様に $B$ の相異なる固有値 $\qty{b\underscore{j}}\underscore{j}$ および対応する射影演算子 $\qty{\mathcal{Q}\underscore{j}}\underscore{j}$ も定める。すると</p><p>\begin{align}
+A&=\sum_i a_i\mathcal{P}_i,& \sum_i\mathcal{P}_i&=I,&\mathcal{P}_i\mathcal{P}_{i'}&=\delta_{ii'}\mathcal{P}_i\\
+B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j'}&=\delta_{jj'}\mathcal{Q}_j
+\end{align}</p>
+<p>より</p><p>\begin{align}
+\mathcal{P}_i&=\dfrac{\prod_{l\neq i}(A-a_lI)}{\prod_{l\neq i}(a_i-a_l)}\\
+\mathcal{Q}_j&=\dfrac{\prod_{m\neq j}(B-b_mI)}{\prod_{m\neq j}(b_j-b_m)}
+\end{align}</p>
+<p>と表せる。実際 $l\neq i$ に対して</p><p>\begin{align*}
+\dfrac{A-a_lI}{a_i-a_l}&=\mathcal{P}_i+\sum_{n\neq l,i}\dfrac{a_n-a_l}{a_i-a_l}\mathcal{P}_n
+\end{align*}</p>
+<p>となり、これを $l\neq i$ に亘って掛け合わせると $\mathcal{P}\underscore{i}$ だけが残る。$\mathcal{Q}\underscore{i}$ も同様。そして、$\mathcal{P}\underscore{i},\mathcal{Q}\underscore{j}$ は $A,B,I$ だけで表されているので可換である：</p><p>\begin{align}
+\comm{\mathcal{P}_i}{\mathcal{Q}_j}=0.
+\end{align}</p>
+<p>このとき</p><p>\begin{align}
+\sum_{i,j}\mathcal{P}_i\mathcal{Q}_j=&I,&(\mathcal{P}_i\mathcal{Q}_j)(\mathcal{P}_{i'}\mathcal{Q}_{j'})&=\delta_{ii'}\delta_{jj'}\mathcal{P}_i\mathcal{Q}_j\label{eq:pq-split}
+\end{align}</p>
+<p>が成り立つので $\qty{\mathcal{P}\underscore{i}\mathcal{Q}\underscore{j}}\underscore{i,j}$ は射影であり、</p><p>\begin{align}
+A&=\sum_{i,j} a_i\mathcal{P}_i\mathcal{Q}_j\\
+B&=\sum_{i,j} b_j\mathcal{P}_i\mathcal{Q}_j
+\end{align}</p>
+<p>とスペクトル分解できる。$\mathcal{P}\underscore{i}$ に対応する固有空間を $W\underscore{i}$、$\mathcal{Q}\underscore{j}$ に対応する固有空間を $V\underscore{j}$ とすると、$\eqref{eq:pq-split}$ は $\qty{W\underscore{i}\cap V\underscore{j}}\underscore{i,j}$ によって Hilbert 空間 $\mathcal{H}$ を直和分解できることを意味している。各 $W\underscore{i}\cap V\underscore{j}$ は依然 $2$ 次以上の次元を持ちうるので適宜（Schmidt の直交化法などにより）$W\underscore{i}\cap V\underscore{j}$ 内の正規直交基底をとることで、$\mathcal{H}$ 全体の正規直交基底 $\qty{\ket{a\underscore{i},b\underscore{j},k}}\underscore{i,j,k}$ であって</p><p>\begin{align}
+A\ket{a_i,b_j,k}&=a_i\ket{a_i,b_j,k},& B\ket{a_i,b_j,k}=b_j\ket{a_i,b_j,k}
+\end{align}</p>
+<p>を満たすようなものを取ることができる。すなわち $A,B$ は同時対角化可能である。</p>
+<h1>参考文献</h1>
+<p><a href="https://www.ims.tsukuba.ac.jp/~shugo_suzuki_lab/upload.pdf" target="_blank" rel="nofollow noopener noreferrer">ディラック記法による線形代数（PDF）</a></p><script>
+MathJax = {
+        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},
+        tex: {
+          inlineMath: [['$', '$'], ['\\\(', '\\\)']],
+          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },
+          color: {
+            padding: '5px',
+            borderWidth: '2px',
+          },
+          macros: {
+            parn: ["\\biggl(#1\\biggr)", 1],
+            sqbr: ["\\biggl[#1\\biggr]", 1],
+            pfrac: ["\\biggl(\\dfrac{#1}{#2}\\biggr)", 2],
+            ds: "\\displaystyle",
+            C: '{\\mathbb C}',
+            R: '{\\mathbb R}',
+            Q: '{\\mathbb Q}',
+            Z: '{\\mathbb Z}',
+            ssqrt: ['\\sqrt{\\smash[b]{\\mathstrut #1}}', 1],
+            tcdegree: ['\\unicode{xb0}'],
+            tccelsius: ['\\unicode{x2103}'],
+            tcperthousand: ['\\unicode{x2030}'],
+            tcmu: ['\\unicode{x3bc}'],
+            tcohm: ['\\unicode{x3a9}'],
+            bm: ['\\boldsymbol{#1}', 1],
+            ol: ['\\overline{#1}', 1],
+            ul: ['\\underline{#1}', 1],
+            ub: ['\\underbrace{#1}', 1],
+            ubt: ['\\underbrace{#1}_{\\text{#2}}', 2],
+            i: '{\\mathrm{i}}',
+            e: '{\\mathrm{e}}',
+            ve: '{\\varepsilon}',
+            slashed: ['{{#1\\!\\!\\!/}}', 1],
+            underscore: '_',
+          },
+          physics: {
+            italicdiff: true,
+            arrowdel: false,
+          },
+          tagformat: {
+            number: (n) => MathJax.config.section + '.' + n,
+            tag:    (tag) => '(' + tag + ')',
+            id:     (id) => 'mjx-eqn:' + id.replace(/\\s/g, '_'),
+            url:    (id, base) => base + '#' + encodeURIComponent(id),
+          },
+          tags: 'ams',
+          tagSide: 'right',
+          tagIndent: '0.8em',
+          processRefs: true,
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        chtml: {
+          displayAlign: 'left',
+          displayIndent: '2em',
+          mtextInheritFont: true,
+        }
+      };
+</script>
+<script id="MathJax-script"
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script><script>
+<p>
+  MathJax = {
+  loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},
+  tex: {
+  inlineMath: [['$', '$'], ['\(', '\)']],
+  packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },
+  color: {
+  padding: '5px',
+  borderWidth: '2px',
+  },
+  macros: {
+  parn: ["\biggl(#1\biggr)", 1],
+  sqbr: ["\biggl[#1\biggr]", 1],
+  pfrac: ["\biggl(\dfrac{#1}{#2}\biggr)", 2],
+  ds: "\displaystyle",
+  C: '{\mathbb C}',
+  R: '{\mathbb R}',
+  Q: '{\mathbb Q}',
+  Z: '{\mathbb Z}',
+  ssqrt: ['\sqrt{\smash[b]{\mathstrut #1}}', 1],
+  tcdegree: ['\unicode{xb0}'],
+  tccelsius: ['\unicode{x2103}'],
+  tcperthousand: ['\unicode{x2030}'],
+  tcmu: ['\unicode{x3bc}'],
+  tcohm: ['\unicode{x3a9}'],
+  bm: ['\boldsymbol{#1}', 1],
+  ol: ['\overline{#1}', 1],
+  ul: ['\underline{#1}', 1],
+  ub: ['\underbrace{#1}', 1],
+  ubt: ['\underbrace{#1}<em>{\text{#2}}', 2],
+i: '{\mathrm{i}}',
+e: '{\mathrm{e}}',
+ve: '{\varepsilon}',
+slashed: ['{{#1\!\!\!/}}', 1],
+underscore: '</em>',
+  },
+  physics: {
+  italicdiff: true,
+  arrowdel: false,
+  },
+  tagformat: {
+  number: (n) => MathJax.config.section + '.' + n,
+  tag: (tag) => '(' + tag + ')',
+  id: (id) => 'mjx-eqn:' + id.replace(/\s/g, '_'),
+  url: (id, base) => base + '#' + encodeURIComponent(id),
+  },
+  tags: 'ams',
+  tagSide: 'right',
+  tagIndent: '0.8em',
+  processRefs: true,
+  },
+  svg: {
+  fontCache: 'global'
+  },
+  chtml: {
+  displayAlign: 'left',
+  displayIndent: '2em',
+  mtextInheritFont: true,
+  }
+  };
+  </script>
+</p><script id="MathJax-script"
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+</div><p class="mt-16 text-center"><a class="px-5 py-3 font-semibold" href="/blog-tsxsample2/">Home</a></p></article></div></main><div class="mb-3 font-semibold text-center text-xs text-gray-500">© 2022 Tomoki Morita</div><footer class="py-3 text-center font-semibold bg-gray-800"><nav class="text-sm" aria-label="Footer navigation"><a class="px-5 py-3" href="/blog-tsxsample2/about/">About</a><a class="px-5 py-3" href="/blog-tsxsample2/contact/">Contact</a></nav></footer></div></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"post":{"title":"可換な演算子の同時対角化可能性","date":"2022-01-30","tags":["next"],"year":"2022","month":"01","slug":"diag-braket","content":"\n\u003cp\u003e対角化可能な演算子 \\(A,B\\) が可換なら \\(A,B\\) は同時対角化可能である。\u003c/p\u003e\n\u003ch2\u003e証明\u003c/h2\u003e\n\u003cp\u003e$A$ の相異なる固有値を $\\qty{a\\underscore{i}}\\underscore{i}$ とし、$a\\underscore{i}$ に対応する固有空間への射影演算子を $\\mathcal{P}\\underscore{i}$ とする。同様に $B$ の相異なる固有値 $\\qty{b\\underscore{j}}\\underscore{j}$ および対応する射影演算子 $\\qty{\\mathcal{Q}\\underscore{j}}\\underscore{j}$ も定める。すると\u003c/p\u003e\u003cp\u003e\\begin{align}\nA\u0026=\\sum_i a_i\\mathcal{P}_i,\u0026 \\sum_i\\mathcal{P}_i\u0026=I,\u0026\\mathcal{P}_i\\mathcal{P}_{i'}\u0026=\\delta_{ii'}\\mathcal{P}_i\\\\\nB\u0026=\\sum_j b_j\\mathcal{Q}_j,\u0026 \\sum_j\\mathcal{Q}_j\u0026=I,\u0026\\mathcal{Q}_j\\mathcal{Q}_{j'}\u0026=\\delta_{jj'}\\mathcal{Q}_j\n\\end{align}\u003c/p\u003e\n\u003cp\u003eより\u003c/p\u003e\u003cp\u003e\\begin{align}\n\\mathcal{P}_i\u0026=\\dfrac{\\prod_{l\\neq i}(A-a_lI)}{\\prod_{l\\neq i}(a_i-a_l)}\\\\\n\\mathcal{Q}_j\u0026=\\dfrac{\\prod_{m\\neq j}(B-b_mI)}{\\prod_{m\\neq j}(b_j-b_m)}\n\\end{align}\u003c/p\u003e\n\u003cp\u003eと表せる。実際 $l\\neq i$ に対して\u003c/p\u003e\u003cp\u003e\\begin{align*}\n\\dfrac{A-a_lI}{a_i-a_l}\u0026=\\mathcal{P}_i+\\sum_{n\\neq l,i}\\dfrac{a_n-a_l}{a_i-a_l}\\mathcal{P}_n\n\\end{align*}\u003c/p\u003e\n\u003cp\u003eとなり、これを $l\\neq i$ に亘って掛け合わせると $\\mathcal{P}\\underscore{i}$ だけが残る。$\\mathcal{Q}\\underscore{i}$ も同様。そして、$\\mathcal{P}\\underscore{i},\\mathcal{Q}\\underscore{j}$ は $A,B,I$ だけで表されているので可換である：\u003c/p\u003e\u003cp\u003e\\begin{align}\n\\comm{\\mathcal{P}_i}{\\mathcal{Q}_j}=0.\n\\end{align}\u003c/p\u003e\n\u003cp\u003eこのとき\u003c/p\u003e\u003cp\u003e\\begin{align}\n\\sum_{i,j}\\mathcal{P}_i\\mathcal{Q}_j=\u0026I,\u0026(\\mathcal{P}_i\\mathcal{Q}_j)(\\mathcal{P}_{i'}\\mathcal{Q}_{j'})\u0026=\\delta_{ii'}\\delta_{jj'}\\mathcal{P}_i\\mathcal{Q}_j\\label{eq:pq-split}\n\\end{align}\u003c/p\u003e\n\u003cp\u003eが成り立つので $\\qty{\\mathcal{P}\\underscore{i}\\mathcal{Q}\\underscore{j}}\\underscore{i,j}$ は射影であり、\u003c/p\u003e\u003cp\u003e\\begin{align}\nA\u0026=\\sum_{i,j} a_i\\mathcal{P}_i\\mathcal{Q}_j\\\\\nB\u0026=\\sum_{i,j} b_j\\mathcal{P}_i\\mathcal{Q}_j\n\\end{align}\u003c/p\u003e\n\u003cp\u003eとスペクトル分解できる。$\\mathcal{P}\\underscore{i}$ に対応する固有空間を $W\\underscore{i}$、$\\mathcal{Q}\\underscore{j}$ に対応する固有空間を $V\\underscore{j}$ とすると、$\\eqref{eq:pq-split}$ は $\\qty{W\\underscore{i}\\cap V\\underscore{j}}\\underscore{i,j}$ によって Hilbert 空間 $\\mathcal{H}$ を直和分解できることを意味している。各 $W\\underscore{i}\\cap V\\underscore{j}$ は依然 $2$ 次以上の次元を持ちうるので適宜（Schmidt の直交化法などにより）$W\\underscore{i}\\cap V\\underscore{j}$ 内の正規直交基底をとることで、$\\mathcal{H}$ 全体の正規直交基底 $\\qty{\\ket{a\\underscore{i},b\\underscore{j},k}}\\underscore{i,j,k}$ であって\u003c/p\u003e\u003cp\u003e\\begin{align}\nA\\ket{a_i,b_j,k}\u0026=a_i\\ket{a_i,b_j,k},\u0026 B\\ket{a_i,b_j,k}=b_j\\ket{a_i,b_j,k}\n\\end{align}\u003c/p\u003e\n\u003cp\u003eを満たすようなものを取ることができる。すなわち $A,B$ は同時対角化可能である。\u003c/p\u003e\n\u003ch1\u003e参考文献\u003c/h1\u003e\n\u003cp\u003e\u003ca href=\"https://www.ims.tsukuba.ac.jp/~shugo_suzuki_lab/upload.pdf\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"\u003eディラック記法による線形代数（PDF）\u003c/a\u003e\u003c/p\u003e\u003cscript\u003e\nMathJax = {\n        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},\n        tex: {\n          inlineMath: [['$', '$'], ['\\\\\\(', '\\\\\\)']],\n          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },\n          color: {\n            padding: '5px',\n            borderWidth: '2px',\n          },\n          macros: {\n            parn: [\"\\\\biggl(#1\\\\biggr)\", 1],\n            sqbr: [\"\\\\biggl[#1\\\\biggr]\", 1],\n            pfrac: [\"\\\\biggl(\\\\dfrac{#1}{#2}\\\\biggr)\", 2],\n            ds: \"\\\\displaystyle\",\n            C: '{\\\\mathbb C}',\n            R: '{\\\\mathbb R}',\n            Q: '{\\\\mathbb Q}',\n            Z: '{\\\\mathbb Z}',\n            ssqrt: ['\\\\sqrt{\\\\smash[b]{\\\\mathstrut #1}}', 1],\n            tcdegree: ['\\\\unicode{xb0}'],\n            tccelsius: ['\\\\unicode{x2103}'],\n            tcperthousand: ['\\\\unicode{x2030}'],\n            tcmu: ['\\\\unicode{x3bc}'],\n            tcohm: ['\\\\unicode{x3a9}'],\n            bm: ['\\\\boldsymbol{#1}', 1],\n            ol: ['\\\\overline{#1}', 1],\n            ul: ['\\\\underline{#1}', 1],\n            ub: ['\\\\underbrace{#1}', 1],\n            ubt: ['\\\\underbrace{#1}_{\\\\text{#2}}', 2],\n            i: '{\\\\mathrm{i}}',\n            e: '{\\\\mathrm{e}}',\n            ve: '{\\\\varepsilon}',\n            slashed: ['{{#1\\\\!\\\\!\\\\!/}}', 1],\n            underscore: '_',\n          },\n          physics: {\n            italicdiff: true,\n            arrowdel: false,\n          },\n          tagformat: {\n            number: (n) =\u003e MathJax.config.section + '.' + n,\n            tag:    (tag) =\u003e '(' + tag + ')',\n            id:     (id) =\u003e 'mjx-eqn:' + id.replace(/\\\\s/g, '_'),\n            url:    (id, base) =\u003e base + '#' + encodeURIComponent(id),\n          },\n          tags: 'ams',\n          tagSide: 'right',\n          tagIndent: '0.8em',\n          processRefs: true,\n        },\n        svg: {\n          fontCache: 'global'\n        },\n        chtml: {\n          displayAlign: 'left',\n          displayIndent: '2em',\n          mtextInheritFont: true,\n        }\n      };\n\u003c/script\u003e\n\u003cscript id=\"MathJax-script\"\n  src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"\u003e\n\u003c/script\u003e\u003cscript\u003e\n\u003cp\u003e\n  MathJax = {\n  loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},\n  tex: {\n  inlineMath: [['$', '$'], ['\\(', '\\)']],\n  packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },\n  color: {\n  padding: '5px',\n  borderWidth: '2px',\n  },\n  macros: {\n  parn: [\"\\biggl(#1\\biggr)\", 1],\n  sqbr: [\"\\biggl[#1\\biggr]\", 1],\n  pfrac: [\"\\biggl(\\dfrac{#1}{#2}\\biggr)\", 2],\n  ds: \"\\displaystyle\",\n  C: '{\\mathbb C}',\n  R: '{\\mathbb R}',\n  Q: '{\\mathbb Q}',\n  Z: '{\\mathbb Z}',\n  ssqrt: ['\\sqrt{\\smash[b]{\\mathstrut #1}}', 1],\n  tcdegree: ['\\unicode{xb0}'],\n  tccelsius: ['\\unicode{x2103}'],\n  tcperthousand: ['\\unicode{x2030}'],\n  tcmu: ['\\unicode{x3bc}'],\n  tcohm: ['\\unicode{x3a9}'],\n  bm: ['\\boldsymbol{#1}', 1],\n  ol: ['\\overline{#1}', 1],\n  ul: ['\\underline{#1}', 1],\n  ub: ['\\underbrace{#1}', 1],\n  ubt: ['\\underbrace{#1}\u003cem\u003e{\\text{#2}}', 2],\ni: '{\\mathrm{i}}',\ne: '{\\mathrm{e}}',\nve: '{\\varepsilon}',\nslashed: ['{{#1\\!\\!\\!/}}', 1],\nunderscore: '\u003c/em\u003e',\n  },\n  physics: {\n  italicdiff: true,\n  arrowdel: false,\n  },\n  tagformat: {\n  number: (n) =\u003e MathJax.config.section + '.' + n,\n  tag: (tag) =\u003e '(' + tag + ')',\n  id: (id) =\u003e 'mjx-eqn:' + id.replace(/\\s/g, '_'),\n  url: (id, base) =\u003e base + '#' + encodeURIComponent(id),\n  },\n  tags: 'ams',\n  tagSide: 'right',\n  tagIndent: '0.8em',\n  processRefs: true,\n  },\n  svg: {\n  fontCache: 'global'\n  },\n  chtml: {\n  displayAlign: 'left',\n  displayIndent: '2em',\n  mtextInheritFont: true,\n  }\n  };\n  \u003c/script\u003e\n\u003c/p\u003e\u003cscript id=\"MathJax-script\"\n  src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js\"\u003e\n\u003c/script\u003e\n"}},"__N_SSG":true},"page":"/[year]/[month]/[slug]","query":{"year":"2022","month":"01","slug":"diag-braket"},"buildId":"xoRMOk3aqg96Xj9oXevR6","assetPrefix":"/blog-tsxsample2","isFallback":false,"gsp":true,"scriptLoader":[]}</script></body></html>
