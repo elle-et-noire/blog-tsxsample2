@@ -1,4 +1,4 @@
-# uooo/blog
+# /blog
 
 My personal blog.
 

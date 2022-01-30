@@ -15,10 +15,10 @@ import remarkParse from "remark-parse"
 
 const mathjaxScript = `<script>
 MathJax = {
-        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot']},
+        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
-          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot'] },
+          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },
           color: {
             padding: '5px',
             borderWidth: '2px',
@@ -47,10 +47,17 @@ MathJax = {
             e: '{\\mathrm{e}}',
             ve: '{\\varepsilon}',
             slashed: ['{{#1\\!\\!\\!/}}', 1],
+            underscore: '_',
           },
           physics: {
             italicdiff: true,
             arrowdel: false,
+          },
+          tagformat: {
+            number: (n) => MathJax.config.section + '.' + n,
+            tag:    (tag) => '(' + tag + ')',
+            id:     (id) => 'mjx-eqn:' + id.replace(/\\s/g, '_'),
+            url:    (id, base) => base + '#' + encodeURIComponent(id),
           },
           tags: 'ams',
           tagSide: 'right',
@@ -71,6 +78,30 @@ MathJax = {
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 </script>
 `
+
+function surroundMath(text: string) {
+  text = text.replace(/\\,/g, "\\\\,").replace(/\\\(/g, "\\\\(").replace(/\\\)/g, "\\\\)").replace(/\\begin{align}/g, "<p>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</p>").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>");
+  let inlinemath = false;
+  let ret = ""
+  for (let i = 0; i < text.length; i++)
+  {
+    if (text[i] == "$")
+      inlinemath = !inlinemath;
+    if (text[i] == "_" && inlinemath) {
+      if (i + 1 >= text.length) // あってはならない
+        continue;
+      ret += "\\underscore";
+      if (text[i + 1] == "\\" || text[i + 1] == "{")
+        continue;
+      // アンダースコアの後の下付きとしては1文字だけが続くはず
+      ret += "{" + text[i + 1] + "}";
+      i++;
+      continue;
+    }
+    ret += text[i];
+  }
+  return ret;
+}
 
 export const markdownToHtml = async (file: string) => {
   const result = await unified()
@@ -150,10 +181,11 @@ export const markdownToHtml = async (file: string) => {
       indent: 2,
       indentInitial: true
     })
-    .process(file.replace(/\\,/g, "\\\\,") + mathjaxScript.replace(/\\/g, "\\\\"));
+    // .process(file.replace(/\\,/g, "\\\\,").replace(/\\\(/g,"\\\\(").replace(/\\\)/g,"\\\\)").replace(/\\begin{align}/g, "<p>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</p>").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>") + mathjaxScript.replace(/\\/g, "\\\\"));
+  .process(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
   // .process(file.replaceAll("\\,", "\\\\,"));
   // console.log(file.replaceAll("\\,", "\\\\,") + mathjaxScript.replaceAll("\\", "\\\\"));
-  // console.log(file.replaceAll("\\,", "\\\\,"));
+  console.log(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
 
   return result.toString();
 };

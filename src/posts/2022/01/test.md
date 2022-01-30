@@ -34,13 +34,21 @@ $$
 \int_{-\infty}^\infty \dd{x}e^{-ax^2}=\sqrt{\dfrac{\pi}{a}}
 $$
 
-$$
+
 \begin{align}
 \int_{-\infty}^\infty \dd{x}e^{-ax^2}&=\sqrt{\dfrac{\pi}{a}}\\\\
 y&=x\\\\
-z\in\mathbb{C}, x\in\R
+z\in\mathbb{C}, x\in\R\\
+\pdv{f}{x}
 \end{align}
-$$
+
+\begin{align}
+\def\ss{_}
+\end{align}
+\begin{align}
+k\ss{B}
+\end{align}
+
 
 # 表
 | Left align | Right align | Center align |
