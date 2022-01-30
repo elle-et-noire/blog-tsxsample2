@@ -5,7 +5,9 @@ tags:
     - next
 ---
 
-対角化可能な演算子 \(A,B\) が可換なら \\(A,B\\) は同時対角化可能である。
+## 命題
+
+> 対角化可能な演算子 \(A,B\) が可換なら \\(A,B\\) は同時対角化可能である。
 
 ## 証明
 
@@ -58,70 +60,11 @@ A\ket{a_i,b_j,k}&=a_i\ket{a_i,b_j,k},& B\ket{a_i,b_j,k}=b_j\ket{a_i,b_j,k}
 
 を満たすようなものを取ることができる。すなわち $A,B$ は同時対角化可能である。
 
-# 参考文献
-[ディラック記法による線形代数（PDF）](https://www.ims.tsukuba.ac.jp/~shugo_suzuki_lab/upload.pdf)
+## 余談
 
-<script>
-MathJax = {
-        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },
-          color: {
-            padding: '5px',
-            borderWidth: '2px',
-          },
-          macros: {
-            parn: ["\\biggl(#1\\biggr)", 1],
-            sqbr: ["\\biggl[#1\\biggr]", 1],
-            pfrac: ["\\biggl(\\dfrac{#1}{#2}\\biggr)", 2],
-            ds: "\\displaystyle",
-            C: '{\\mathbb C}',
-            R: '{\\mathbb R}',
-            Q: '{\\mathbb Q}',
-            Z: '{\\mathbb Z}',
-            ssqrt: ['\\sqrt{\\smash[b]{\\mathstrut #1}}', 1],
-            tcdegree: ['\\unicode{xb0}'],
-            tccelsius: ['\\unicode{x2103}'],
-            tcperthousand: ['\\unicode{x2030}'],
-            tcmu: ['\\unicode{x3bc}'],
-            tcohm: ['\\unicode{x3a9}'],
-            bm: ['\\boldsymbol{#1}', 1],
-            ol: ['\\overline{#1}', 1],
-            ul: ['\\underline{#1}', 1],
-            ub: ['\\underbrace{#1}', 1],
-            ubt: ['\\underbrace{#1}_{\\text{#2}}', 2],
-            i: '{\\mathrm{i}}',
-            e: '{\\mathrm{e}}',
-            ve: '{\\varepsilon}',
-            slashed: ['{{#1\\!\\!\\!/}}', 1],
-            underscore: '_',
-          },
-          physics: {
-            italicdiff: true,
-            arrowdel: false,
-          },
-          tagformat: {
-            number: (n) => MathJax.config.section + '.' + n,
-            tag:    (tag) => '(' + tag + ')',
-            id:     (id) => 'mjx-eqn:' + id.replace(/\\s/g, '_'),
-            url:    (id, base) => base + '#' + encodeURIComponent(id),
-          },
-          tags: 'ams',
-          tagSide: 'right',
-          tagIndent: '0.8em',
-          processRefs: true,
-        },
-        svg: {
-          fontCache: 'global'
-        },
-        chtml: {
-          displayAlign: 'left',
-          displayIndent: '2em',
-          mtextInheritFont: true,
-        }
-      };
-</script>
-<script id="MathJax-script"
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-</script>
+$\comm{A}{B}=0,\comm{B}{C}=0\implies\comm{A}{C}=0$だと何故か思い込んでいたけれど$B=\mathbb{1}$が反例でした。
+
+
+# 参考文献
+
+[ディラック記法による線形代数（PDF）](https://www.ims.tsukuba.ac.jp/~shugo_suzuki_lab/upload.pdf)

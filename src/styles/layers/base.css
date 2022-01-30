@@ -1,7 +1,8 @@
 @layer base {
+
   html,
   body {
-    @apply text-gray-100 text-base bg-gray-900;
+    @apply text-gray-100 text-base bg-gray-900 scrollbar scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-y-scroll;
   }
 
   h1 {
@@ -13,7 +14,7 @@
   }
 
   p {
-    @apply mb-5;
+    @apply mb-5 bg-gray-900 scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-x-scroll;
   }
 
   a {
