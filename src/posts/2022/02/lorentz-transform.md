@@ -10,7 +10,7 @@ $K$系に対する$K'$系の速さを$v$、方向を$x$軸にとる。Minkowski�
 \begin{align}
 (ct)^2-\bm{x}^2&=(ct')^2-\bm{x}'^2
 \end{align}
-のである角度$\phi$を用いて
+ので、ある角度$\phi$を用いて
 \begin{align}
   ct&=ct'\cosh\phi+x'\sinh\phi\\
   x&=ct'\sinh\phi+x'\cosh\phi\\

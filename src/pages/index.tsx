@@ -8,19 +8,25 @@ import { Page } from "~/layouts/page";
 import type { Post } from "~/types/post";
 import { getLatestPosts, getOldPosts, getTags } from "~/utils/api";
 import { formatDate } from "~/utils/format";
+import { markdownToHtml } from "~/utils/convert";
+import { PostContent } from "~/components/post-content";
+import { getPosts, getPostByPath } from "~/utils/api";
 
 type Props = {
   tags: string[];
   latestPosts: Post[];
   oldPosts: Post[];
+  intro: string;
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
+  const content = await markdownToHtml(getPostByPath(`intro.md`).content);
   return {
     props: {
       tags: getTags(),
       latestPosts: getLatestPosts(),
       oldPosts: getOldPosts(),
+      intro: content
     },
   };
 };
@@ -37,6 +43,9 @@ export default function View(props: Props) {
         <meta property="og:description" content={APP_DESCRIPTION} />
         <meta property="og:url" content={APP_URL} />
       </Head>
+      <article>
+        <PostContent content={props.intro} />
+      </article>
       <h2 className="mb-5">Tags</h2>
       <Tags tags={props.tags} className="mb-14" />
       <h2 className="mb-5">Posts</h2>
@@ -56,7 +65,7 @@ export default function View(props: Props) {
         <div className="text-center">
           <button
             onClick={moreOldPosts}
-            className="px-5 py-1 text-gray-300 active:text-pink-500 bg-gray-700 rounded shadow-sm"
+            className="px-5 py-1 text-gray-300 active:text-pink-500 bg-darkgreen rounded shadow-sm"
           >
             more old posts
           </button>

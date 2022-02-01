@@ -15,8 +15,8 @@ $A$ の相異なる固有値を $\qty{a_i}_i$ とし、$a_i$ に対応する固�
 
 
 \begin{align}
-A&=\sum_i a_i\mathcal{P}_i,& \sum_i\mathcal{P}_i&=I,&\mathcal{P}_i\mathcal{P}_{i'}&=\delta_{ii'}\mathcal{P}_i\\
-B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j'}&=\delta_{jj'}\mathcal{Q}_j
+A&=\sum_i a_i\mathcal{P}_i,& \sum_i\mathcal{P}_i&=I,&\mathcal{P}_i\mathcal{P}_{i'}&=\delta_{ii'}\mathcal{P}_i\label{eq:a}\\
+B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j'}&=\delta_{jj'}\mathcal{Q}_j\label{eq:b}
 \end{align}
 
 
@@ -45,14 +45,14 @@ B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j
 \sum_{i,j}\mathcal{P}_i\mathcal{Q}_j=&I,&(\mathcal{P}_i\mathcal{Q}_j)(\mathcal{P}_{i'}\mathcal{Q}_{j'})&=\delta_{ii'}\delta_{jj'}\mathcal{P}_i\mathcal{Q}_j\label{eq:pq-split}
 \end{align}
 
-が成り立つので $\qty{\mathcal{P}_i\mathcal{Q}_j}_{i,j}$ は射影であり、
+が成り立つので $\qty{\mathcal{P}_i\mathcal{Q}_j}_{i,j}$ は射影であり、\eqref{eq:a}、\eqref{eq:b}から導かれる
 
 \begin{align}
 A&=\sum_{i,j} a_i\mathcal{P}_i\mathcal{Q}_j\\
 B&=\sum_{i,j} b_j\mathcal{P}_i\mathcal{Q}_j
 \end{align}
 
-とスペクトル分解できる。$\mathcal{P}_i$ に対応する固有空間を $W_i$、$\mathcal{Q}_j$ に対応する固有空間を $V_j$ とすると、$\eqref{eq:pq-split}$ は $\qty{W_i\cap V_j}_{i,j}$ によって Hilbert 空間 $\mathcal{H}$ を直和分解できることを意味している。各 $W_i\cap V_j$ は依然 $2$ 次以上の次元を持ちうるので適宜（Schmidt の直交化法などにより）$W_i\cap V_j$ 内の正規直交基底をとることで、$\mathcal{H}$ 全体の正規直交基底 $\qty{\ket{a_i,b_j,k}}_{i,j,k}$ であって
+はスペクトル分解になっている。$\mathcal{P}_i$ に対応する固有空間を $W_i$、$\mathcal{Q}_j$ に対応する固有空間を $V_j$ とすると、$\eqref{eq:pq-split}$ は $\qty{W_i\cap V_j}_{i,j}$ によって Hilbert 空間 $\mathcal{H}$ を直和分解できることを意味している。各 $W_i\cap V_j$ は依然 $2$ 次以上の次元を持ちうるので適宜（Schmidt の直交化法などにより）$W_i\cap V_j$ 内の正規直交基底をとることで、$\mathcal{H}$ 全体の正規直交基底 $\qty{\ket{a_i,b_j,k}}_{i,j,k}$ であって
 
 \begin{align}
 A\ket{a_i,b_j,k}&=a_i\ket{a_i,b_j,k},& B\ket{a_i,b_j,k}=b_j\ket{a_i,b_j,k}
