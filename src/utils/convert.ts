@@ -53,16 +53,19 @@ MathJax = {
             italicdiff: true,
             arrowdel: false,
           },
+          section: 1,
           tagformat: {
-            number: (n) => MathJax.config.section + '.' + n,
-            tag:    (tag) => '(' + tag + ')',
-            id:     (id) => 'mjx-eqn:' + id.replace(/\\s/g, '_'),
+            // number: (n) => MathJax.config.section + '.' + n,
+            number: (n) => n.toString(),
+            // tag:    (tag) => '(' + tag + ')',
+            id:     (tag) => 'eqn-id:' + tag,
             url:    (id, base) => base + '#' + encodeURIComponent(id),
           },
           tags: 'ams',
           tagSide: 'right',
           tagIndent: '0.8em',
           processRefs: true,
+          useLabelIds: false,         // use label name rather than tag for ids
         },
         svg: {
           fontCache: 'global'
@@ -71,6 +74,39 @@ MathJax = {
           displayAlign: 'left',
           displayIndent: '2em',
           mtextInheritFont: true,
+        },
+        startup: {
+          ready() {
+            const Configuration = MathJax._.input.tex.Configuration.Configuration;
+            const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
+            new CommandMap('sections', {
+              nextSection: 'NextSection',
+              setSection: 'SetSection',
+            }, {
+              NextSection(parser, name) {
+                MathJax.config.section++;
+                parser.tags.counter = parser.tags.allCounter = 0;
+              },
+              SetSection(parser, name) {
+                const n = parser.GetArgument(name);
+                MathJax.config.section = parseInt(n);
+              }
+            });
+            Configuration.create(
+              'sections', {handler: {macro: ['sections']}}
+            );
+            MathJax.startup.defaultReady();
+            MathJax.startup.input[0].preFilters.add(({math}) => {
+              if (math.inputData.recompile) {
+                MathJax.config.section = math.inputData.recompile.section;
+              }
+            });
+            MathJax.startup.input[0].postFilters.add(({math}) => {
+              if (math.inputData.recompile) {
+                math.inputData.recompile.section = MathJax.config.section;
+              }
+            });
+          }
         }
       };
 </script>
@@ -80,13 +116,25 @@ MathJax = {
 `
 
 function surroundMath(text: string) {
-  text = text.replace(/\\,/g, "\\\\,").replace(/\\\(/g, "\\\\(").replace(/\\\)/g, "\\\\)").replace(/\\begin{align}/g, "<p>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</p>").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>");
+  text = text.replace(/\\\(/g, "\\\\(").replace(/\\\)/g, "\\\\)").replace(/\\begin{align}/g, "<p>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</p>").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>");
   let inlinemath = false;
   let ret = ""
   for (let i = 0; i < text.length; i++)
   {
-    if (text[i] == "$")
+    if (text[i] == " " && ((i - 1 >= 0 && text[i - 1] == "$") || (i + 1 < text.length && text[i + 1] == "$")))
+      continue;
+
+    if (text[i] == "$" && (i - 1 < 0 || text[i - 1] != "$") && (i + 1 >= text.length || text[i + 1] != "$")) {
       inlinemath = !inlinemath;
+      // 文中数式と地の文の間隔
+      if (inlinemath)
+        ret += "$\\hspace{0.2em}";
+      else
+        ret += "\\hspace{0.2em}$";
+      continue;
+    }
+
+    // 斜体化け対策
     if (text[i] == "_" && inlinemath) {
       if (i + 1 >= text.length) // あってはならない
         continue;
@@ -94,10 +142,10 @@ function surroundMath(text: string) {
       if (text[i + 1] == "\\" || text[i + 1] == "{")
         continue;
       // アンダースコアの後の下付きとしては1文字だけが続くはず
-      ret += "{" + text[i + 1] + "}";
-      i++;
+      ret += "{" + text[i++ + 1] + "}";
       continue;
     }
+
     ret += text[i];
   }
   return ret;

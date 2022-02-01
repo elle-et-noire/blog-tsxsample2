@@ -17,7 +17,7 @@ export default function View() {
       <p>
         何かしらの問い合わせに関しては{" "}
         <LinkExternal
-          href="https://twitter.com/livejam_db"
+          href="https://twitter.com/L48610"
           className="inline-flex items-center"
         >
           Twitter

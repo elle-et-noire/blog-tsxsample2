@@ -1,20 +1,29 @@
 @layer base {
+  @font-face {
+    font-family: AppliMincho;
+    font-weight: 400;
+    src: url(/fonts/AppliMincho.otf) format("opentype");
+  }
 
   html,
   body {
-    @apply text-gray-100 text-base bg-gray-900 scrollbar scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-y-scroll;
+    @apply text-white text-base bg-black scrollbar scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-y-scroll font-applimincho;
   }
 
   h1 {
-    @apply text-4xl mb-2 font-semibold;
+    @apply my-6 text-2xl font-semibold;
   }
 
   h2 {
-    @apply text-3xl font-semibold;
+    @apply my-4 pb-1 border-b border-gray-600 text-xl font-semibold;
+  }
+
+  h3 {
+    @apply text-lg font-medium;
   }
 
   p {
-    @apply mb-5 bg-gray-900 scrollbar-thin scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-x-scroll;
+    @apply bg-black scrollbar scrollbar-thumb-blue-700 scrollbar-track-blue-300 overflow-x-scroll;
   }
 
   a {
