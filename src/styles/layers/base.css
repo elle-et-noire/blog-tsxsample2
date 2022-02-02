@@ -7,7 +7,7 @@
 
   html,
   body {
-    @apply text-white text-base bg-black font-applimincho scroll-smooth scroll-pt-20 round-scrollbar;
+    @apply text-white text-base bg-gradient-to-tr from-darkgreen to-black bg-[length:400%_400%] animate-gradient-background font-applimincho scroll-smooth scroll-pt-20 round-scrollbar selection:bg-raspberry;
   }
 
   h1 {
@@ -23,7 +23,7 @@
   }
 
   p {
-    @apply bg-black overflow-x-auto round-scrollbar;
+    @apply overflow-x-auto round-scrollbar;
   }
 
   a {

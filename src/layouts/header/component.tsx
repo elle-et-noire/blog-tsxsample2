@@ -4,7 +4,7 @@ import type { _Props } from "./types";
 export const Component: React.VFC<_Props> = (props) => (
   <header>
     <nav
-      className="fixed w-full py-3 z-20 text-center font-semibold bg-darkgreen"
+      className="fixed w-full py-3 z-20 text-center font-semibold bg-transparent backdrop-filter backdrop-blur-sm bg-opacity-10"
       aria-label="Header navigation"
     >
       <Link href="/">

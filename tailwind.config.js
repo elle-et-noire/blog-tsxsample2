@@ -42,7 +42,25 @@ module.exports = {
         'black': '#002b36',
         'darkgreen': '#145055',
         'water': '#51c4d3',
-        'raspberry': '#ff44dd'
+        // 'raspberry': '#ff44dd'
+        'raspberry': '#d42474'
+        // 'raspberry': '#ff0099'
+      },
+      animation: {
+        'gradient-background': 'gradient-ackground 10s ease infinite'
+      },
+      keyframes: {
+        'gradient-background': {
+          "0%": {
+            'background-position': '0% 50%'
+          },
+          "50%": {
+            'background-position': '100% 50%'
+          },
+          "100%": {
+            'background-position': '0% 50%'
+          }
+        },
       },
     },
     fontFamily: {
@@ -55,6 +73,7 @@ module.exports = {
     plugin(function({ addUtilities }) {
       addUtilities({
         ".round-scrollbar": {
+          overflow: "overlay",
           "&::-webkit-scrollbar": {
             width: "10px",
             height: "10px"
@@ -64,8 +83,9 @@ module.exports = {
             "border-radius": "5px"
           },
           "&::-webkit-scrollbar-track": {
-            background: "#002b36"
-          },
+            background: "transparent"
+            // background: "#002b36"
+          }
         }
       })
     })
