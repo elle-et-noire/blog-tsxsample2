@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   content: ["./src/**/*.tsx"],
   theme: {
@@ -50,7 +52,23 @@ module.exports = {
   },
   // darkMode: 'media',  // or darkMode: 'class'
   plugins: [
-    require('tailwind-scrollbar'),
+    plugin(function({ addUtilities }) {
+      addUtilities({
+        ".round-scrollbar": {
+          "&::-webkit-scrollbar": {
+            width: "10px",
+            height: "10px"
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#145055",
+            "border-radius": "5px"
+          },
+          "&::-webkit-scrollbar-track": {
+            background: "#002b36"
+          },
+        }
+      })
+    })
   ],
   // variants: {
   //   scrollbar: ['dark']

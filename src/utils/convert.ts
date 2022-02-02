@@ -111,7 +111,7 @@ MathJax = {
       };
 </script>
 <script id="MathJax-script"
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-chtml.min.js?config=TeX-AMS_HTML">
 </script>
 `
 
