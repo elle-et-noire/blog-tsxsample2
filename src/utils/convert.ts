@@ -233,7 +233,7 @@ export const markdownToHtml = async (file: string) => {
   .process(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
   // .process(file.replaceAll("\\,", "\\\\,"));
   // console.log(file.replaceAll("\\,", "\\\\,") + mathjaxScript.replaceAll("\\", "\\\\"));
-  console.log(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
+  // console.log(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
 
   return result.toString();
 };

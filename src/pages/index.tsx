@@ -20,7 +20,7 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const content = await markdownToHtml(getPostByPath(`intro.md`).content);
+  const content = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
   return {
     props: {
       tags: getTags(),
