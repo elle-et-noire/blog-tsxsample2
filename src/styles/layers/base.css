@@ -29,4 +29,16 @@
   a {
     @apply underline decoration-[0.05em] underline-offset-[0.25em];
   }
+
+  .tooltip {
+    @apply opacity-0 invisible absolute ease-in-out duration-300;
+  }
+  
+  .has-tooltip:hover .tooltip {
+    @apply opacity-100 visible z-50 duration-300 delay-300 ease-in-out;
+  }
+
+  .balloon {
+    @apply before:block absolute before:absolute top-full before:-top-1 left-1/2 before:left-1/2 z-10 before:z-0 py-[2px] px-2 mx-auto mt-2 before:w-2 before:h-2 text-xs text-white whitespace-nowrap before:bg-black bg-black rounded transform before:transform before:rotate-45 -translate-x-1/2 before:-translate-x-1/2;
+  }
 }

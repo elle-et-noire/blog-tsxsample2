@@ -19,7 +19,11 @@ tags:
 \begin{align}
   \delta(x)=\lim_{\ve\to 0}\dfrac{1}{\sqrt{2\pi\ve}}\e^{-x^2/2\ve}\label{eq:delta}
 \end{align}
-を用いて確かめられる。$x\simeq\alpha_i$において$f(x)=f'(\alpha_i)(x-\alpha_i)+\order{(x-\alpha_i)^2}$と展開でき、\eqref{eq:delta}に代入すると
+を用いて確かめられる。$x\simeq\alpha_i$において
+\begin{align}
+  f(x)=f'(\alpha_i)(x-\alpha_i)+\order{(x-\alpha_i)^2}
+\end{align}
+と展開でき、\eqref{eq:delta}に代入すると
 \begin{align}
   \eval{\delta(f(x))}_{x\simeq\alpha_i}&=\lim_{\ve\to 0}\dfrac{1}{\sqrt{2\pi\ve}}\exp\qty[-\dfrac{(x-\alpha_i)^2\abs{f'(\alpha_i)}^2}{2\ve}\qty[1+\order{x-\alpha_i}]]\\
   &=\lim_{\ve'\to 0}\dfrac{1}{\sqrt{2\pi\ve'}\abs{f'(\alpha_i)}}\exp\qty[-\dfrac{(x-\alpha_i)^2}{2\ve'}\qty[1+\order{x-\alpha_i}]]\ \qty(\ve'=\dfrac{\ve}{\abs{f'(\alpha_i)}^2})\\
@@ -45,21 +49,21 @@ $K$系内で速さ$v$で動く質量$m$の粒子について、粒子の進む�
 \varLambda^\mu{}_\nu&=\mqty[\dmat{\gamma & \gamma\beta \\ \gamma\beta & \gamma, 1, 1}]
 \ \mathrm{where}\ \beta = \dfrac{v}{c}=\dfrac{\abs{\bm{p}}}{\sqrt{\bm{p}^2+m^2c^2}},\ \gamma=\dfrac{1}{\sqrt{1-\beta^2}}\label{eq:lorentz-standard}
 \end{align}
-によって粒子の静止系に移れる：
+によって粒子の静止系$K'$からの変換が与えられる：
 \begin{align}
-  p^\mu=\mqty(E(\bm{p})/c,\bm{p})^\mathrm{T}\mapsto p'^\mu=\mqty(E(\bm{p}')/c,\bm{0})^\mathrm{T}.
+  p^\mu=\mqty(E(\bm{p})/c,\bm{p})^\mathrm{T}=\varLambda^\mu{}_\nu p'^\nu=\varLambda\mqty(E(\bm{p}')/c,\bm{0})^\mathrm{T}.
 \end{align}
 
 # 証明
 
 ここでは計量を $(+,-,-,-)$ とする。$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$ は、$E(\bm{p})=c\sqrt{\bm{p}^2+m^2c^2}$ より3次元空間内の回転で不変であることは明らかである。よって\eqref{eq:lorentz-standard}の変換で不変であることを示せばよい。
 
-まず粒子の静止系で考える。$\bm{p}'$ を固定し、$p'^0$ の関数として見ると
+まず$K'$系で考える（全体での式中の$\prime$の数を減らしたいので）。$\bm{p}'$ を固定し、$p'^0$ の関数として見ると
 \begin{align}
 \theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)&=\theta(p'^0)\delta((p'^0)^2-E^2(\bm{p}')/c^2)\\
 &=\dfrac{c}{2E(\bm{p}')}\theta(p'^0)\qty\big[\delta(p'^0-E(\bm{p}')/c)+\underbrace{\delta(p'^0+E(\bm{p}')/c)}_{=0\ \text{due to}\theta(p'^0)}]
 \end{align}
-である（$\theta(p'^0)$がかかっているのは、物理的には$p'^0>0$であることを反映させるため）。$\dd[4]p$ およびLorentz不変な量 $A(\bm{p})$ をかけて全時空 $p'^\mu\in(-\infty,\infty)^4$ で積分すれば
+である（$\theta(p'^0)$がかかっているのは、物理的には$p'^0>0$であることを反映させるため）。$\dd[4]{p'}$ およびLorentz不変な量 $A(\bm{p}')$ をかけて全時空 $p'^\mu\in(-\infty,\infty)^4$ で積分すれば
 \begin{align}
   \int_{\mathbb{M}^{1,3}}\dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p}')&=\int_{\mathbb{R}^3}\dfrac{c\dd[3]{\bm{p}'}}{2E(\bm{p}')}A(\bm{p}').\label{eq:original}
 \end{align}
@@ -79,7 +83,7 @@ p'^0&=\gamma p^0+\gamma\beta p^1
 &\qquad+\underbrace{\theta(-\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=0}\:\underbrace{\delta(p^0+E(\bm{p})/c)}_{=0}]\dd[4]{p}\ (\eqref{eq:delta-convolute}\text{を用いた})\\
 &=\dfrac{c}{2E(\bm{p})}\delta(p^0-E(\bm{p})/c)\dd[4]{p}
 \end{align}
-となる。こちらもLorentz不変な量 $A(\bm{p})$ をかけて全空間 $p'^\mu\in(-\infty,\infty)^4$ で積分すれば
+となる。こちらもLorentz不変な量 $A(\bm{p})$ をかけて全時空 $p'^\mu\in(-\infty,\infty)^4$（$\iff p^\mu\in(-\infty,\infty)^4$）で積分すれば
 \begin{align}
 \int_{\mathbb{M}^{1,3}} \dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p})&=\int_{\mathbb{R}^3}A(\bm{p})\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}\label{eq:comp2}
 \end{align}

@@ -11,6 +11,7 @@ import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
 import { getPosts, getPostByPath } from "~/utils/api";
+import { Tooltip } from "~/components/tooltip"
 
 type Props = {
   tags: string[];
@@ -43,6 +44,22 @@ export default function View(props: Props) {
         <meta property="og:description" content={APP_DESCRIPTION} />
         <meta property="og:url" content={APP_URL} />
       </Head>
+      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
+      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
+      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
+      うおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおお<br />
+      うおおおおお<span className='has-tooltip relative items-center'>
+        <span className='flex tooltip balloon'>Some Nice Tooltip Text<br/>ゲルフォントシュナイダー</span>
+        Custom Position (above)
+      </span>うおおおおおおおお$a=b$
+      うおおおおお<span className='has-tooltip relative items-center'>
+        <span className='flex tooltip balloon'>Some Nice Tooltip Text</span>
+        Custom Position (above)
+      </span>うおおおおおおおお$a=b$
+      うおおおおお<span className='has-tooltip relative items-center'>
+        <span className='flex tooltip balloon'>Some Nice Tooltip Text</span>
+        Custom Position (above)
+      </span>うおおおおおおおお$a=b$
       <article>
         <PostContent content={props.intro} />
       </article>
