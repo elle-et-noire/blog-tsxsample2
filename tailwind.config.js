@@ -73,7 +73,6 @@ module.exports = {
     plugin(function({ addUtilities }) {
       addUtilities({
         ".round-scrollbar": {
-          overflow: "overlay",
           "&::-webkit-scrollbar": {
             width: "10px",
             height: "10px"
@@ -86,6 +85,9 @@ module.exports = {
             background: "transparent"
             // background: "#002b36"
           }
+        },
+        ".overflow-overlay": {
+          overflow: "overlay",
         }
       })
     })

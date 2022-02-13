@@ -3,7 +3,6 @@ import Head from "next/head";
 import { Layout } from "~/layouts/layout";
 import { Loading } from "~/layouts/loading";
 import "~/styles/app.css";
-import Script from 'next/script'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -1,16 +1,14 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { useState } from "react";
 import { Tags } from "~/components/tags";
 import { APP_DESCRIPTION, APP_NAME, APP_URL } from "~/constants/app";
 import { Page } from "~/layouts/page";
 import type { Post } from "~/types/post";
-import { getLatestPosts, getOldPosts, getTags } from "~/utils/api";
+import { getLatestPosts, getOldPosts, getTags, getPostByPath } from "~/utils/api";
 import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
-import { getPosts, getPostByPath } from "~/utils/api";
 import { Tooltip } from "~/components/tooltip"
 
 type Props = {
@@ -44,12 +42,13 @@ export default function View(props: Props) {
         <meta property="og:description" content={APP_DESCRIPTION} />
         <meta property="og:url" content={APP_URL} />
       </Head>
+      <div>
       うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
       うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
       うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
       うおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおお<br />
       うおおおおお<span className='has-tooltip relative items-center'>
-        <span className='flex tooltip balloon'>Some Nice Tooltip Text<br/>ゲルフォントシュナイダー</span>
+        <span className='flex tooltip balloon'><p>Some Nice Tooltip Text<br/>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</p></span>
         Custom Position (above)
       </span>うおおおおおおおお$a=b$
       うおおおおお<span className='has-tooltip relative items-center'>
@@ -59,7 +58,8 @@ export default function View(props: Props) {
       うおおおおお<span className='has-tooltip relative items-center'>
         <span className='flex tooltip balloon'>Some Nice Tooltip Text</span>
         Custom Position (above)
-      </span>うおおおおおおおお$a=b$
+        </span>うおおおおおおおお$a=b$
+        </div>
       <article>
         <PostContent content={props.intro} />
       </article>
@@ -72,9 +72,7 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <Link href={`/${post.year}/${post.month}/${post.slug}`}>
-              <a className="font-semibold">{post.title}</a>
-            </Link>
+            <a className="font-semibold" href={`/${post.year}/${post.month}/${post.slug}`}>{post.title}</a>
           </li>
         ))}
       </ul>
@@ -94,9 +92,7 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <Link href={`/${post.year}/${post.month}/${post.slug}`}>
-              <a className="font-semibold">{post.title}</a>
-            </Link>
+            <a className="font-semibold" href={`/${post.year}/${post.month}/${post.slug}`}>{post.title}</a>
           </li>
         ))}
       </ul>

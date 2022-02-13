@@ -24,11 +24,15 @@ tags:
   f(x)=f'(\alpha_i)(x-\alpha_i)+\order{(x-\alpha_i)^2}
 \end{align}
 と展開でき、\eqref{eq:delta}に代入すると
-\begin{align}
+<address class='xscroll'>
+$$
+\begin{aligned}
   \eval{\delta(f(x))}_{x\simeq\alpha_i}&=\lim_{\ve\to 0}\dfrac{1}{\sqrt{2\pi\ve}}\exp\qty[-\dfrac{(x-\alpha_i)^2\abs{f'(\alpha_i)}^2}{2\ve}\qty[1+\order{x-\alpha_i}]]\\
   &=\lim_{\ve'\to 0}\dfrac{1}{\sqrt{2\pi\ve'}\abs{f'(\alpha_i)}}\exp\qty[-\dfrac{(x-\alpha_i)^2}{2\ve'}\qty[1+\order{x-\alpha_i}]]\ \qty(\ve'=\dfrac{\ve}{\abs{f'(\alpha_i)}^2})\\
   &=\dfrac{\delta(x-\alpha_i)}{\abs{f'(\alpha_i)}}
-\end{align}
+\end{aligned}
+$$
+</address>
 となる。全ての$\alpha_i$について和を取れば\eqref{eq:delta-compose}となる。
 
 ## デルタ函数の性質
@@ -74,7 +78,7 @@ $K$系内で速さ$v$で動く質量$m$の粒子について、粒子の進む�
 p'^\mu p'_\mu&=p^\mu p_\mu\\
 p'^0&=\gamma p^0+\gamma\beta p^1
 \end{align}
-と変換される。これらより
+と変換される。これらより[不変規格化因子 - EMANの素粒子論](https://eman-physics.net/elementary/invariant_factor.html)
 \begin{align}
 &\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)\dd[4]{p'}\\
 &=\theta(\gamma p^0+\gamma\beta p^1)\delta(p^\mu p_\mu-m^2c^2)\dd[4]{p}\\
@@ -87,7 +91,7 @@ p'^0&=\gamma p^0+\gamma\beta p^1
 \begin{align}
 \int_{\mathbb{M}^{1,3}} \dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p})&=\int_{\mathbb{R}^3}A(\bm{p})\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}\label{eq:comp2}
 \end{align}
-となる。\eqref{eq:original}と\eqref{eq:comp2}を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。
+となる。<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\[\int\underscore{\mathbb{M}^{1,3}}\dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'\underscore\mu-m^2c^2)A(\bm{p}')=\int\underscore{\mathbb{R}^3}\dfrac{c\dd[3]{\bm{p}'}}{2E(\bm{p}')}A(\bm{p}').\\]</span>\eqref{eq:original}</span>と<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</span>\eqref{eq:comp2}</span>を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\[\int\underscore{\mathbb{M}^{1,3}}\dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'\underscore\mu-m^2c^2)A(\bm{p}')=\int\underscore{\mathbb{R}^3}\dfrac{c\dd[3]{\bm{p}'}}{2E(\bm{p}')}A(\bm{p}').\\]</span>\eqref{eq:original}</span>と<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</span>\eqref{eq:comp2}</span>
 
 
 # 参考文献
