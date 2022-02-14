@@ -8,6 +8,7 @@ import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
 import { description } from "~/utils/meta";
+import { MathjaxTypeset } from "~/components/mathjaxtypeset"
 
 type Props = {
   post: Post;
@@ -73,7 +74,9 @@ export default function View(props: Props) {
         <span className='flex tooltip balloon'><p>Some Nice Tooltip Text<br/>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</p></span>
         Custom Position (above)
       </span>うおおおおおおおお$a=b$</p></div>
-      <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
+      <MathjaxTypeset>
+        <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
+      </MathjaxTypeset>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>

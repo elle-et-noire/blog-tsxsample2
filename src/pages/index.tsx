@@ -74,7 +74,9 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <a className="font-semibold" href={B(`/${post.year}/${post.month}/${post.slug}`)}>{post.title}</a>
+            <Link href={`/${post.year}/${post.month}/${post.slug}`}>
+              <a className="font-semibold">{post.title}</a>
+            </Link>
           </li>
         ))}
       </ul>
@@ -94,7 +96,9 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <a className="font-semibold" href={B(`/${post.year}/${post.month}/${post.slug}`)}>{post.title}</a>
+            <Link href={`/${post.year}/${post.month}/${post.slug}`}>
+              <a className="font-semibold">{post.title}</a>
+            </Link>
           </li>
         ))}
       </ul>

@@ -50,6 +50,7 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "better-react-mathjax": "^1.0.3",
     "rehype-external-links": "^1.0.1",
     "rehype-format": "^4.0.1",
     "rehype-stringify": "^9.0.2",

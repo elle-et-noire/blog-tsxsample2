@@ -179,6 +179,7 @@ export const markdownToHtml = async (file: string) => {
       indent: 2,
       indentInitial: true
     })
-  .process(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
+  // .process(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
+  .process(surroundMath(file));
   return result.toString();
 };
