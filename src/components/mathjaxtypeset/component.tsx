@@ -1,6 +1,11 @@
 import type { _Props } from "./types";
 import React, { useContext, useRef, useEffect } from "react";
-import { MathJaxContext, MathJaxBaseContext } from "better-react-mathjax";
+import { MathJaxContext, MathJaxBaseContext, MathJax3Object } from "better-react-mathjax";
+
+const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
+  // Weapon型に強制キャストしてatackプロパティがあればWeapon型とする
+  return !!(mjObject as MathJax3Object)?.startup
+}
 
 export const Component: React.VFC<_Props> = (props) => {
   const mjContext = useContext(MathJaxBaseContext);
@@ -9,11 +14,13 @@ export const Component: React.VFC<_Props> = (props) => {
   useEffect(() => {
     if (mjContext && mathBlock.current) {
       mjContext.promise.then((mathJax) => {
-        mathJax.startup.promise.then(() => {
-          mathJax.texReset();
-          mathJax.typesetClear([mathBlock.current]);
-          mathJax.typesetPromise([mathBlock.current]);
-        });
+        if (isMathJax3Object(mathJax)) {
+          mathJax.startup.promise.then(() => {
+            mathJax.texReset();
+            mathJax.typesetClear([mathBlock.current]);
+            mathJax.typesetPromise([mathBlock.current]);
+          });
+        }
       });
     }
   });
