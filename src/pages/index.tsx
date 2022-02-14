@@ -1,5 +1,6 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useState } from "react";
 import { Tags } from "~/components/tags";
 import { APP_DESCRIPTION, APP_NAME, APP_URL } from "~/constants/app";
@@ -10,6 +11,7 @@ import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
 import { Tooltip } from "~/components/tooltip"
+import B from '~/utils/basepath';
 
 type Props = {
   tags: string[];
@@ -72,7 +74,7 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <a className="font-semibold" href={`/${post.year}/${post.month}/${post.slug}`}>{post.title}</a>
+            <a className="font-semibold" href={B(`/${post.year}/${post.month}/${post.slug}`)}>{post.title}</a>
           </li>
         ))}
       </ul>
@@ -92,7 +94,7 @@ export default function View(props: Props) {
             <div className="italic text-xs text-gray-400">
               {formatDate(post.date)}
             </div>
-            <a className="font-semibold" href={`/${post.year}/${post.month}/${post.slug}`}>{post.title}</a>
+            <a className="font-semibold" href={B(`/${post.year}/${post.month}/${post.slug}`)}>{post.title}</a>
           </li>
         ))}
       </ul>
