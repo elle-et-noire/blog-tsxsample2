@@ -6,127 +6,6 @@ import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 
-const mathjaxScript = `<script>
-MathJax = {
-        loader: {load: ['[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[tex]/tagformat']},
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          packages: { '[+]': ['physics', 'mathtools', 'color', 'upgreek', 'centernot', 'tagformat'] },
-          color: {
-            padding: '5px',
-            borderWidth: '2px',
-          },
-          macros: {
-            parn: ["\\biggl(#1\\biggr)", 1],
-            sqbr: ["\\biggl[#1\\biggr]", 1],
-            pfrac: ["\\biggl(\\dfrac{#1}{#2}\\biggr)", 2],
-            ds: "\\displaystyle",
-            C: '{\\mathbb C}',
-            R: '{\\mathbb R}',
-            Q: '{\\mathbb Q}',
-            Z: '{\\mathbb Z}',
-            ssqrt: ['\\sqrt{\\smash[b]{\\mathstrut #1}}', 1],
-            tcdegree: ['\\unicode{xb0}'],
-            tccelsius: ['\\unicode{x2103}'],
-            tcperthousand: ['\\unicode{x2030}'],
-            tcmu: ['\\unicode{x3bc}'],
-            tcohm: ['\\unicode{x3a9}'],
-            bm: ['\\boldsymbol{#1}', 1],
-            ol: ['\\overline{#1}', 1],
-            ul: ['\\underline{#1}', 1],
-            ub: ['\\underbrace{#1}', 1],
-            ubt: ['\\underbrace{#1}_{\\text{#2}}', 2],
-            i: '{\\mathrm{i}}',
-            e: '{\\mathrm{e}}',
-            ve: '{\\varepsilon}',
-            slashed: ['{{#1\\!\\!\\!/}}', 1],
-            underscore: '_',
-          },
-          physics: {
-            italicdiff: true,
-            arrowdel: false,
-          },
-          section: 1,
-          tagformat: {
-            // number: (n) => MathJax.config.section + '.' + n,
-            number: (n) => n.toString(),
-            // tag:    (tag) => '(' + tag + ')',
-            id:     (tag) => 'eqn-id:' + tag,
-            url:    (id, base) => base + '#' + encodeURIComponent(id),
-          },
-          tags: 'ams',
-          tagSide: 'right',
-          tagIndent: '0.8em',
-          processRefs: true,
-          useLabelIds: false,         // use label name rather than tag for ids
-        },
-        svg: {
-          fontCache: 'global'
-        },
-        chtml: {
-          displayAlign: 'left',
-          displayIndent: '2em',
-          mtextInheritFont: true,
-        },
-        startup: {
-          ready() {
-            const Configuration = MathJax._.input.tex.Configuration.Configuration;
-            const CommandMap = MathJax._.input.tex.SymbolMap.CommandMap;
-            new CommandMap('sections', {
-              nextSection: 'NextSection',
-              setSection: 'SetSection',
-            }, {
-              NextSection(parser, name) {
-                MathJax.config.section++;
-                parser.tags.counter = parser.tags.allCounter = 0;
-              },
-              SetSection(parser, name) {
-                const n = parser.GetArgument(name);
-                MathJax.config.section = parseInt(n);
-              }
-            });
-            Configuration.create(
-              'sections', {handler: {macro: ['sections']}}
-            );
-            MathJax.startup.defaultReady();
-            MathJax.startup.input[0].preFilters.add(({math}) => {
-              if (math.inputData.recompile) {
-                MathJax.config.section = math.inputData.recompile.section;
-              }
-            });
-            MathJax.startup.input[0].postFilters.add(({math}) => {
-              if (math.inputData.recompile) {
-                math.inputData.recompile.section = MathJax.config.section;
-              }
-            });
-          }
-        }
-      };
-</script>
-<script id="MathJax-script"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-chtml.min.js?config=TeX-AMS_HTML">
-</script>
-`
-
-const stylescript = `
-<style>
-.xscroll {
-  overflow-x: scroll;
-}
-::-webkit-scrollbar {
-  width: 10px,
-  height: 10px
-}
-::-webkit-scrollbar-thumb {
-  background: #145055,
-  border-radius: 5px
-},
-::-webkit-scrollbar-track {
-  background: transparent
-}
-</style>
-`
-
 function surroundMath(text: string) {
   text = text.replace(/\\\(/g, "\\\\(").replace(/\\\)/g, "\\\\)").replace(/\\begin{align}/g, "\n<address>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</address>\n").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>");
   let inlinemath = false;
@@ -163,6 +42,91 @@ function surroundMath(text: string) {
   return ret;
 }
 
+function coatMath(text: string) {
+  let result = "";
+  let mathdepth = 0; // inline or display の数式の中の数式
+  let endsymbol = false;
+  let mathmode = false;
+  const opendisplaymath = "\n<address>";
+  const closedisplaymath = "</address>\n";
+  const openinlinemath = "";
+  const closeinlinemath = "";
+  for (let i = 0; i < text.length; i++) {
+    const substr = (n: number) => (i + n - 1 < text.length ? text.substring(i, i + n) : text[i])
+
+    if (substr(2) == "\\(" || substr(2) == "\\)" || (substr(1) == "$" && substr(2) != "$$")) {
+      mathmode = !mathmode;
+      mathmode ? ++mathdepth : --mathdepth;
+      if (mathmode && mathdepth == 1 || !mathmode && mathdepth == 0)
+        result += (mathmode ? openinlinemath + "$" : "$" + closeinlinemath);
+      else
+        result += (mathmode ? "$" : "$");
+      if (substr(1) != "$")
+        ++i;
+      continue;
+    }
+
+    if (substr(2) == "\\[" || substr(6) == "\\begin") {
+      ++mathdepth;
+      mathmode = true;
+      if (mathdepth == 1)
+        result += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
+    }
+
+    if (substr(2) == "\\]" || substr(4) == "\\end") {
+      --mathdepth;
+      mathmode = false;
+      if (mathdepth == 0) {
+        if (substr(2) == "\\]") {
+          result += "\\]" + closedisplaymath;
+          ++i;
+          continue;
+        }
+        endsymbol = true;
+      }
+    }
+
+    if (substr(2) == "$$") {
+      // mathdepth == 0 or 1 のはず
+      mathdepth = 1 - mathdepth;
+      mathmode = !mathmode;
+      result += (mathdepth == 1 ? opendisplaymath + "\\[" : "\\]" + closedisplaymath);
+      ++i;
+      continue;
+    }
+
+    if (mathmode && substr(5) == "\\text") {
+      mathmode = false;
+    }
+
+    if (substr(1) == "}") {
+      if (endsymbol) {
+        endsymbol = false;
+        result += "}" + closedisplaymath;
+        continue;
+      }
+      if (!mathmode && mathdepth > 0) // \text の閉じ括弧のはず
+        mathmode = true;
+    }
+
+    if (substr(1) == '_' && mathmode) {
+      if (i + 1 >= text.length) // あってはならない
+        continue;
+      result += "\\underscore";
+      if (substr(2) == '_\\' || substr(2) == '_{')
+        continue;
+      ++i;
+      result += "{" + substr(1) + "}";
+      continue;
+    }
+
+    result += substr(1);
+  }
+  result += `\nあうあう<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\begin{align}\\int\\underscore{\\mathbb{M}^{1,3}}\\dd[4]{p'}\\theta(p'^0)\\delta(p'^\\mu p'\\underscore\\mu-m^2c^2)A(\\bm{p}')=\\int\\underscore{\\mathbb{R}^3}\\dfrac{c\\dd[3]{\\bm{p}'}}{2E(\\bm{p}')}A(\\bm{p}').\\tag{10}\\end{align}</span>\n\\eqref{eq:original}</span>お～もちかえりぃ～。`;
+  console.log(result);
+  return result;
+}
+
 export const markdownToHtml = async (file: string) => {
   const result = await unified()
     .use(remarkParse)
@@ -179,7 +143,6 @@ export const markdownToHtml = async (file: string) => {
       indent: 2,
       indentInitial: true
     })
-  // .process(surroundMath(file) + mathjaxScript.replace(/\\/g, "\\\\"));
-  .process(surroundMath(file));
+  .process(coatMath(file));
   return result.toString();
 };

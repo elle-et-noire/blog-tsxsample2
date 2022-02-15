@@ -67,20 +67,15 @@ export default function View(props: Props) {
           content={`${APP_URL}${props.post.year}/${props.post.month}/${props.post.slug}`}
         />
       </Head>
-      {/* <article> */}
-        {/* <PostHeader title={props.post.title} date={props.post.date} /> */}
-      {/* <PostContent content={props.post.content} /> */}
-      <div><p>うおおおおお<span className='has-tooltip relative items-center'>
-        <span className='flex tooltip balloon'><p>Some Nice Tooltip Text<br/>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</p></span>
-        Custom Position (above)
-      </span>うおおおおおおおお$a=b$</p></div>
-      <MathjaxTypeset>
-        <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
-      </MathjaxTypeset>
+      <article>
+        <MathjaxTypeset>
+          <PostHeader title={props.post.title} date={props.post.date} />
+          <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
+        </MathjaxTypeset>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>
-      {/* </article> */}
+      </article>
     </Page>
   );
 }

@@ -1,6 +1,6 @@
 import type { _Props } from "./types";
 import React, { useContext, useRef, useEffect } from "react";
-import { MathJaxContext, MathJaxBaseContext, MathJax3Object } from "better-react-mathjax";
+import { MathJaxBaseContext, MathJax3Object } from "better-react-mathjax";
 
 const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
   // Weapon型に強制キャストしてatackプロパティがあればWeapon型とする
@@ -27,7 +27,6 @@ export const Component: React.VFC<_Props> = (props) => {
 
   return (
     <div ref={mathBlock}>
-      {/* {"$$\\sum_{n = 100}^{1000}\\left(\\frac{10\\sqrt{n}}{n}\\right)$$"} */}
       {props.children}
     </div>
   );

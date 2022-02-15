@@ -10,10 +10,10 @@ tags:
   F^{\mu\nu}F_{\mu\nu}=\mathrm{const.}\label{eq:1}
 \end{align}
 
-<span className="text-pink-400">uoo</span>
+<span class="text-pink-400">uoo</span>
 
-<span className='has-tooltip relative items-center'>
-  <span className='flex tooltip balloon'>
+<span class='has-tooltip relative items-center'>
+  <span class='flex tooltip balloon'>
     uoo
   </span>
   uoo
