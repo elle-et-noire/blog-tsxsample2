@@ -10,8 +10,9 @@ import { getLatestPosts, getOldPosts, getTags, getPostByPath } from "~/utils/api
 import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
-import { Tooltip } from "~/components/tooltip"
-import B from '~/utils/basepath';
+import { MathJaxTypeset, blockMath } from "~/components/mathjaxtypeset";
+import { MathJax } from "better-react-mathjax";
+
 
 type Props = {
   tags: string[];
@@ -45,25 +46,32 @@ export default function View(props: Props) {
         <meta property="og:url" content={APP_URL} />
       </Head>
       <div>
-      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
-      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
-      うおおおおお<Tooltip tooltipText="ツールチップの文言だよぶらぶらぶら">アイコンとか</Tooltip>うおおおおおおお
-      うおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおお<br />
-      うおおおおお<span className='has-tooltip relative items-center'>
-        <span className='flex tooltip balloon'><p>Some Nice Tooltip Text<br/>ゲルフォントシュナイダーくぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；くぁｗせｄｒｆｔｇｙふじこｌｐ；</p></span>
-        Custom Position (above)
-      </span>うおおおおおおおお$a=b$
-      うおおおおお<span className='has-tooltip relative items-center'>
-        <span className='flex tooltip balloon'>Some Nice Tooltip Text</span>
-        Custom Position (above)
-      </span>うおおおおおおおお$a=b$
-      うおおおおお<span className='has-tooltip relative items-center'>
-        <span className='flex tooltip balloon'>Some Nice Tooltip Text</span>
-        Custom Position (above)
-        </span>うおおおおおおおお$a=b$
-        </div>
+      <span className='has-tooltip relative items-center'>
+        <span className='flex tooltip balloon'>智識</span>
+        Lumieres
+      </span>
+      <span className='has-tooltip relative items-center'>
+        <span className='flex tooltip balloon'>矮小</span>
+        Legeres
+      </span>
+      </div>
+      <MathJax
+            renderMode={"pre"}
+            typesettingOptions={{ fn: "tex2chtml" }}
+            text={`\\begin{align}x^4 = 100\\label{eq:ua}\\end{align}`}
+      />
+      <MathJax
+            renderMode={"pre"}
+            typesettingOptions={{ fn: "tex2chtml" }}
+            text={`\\eqref{eq:ua}`}
+            inline
+      />
       <article>
-        <PostContent content={props.intro} />
+        <MathJax hideUntilTypeset={"first"}>
+          <MathJaxTypeset>
+            <PostContent content={props.intro} />
+          </MathJaxTypeset>
+        </MathJax>
       </article>
       <h2 className="mb-5">Tags</h2>
       <Tags tags={props.tags} className="mb-14" />

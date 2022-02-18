@@ -3,7 +3,7 @@ import type { Props } from "./types";
 import { MathJaxContext, MathJax } from "better-react-mathjax";
 
 
-export const MathjaxTypeset: React.VFC<Props> = (props) => {
+export const MathJaxTypeset: React.VFC<Props> = (props) => {
   return <Component {...props} />;
 };
 
@@ -74,9 +74,27 @@ export const MathJaxEnvironment: React.VFC<Props> = (props) => {
 
   return (
     <MathJaxContext version={3} config={config}>
-      <MathJax hideUntilTypeset={"first"}>
+      {/* <MathJax hideUntilTypeset={"first"}> */}
         {props.children}
-      </MathJax>
+      {/* </MathJax> */}
     </MathJaxContext>
+  );
+}
+
+export const blockMath: React.VFC<Props> = (props) => {
+  return (
+  <>
+    <MathJax
+      renderMode={"pre"}
+      typesettingOptions={{ fn: "tex2chtml" }}
+      text={`\\begin{align}x^4 = 100\\label{eq:ua}\\end{align}`}
+    />
+    <MathJax
+      renderMode={"pre"}
+      typesettingOptions={{ fn: "tex2chtml" }}
+      text={`\\eqref{eq:ua}`}
+      inline
+    />
+  </>
   );
 }

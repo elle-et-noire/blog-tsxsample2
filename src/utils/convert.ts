@@ -6,42 +6,6 @@ import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 
-function surroundMath(text: string) {
-  text = text.replace(/\\\(/g, "\\\\(").replace(/\\\)/g, "\\\\)").replace(/\\begin{align}/g, "\n<address>\\begin{align}").replace(/\\end{align}/g, "\\end{align}</address>\n").replace(/\\begin{align\*}/g, "<p>\\begin{align*}").replace(/\\end{align\*}/g, "\\end{align*}</p>");
-  let inlinemath = false;
-  let ret = ""
-  for (let i = 0; i < text.length; i++)
-  {
-    if (text[i] == " " && ((i - 1 >= 0 && text[i - 1] == "$") || (i + 1 < text.length && text[i + 1] == "$")))
-      continue;
-
-    if (text[i] == "$" && (i - 1 < 0 || text[i - 1] != "$") && (i + 1 >= text.length || text[i + 1] != "$")) {
-      inlinemath = !inlinemath;
-      // 文中数式と地の文の間隔
-      if (inlinemath)
-        ret += "$\\hspace{0.2em}";
-      else
-        ret += "\\hspace{0.2em}$";
-      continue;
-    }
-
-    // 斜体化け対策
-    if (text[i] == "_" && inlinemath) {
-      if (i + 1 >= text.length) // あってはならない
-        continue;
-      ret += "\\underscore";
-      if (text[i + 1] == "\\" || text[i + 1] == "{")
-        continue;
-      // アンダースコアの後の下付きとしては1文字だけが続くはず
-      ret += "{" + text[i++ + 1] + "}";
-      continue;
-    }
-
-    ret += text[i];
-  }
-  return ret;
-}
-
 function coatMath(text: string) {
   let result = "";
   let mathdepth = 0; // inline or display の数式の中の数式
@@ -51,6 +15,9 @@ function coatMath(text: string) {
   const closedisplaymath = "</address>\n";
   const openinlinemath = "";
   const closeinlinemath = "";
+  const mathblocks: { [label: string]: string } = {};
+  text.match(/\\(eq)?ref\{[^}]+\}/g)?.forEach(label => mathblocks[label.substring(7, label.length - 1)] = '');
+  let mathbegin = 0;
   for (let i = 0; i < text.length; i++) {
     const substr = (n: number) => (i + n - 1 < text.length ? text.substring(i, i + n) : text[i])
 
@@ -69,8 +36,10 @@ function coatMath(text: string) {
     if (substr(2) == "\\[" || substr(6) == "\\begin") {
       ++mathdepth;
       mathmode = true;
-      if (mathdepth == 1)
+      if (mathdepth == 1) {
         result += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
+        mathbegin = result.length - 1;
+      }
     }
 
     if (substr(2) == "\\]" || substr(4) == "\\end") {
@@ -78,8 +47,14 @@ function coatMath(text: string) {
       mathmode = false;
       if (mathdepth == 0) {
         if (substr(2) == "\\]") {
+          const mathend = result.length + 2;
+
           result += "\\]" + closedisplaymath;
           ++i;
+
+          const mathblock = result.substring(mathbegin, mathend);
+          const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
+          labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, '')));
           continue;
         }
         endsymbol = true;
@@ -101,8 +76,14 @@ function coatMath(text: string) {
 
     if (substr(1) == "}") {
       if (endsymbol) {
+        const mathend = result.length + 1;
+
         endsymbol = false;
         result += "}" + closedisplaymath;
+
+        const mathblock = result.substring(mathbegin, mathend);
+        const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
+        labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, '')));
         continue;
       }
       if (!mathmode && mathdepth > 0) // \text の閉じ括弧のはず
@@ -122,6 +103,13 @@ function coatMath(text: string) {
 
     result += substr(1);
   }
+  Object.entries(mathblocks).forEach(([key, value]) => {
+    result += `
+    <div id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
+      ${value}
+    </div>
+    `
+  });
   result += `\nあうあう<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\begin{align}\\int\\underscore{\\mathbb{M}^{1,3}}\\dd[4]{p'}\\theta(p'^0)\\delta(p'^\\mu p'\\underscore\\mu-m^2c^2)A(\\bm{p}')=\\int\\underscore{\\mathbb{R}^3}\\dfrac{c\\dd[3]{\\bm{p}'}}{2E(\\bm{p}')}A(\\bm{p}').\\tag{10}\\end{align}</span>\n\\eqref{eq:original}</span>お～もちかえりぃ～。`;
   console.log(result);
   return result;

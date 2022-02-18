@@ -31,3 +31,7 @@
 .remark-highlight pre[data-file]::before {
   @apply content-[attr(data-file)] relative top-[-22px] left-[-18px] px-2 py-1 rounded-tl font-mono text-xxs md:text-xs text-gray-100 bg-gray-600;
 }
+
+.window {
+  @apply fixed translate-y-[-50%] translate-x-[-50%] top-[50%] left-[50%] text-center invisible opacity-0 hover:visible hover:opacity-100 ease-in-out duration-300 bg-black rounded-md drop-shadow-lg pr-5
+}

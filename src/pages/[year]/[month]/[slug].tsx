@@ -8,7 +8,8 @@ import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
 import { description } from "~/utils/meta";
-import { MathjaxTypeset } from "~/components/mathjaxtypeset"
+import { MathJaxTypeset } from "~/components/mathjaxtypeset";
+import { MathJax } from "better-react-mathjax";
 
 type Props = {
   post: Post;
@@ -68,10 +69,12 @@ export default function View(props: Props) {
         />
       </Head>
       <article>
-        <MathjaxTypeset>
-          <PostHeader title={props.post.title} date={props.post.date} />
-          <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
-        </MathjaxTypeset>
+        <MathJax hideUntilTypeset={"first"}>
+          <MathJaxTypeset>
+            <PostHeader title={props.post.title} date={props.post.date} />
+            <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
+          </MathJaxTypeset>
+        </MathJax>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>
