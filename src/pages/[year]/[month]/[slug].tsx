@@ -13,6 +13,7 @@ import { MathJax } from "better-react-mathjax";
 
 type Props = {
   post: Post;
+  mathlabels: string[];
 };
 
 type Params = {
@@ -26,7 +27,7 @@ type Params = {
 export const getStaticProps = async ({ params }: Params) => {
   const path = `${params.year}/${params.month}/${params.slug}.md`;
   const post = getPostByPath(path);
-  const content = await markdownToHtml(post.content || "");
+  const [content, mathlabels] = await markdownToHtml(post.content || "");
 
   return {
     props: {
@@ -34,6 +35,7 @@ export const getStaticProps = async ({ params }: Params) => {
         ...post.data,
         content,
       },
+      mathlabels
     },
   };
 };
@@ -70,7 +72,7 @@ export default function View(props: Props) {
       </Head>
       <article>
         <MathJax hideUntilTypeset={"first"}>
-          <MathJaxTypeset>
+          <MathJaxTypeset mathlabels={props.mathlabels}>
             <PostHeader title={props.post.title} date={props.post.date} />
             <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
           </MathJaxTypeset>

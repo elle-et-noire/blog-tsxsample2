@@ -6,7 +6,7 @@ import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
 
-function coatMath(text: string) {
+function decorateMath(text: string): [string, string[]] {
   let result = "";
   let mathdepth = 0; // inline or display の数式の中の数式
   let endsymbol = false;
@@ -16,7 +16,7 @@ function coatMath(text: string) {
   const openinlinemath = "";
   const closeinlinemath = "";
   const mathblocks: { [label: string]: string } = {};
-  text.match(/\\(eq)?ref\{[^}]+\}/g)?.forEach(label => mathblocks[label.substring(7, label.length - 1)] = '');
+  text.match(/\\(eq)?ref\{[^}]+\}/g)?.forEach(label => mathblocks[label.substring(7, label.length - 1)] = "");
   let mathbegin = 0;
   for (let i = 0; i < text.length; i++) {
     const substr = (n: number) => (i + n - 1 < text.length ? text.substring(i, i + n) : text[i])
@@ -38,7 +38,7 @@ function coatMath(text: string) {
       mathmode = true;
       if (mathdepth == 1) {
         result += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
-        mathbegin = result.length - 1;
+        mathbegin = result.length;
       }
     }
 
@@ -83,7 +83,9 @@ function coatMath(text: string) {
 
         const mathblock = result.substring(mathbegin, mathend);
         const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
-        labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, '')));
+        labels?.forEach(label => {
+          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, ''))
+        });
         continue;
       }
       if (!mathmode && mathdepth > 0) // \text の閉じ括弧のはず
@@ -105,17 +107,18 @@ function coatMath(text: string) {
   }
   Object.entries(mathblocks).forEach(([key, value]) => {
     result += `
-    <div id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
-      ${value}
-    </div>
+<div id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
+${value}
+</div>
     `
   });
-  result += `\nあうあう<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\begin{align}\\int\\underscore{\\mathbb{M}^{1,3}}\\dd[4]{p'}\\theta(p'^0)\\delta(p'^\\mu p'\\underscore\\mu-m^2c^2)A(\\bm{p}')=\\int\\underscore{\\mathbb{R}^3}\\dfrac{c\\dd[3]{\\bm{p}'}}{2E(\\bm{p}')}A(\\bm{p}').\\tag{10}\\end{align}</span>\n\\eqref{eq:original}</span>お～もちかえりぃ～。`;
-  console.log(result);
-  return result;
+  // result += `\nあうあう<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\begin{align}\\int\\underscore{\\mathbb{M}^{1,3}}\\dd[4]{p'}\\theta(p'^0)\\delta(p'^\\mu p'\\underscore\\mu-m^2c^2)A(\\bm{p}')=\\int\\underscore{\\mathbb{R}^3}\\dfrac{c\\dd[3]{\\bm{p}'}}{2E(\\bm{p}')}A(\\bm{p}').\\tag{10}\\end{align}</span>\n\\eqref{eq:original}</span>お～もちかえりぃ～。`;
+  // console.log(result);
+  return [result, Object.keys(mathblocks)];
 }
 
-export const markdownToHtml = async (file: string) => {
+export const markdownToHtml = async (file: string): Promise<[string, string[]]> => {
+  const [text, labels] = decorateMath(file);
   const result = await unified()
     .use(remarkParse)
     .use(gfm)
@@ -131,6 +134,6 @@ export const markdownToHtml = async (file: string) => {
       indent: 2,
       indentInitial: true
     })
-  .process(coatMath(file));
-  return result.toString();
+  .process(text);
+  return [result.toString(), labels];
 };

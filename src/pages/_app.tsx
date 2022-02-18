@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Layout } from "~/layouts/layout";
 import { Loading } from "~/layouts/loading";
 import "~/styles/app.css";
-import { MathJaxEnvironment } from "~/components/mathjaxtypeset";
+import { MathJaxEnvironment } from "~/components/mathjaxenvironment";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

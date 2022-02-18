@@ -22,10 +22,3 @@ tags:
 うおうお\eqref{eq:1}なのです～
 
 うおうおうおうおうおうおうおうお\eqref{eq:1}なのです～
-<div class="button">うおうお</div>
-<div class="button">うおうお</div>
-
-<div id="preview-mjx-eqn%3Aeq%3A1" class="window" style="position:fixed">\begin{align}
-  F^{\mu\nu}F_{\mu\nu}=\mathrm{const.}\tag{1}
-\end{align}</div>
-<img src="https://picsum.photos/id/175/140">

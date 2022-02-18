@@ -10,7 +10,7 @@ import { getLatestPosts, getOldPosts, getTags, getPostByPath } from "~/utils/api
 import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
-import { MathJaxTypeset, blockMath } from "~/components/mathjaxtypeset";
+import { MathJaxTypeset } from "~/components/mathjaxtypeset";
 import { MathJax } from "better-react-mathjax";
 
 
@@ -19,16 +19,18 @@ type Props = {
   latestPosts: Post[];
   oldPosts: Post[];
   intro: string;
+  mathlabels: string[];
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const content = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
+  const [content, mathlabels] = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
   return {
     props: {
       tags: getTags(),
       latestPosts: getLatestPosts(),
       oldPosts: getOldPosts(),
-      intro: content
+      intro: content,
+      mathlabels: mathlabels
     },
   };
 };
@@ -68,7 +70,7 @@ export default function View(props: Props) {
       />
       <article>
         <MathJax hideUntilTypeset={"first"}>
-          <MathJaxTypeset>
+          <MathJaxTypeset mathlabels={props.mathlabels}>
             <PostContent content={props.intro} />
           </MathJaxTypeset>
         </MathJax>
