@@ -22,16 +22,7 @@
     @apply text-lg font-medium;
   }
 
-  /* p {
-    /* @apply overflow-x-auto round-scrollbar overflow-y-visible; 
-    @apply overflow-visible;
-  } */
-
-  .xscroll {
-    @apply overflow-x-auto round-scrollbar;
-  }
-
-  address {
+  p {
     @apply overflow-x-auto round-scrollbar;
   }
 

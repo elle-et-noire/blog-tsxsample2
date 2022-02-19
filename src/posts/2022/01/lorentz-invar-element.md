@@ -78,7 +78,7 @@ $K$系内で速さ$v$で動く質量$m$の粒子について、粒子の進む�
 p'^\mu p'_\mu&=p^\mu p_\mu\\
 p'^0&=\gamma p^0+\gamma\beta p^1
 \end{align}
-と変換される。これらより[不変規格化因子 - EMANの素粒子論](https://eman-physics.net/elementary/invariant_factor.html)
+と変換される。これらより
 \begin{align}
 &\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)\dd[4]{p'}\\
 &=\theta(\gamma p^0+\gamma\beta p^1)\delta(p^\mu p_\mu-m^2c^2)\dd[4]{p}\\

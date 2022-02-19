@@ -5,35 +5,63 @@ import rehypeStringify from "rehype-stringify"
 import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
+import { resolveNaptr } from 'dns';
 
 function decorateMath(text: string): [string, string[]] {
   let result = "";
   let mathdepth = 0; // inline or display の数式の中の数式
-  let endsymbol = false;
-  let mathmode = false;
-  const opendisplaymath = "\n<address>";
-  const closedisplaymath = "</address>\n";
+  let endsymbol = false; // \end{hoge} の中
+  let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
+  const opendisplaymath = "\n<p>";
+  const closedisplaymath = "</p>\n";
   const openinlinemath = "";
   const closeinlinemath = "";
+  const spacer = "\\hspace{0.2em}";
+  const rspacedchars = ["。", "、", "）", "，", "．", " ", "　"];
+  const lspacedchars = ["（"];
+  const mdcontrolls = [">", ".", "*", "-", ":"];
   const mathblocks: { [label: string]: string } = {};
   text.match(/\\(eq)?ref\{[^}]+\}/g)?.forEach(label => mathblocks[label.substring(7, label.length - 1)] = "");
   let mathbegin = 0;
   for (let i = 0; i < text.length; i++) {
-    const substr = (n: number) => (i + n - 1 < text.length ? text.substring(i, i + n) : text[i])
+    const substr = (pos: number, n: number) => pos > 0 ? (pos < text.length ? pos + n - 1 < text.length ? text.substring(pos, pos + n) : text[pos] : text[text.length - 1]) : text[0]
+    const isinmathopener = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\("
+    const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
 
-    if (substr(2) == "\\(" || substr(2) == "\\)" || (substr(1) == "$" && substr(2) != "$$")) {
+    if (mathdepth == 0 && substr(i, 1) == " ") {
+      if (i + 1 < text.length && isinmathopener(substr(i + 1, 1))) {
+        if (i == 0 || !mdcontrolls.includes(substr(i - 1, 1)))
+          continue;
+      }
+      if (i > 0 && isinmathcloser(substr(i - 1, 1))) {
+        continue;
+      }
+    }
+
+    if (isinmathopener(substr(i, 2)) || isinmathcloser(substr(i, 2))) {
       mathmode = !mathmode;
       mathmode ? ++mathdepth : --mathdepth;
-      if (mathmode && mathdepth == 1 || !mathmode && mathdepth == 0)
-        result += (mathmode ? openinlinemath + "$" : "$" + closeinlinemath);
-      else
-        result += (mathmode ? "$" : "$");
-      if (substr(1) != "$")
+      if (mathmode) {
+        const needspacer = (i > 0 && !rspacedchars.includes(result.substring(result.length - 1, 1)))
+        if (mathdepth == 1)
+          result += openinlinemath
+        result += "$";
+        if (needspacer)
+          result += spacer;
+      }
+      if (substr(i, 1) != "$")
         ++i;
+      if (!mathmode) {
+        if (i + 1 < text.length && !lspacedchars.includes(result.substring(result.length + 1, 1)))
+          result += spacer;
+        result += "$";
+        if (mathdepth == 0)
+          result += closeinlinemath;
+      }
       continue;
     }
 
-    if (substr(2) == "\\[" || substr(6) == "\\begin") {
+    if (substr(i, 2) == "\\[" || substr(i, 6) == "\\begin") {
       ++mathdepth;
       mathmode = true;
       if (mathdepth == 1) {
@@ -42,11 +70,11 @@ function decorateMath(text: string): [string, string[]] {
       }
     }
 
-    if (substr(2) == "\\]" || substr(4) == "\\end") {
+    if (substr(i, 2) == "\\]" || substr(i, 4) == "\\end") {
       --mathdepth;
       mathmode = false;
       if (mathdepth == 0) {
-        if (substr(2) == "\\]") {
+        if (substr(i, 2) == "\\]") {
           const mathend = result.length + 2;
 
           result += "\\]" + closedisplaymath;
@@ -54,14 +82,14 @@ function decorateMath(text: string): [string, string[]] {
 
           const mathblock = result.substring(mathbegin, mathend);
           const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
-          labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, '')));
+          labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}')));
           continue;
         }
         endsymbol = true;
       }
     }
 
-    if (substr(2) == "$$") {
+    if (substr(i, 2) == "$$") {
       // mathdepth == 0 or 1 のはず
       mathdepth = 1 - mathdepth;
       mathmode = !mathmode;
@@ -70,11 +98,11 @@ function decorateMath(text: string): [string, string[]] {
       continue;
     }
 
-    if (mathmode && substr(5) == "\\text") {
+    if (mathmode && substr(i, 5) == "\\text") {
       mathmode = false;
     }
 
-    if (substr(1) == "}") {
+    if (substr(i, 1) == "}") {
       if (endsymbol) {
         const mathend = result.length + 1;
 
@@ -84,7 +112,7 @@ function decorateMath(text: string): [string, string[]] {
         const mathblock = result.substring(mathbegin, mathend);
         const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
         labels?.forEach(label => {
-          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\label\{[^}]+\}/g, ''))
+          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
         });
         continue;
       }
@@ -92,28 +120,26 @@ function decorateMath(text: string): [string, string[]] {
         mathmode = true;
     }
 
-    if (substr(1) == '_' && mathmode) {
+    if (substr(i, 1) == '_' && mathmode) {
       if (i + 1 >= text.length) // あってはならない
         continue;
       result += "\\underscore";
-      if (substr(2) == '_\\' || substr(2) == '_{')
+      if (substr(i, 2) == '_\\' || substr(i, 2) == '_{')
         continue;
       ++i;
-      result += "{" + substr(1) + "}";
+      result += "{" + substr(i, 1) + "}";
       continue;
     }
 
-    result += substr(1);
+    result += substr(i, 1);
   }
   Object.entries(mathblocks).forEach(([key, value]) => {
     result += `
-<div id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
+<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
 ${value}
-</div>
+</p>
     `
   });
-  // result += `\nあうあう<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>\\begin{align}\\int\\underscore{\\mathbb{M}^{1,3}}\\dd[4]{p'}\\theta(p'^0)\\delta(p'^\\mu p'\\underscore\\mu-m^2c^2)A(\\bm{p}')=\\int\\underscore{\\mathbb{R}^3}\\dfrac{c\\dd[3]{\\bm{p}'}}{2E(\\bm{p}')}A(\\bm{p}').\\tag{10}\\end{align}</span>\n\\eqref{eq:original}</span>お～もちかえりぃ～。`;
-  // console.log(result);
   return [result, Object.keys(mathblocks)];
 }
 
