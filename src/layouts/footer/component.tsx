@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const Component: React.VFC = () => (
-  <footer className="py-3 text-center font-semibold bg-darkgreen">
+  <footer className="py-3 text-center font-semibold bg-emerald">
     <nav className="text-sm" aria-label="Footer navigation">
       <Link href="/about">
         <a className="px-5 py-3">About</a>

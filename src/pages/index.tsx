@@ -94,7 +94,7 @@ export default function View(props: Props) {
         <div className="text-center">
           <button
             onClick={moreOldPosts}
-            className="px-5 py-1 text-gray-300 active:text-pink-500 bg-darkgreen rounded shadow-sm"
+            className="px-5 py-1 text-gray-300 active:text-pink-500 bg-black rounded shadow-[0_0_16px_0_rgba(0,119,119,0.25)]"
           >
             more old posts
           </button>

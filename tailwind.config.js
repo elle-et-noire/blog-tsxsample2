@@ -38,7 +38,7 @@ module.exports = {
         'silver': '#ecebff',
         'bubble-gum': '#ff77e9',
         'bermuda': '#78dcca',
-        'emerald': '#2f7881',
+        'emerald': '#007777',
         'black': '#002b36',
         'darkgreen': '#145055',
         'water': '#51c4d3',
@@ -78,7 +78,7 @@ module.exports = {
             height: "10px"
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "#145055",
+            background: "#666666",
             "border-radius": "5px"
           },
           "&::-webkit-scrollbar-track": {

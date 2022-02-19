@@ -7,7 +7,7 @@
 
   html,
   body {
-    @apply text-white text-base bg-gradient-to-tr from-darkgreen to-black bg-[length:400%_400%] animate-gradient-background font-applimincho scroll-smooth scroll-pt-20 round-scrollbar overflow-overlay selection:bg-raspberry overflow-visible;
+    @apply text-white text-base bg-gradient-to-tr from-darkgreen to-black bg-[length:400%_400%] animate-gradient-background font-applimincho scroll-smooth scroll-pt-20 round-scrollbar overflow-overlay selection:bg-emerald overflow-visible;
   }
 
   h1 {
@@ -15,7 +15,7 @@
   }
 
   h2 {
-    @apply my-4 pb-1 border-b border-gray-600 text-xl font-semibold;
+    @apply my-4 pb-1 border-b border-emerald text-xl font-semibold;
   }
 
   h3 {
