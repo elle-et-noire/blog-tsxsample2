@@ -5,141 +5,176 @@ import rehypeStringify from "rehype-stringify"
 import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
-import { resolveNaptr } from 'dns';
+
+// TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
 function decorateMath(text: string): [string, string[]] {
-  let result = "";
-  let mathdepth = 0; // inline or display の数式の中の数式
+  let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
-  const opendisplaymath = "\n<p>";
-  const closedisplaymath = "</p>\n";
-  const openinlinemath = "";
-  const closeinlinemath = "";
+  const opendisplaymath = "\n<address>";
+  const closedisplaymath = "</address>\n";
   const spacer = "\\hspace{0.2em}";
   const rspacedchars = ["。", "、", "）", "，", "．", " ", "　"];
   const lspacedchars = ["（"];
   const mdcontrolls = [">", ".", "*", "-", ":"];
   const mathblocks: { [label: string]: string } = {};
-  text.match(/\\(eq)?ref\{[^}]+\}/g)?.forEach(label => mathblocks[label.substring(7, label.length - 1)] = "");
+  // 参照される式ラベルを調べておく。matchAll を使わせろ！
+  text.match(/\\(eq)?ref\{([^}]+)\}/g)?.forEach(label => {
+    const l = label.match(/\\(eq)?ref\{([^}]+)\}/);
+    if (l != null && l.length >= 3) mathblocks[l[2]] = "";
+  });
+  // tooltip に表示するために数式を切り出す開始位置
   let mathbegin = 0;
+
+  const mdblocks: [string, string][] = [];
+  let mdblock = "";
+  const closemdblock = (mode: string) => { mdblocks.push([mode, mdblock]); mdblock = ""; }
+
   for (let i = 0; i < text.length; i++) {
     const substr = (pos: number, n: number) => pos > 0 ? (pos < text.length ? pos + n - 1 < text.length ? text.substring(pos, pos + n) : text[pos] : text[text.length - 1]) : text[0]
     const isinmathopener = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\("
     const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
 
-    if (mathdepth == 0 && substr(i, 1) == " ") {
-      if (i + 1 < text.length && isinmathopener(substr(i + 1, 1))) {
-        if (i == 0 || !mdcontrolls.includes(substr(i - 1, 1)))
-          continue;
-      }
-      if (i > 0 && isinmathcloser(substr(i - 1, 1))) {
-        continue;
-      }
-    }
+    // pos の前に1つ空白があってかつ詰めるべき
+    const topresmashed = (pos: number) => pos == 0 || substr(pos - 1, 1) == " " && (pos == 1 || !mdcontrolls.includes(substr(i - 2, 1)))
+    const topostsmashed = (pos: number) => pos == text.length - 1 || substr(pos + 1, 1) == " "
+    // 文中数式前後の空白を1つ吸収する
+    if (!mathmode && (i + 1 < text.length && isinmathopener(substr(i + 1, 1)) && topresmashed(i + 1) || i > 0 && isinmathcloser(substr(i - 1, 1)) && topostsmashed(i - 1)))
+      continue;
 
+    // 文中数式開閉
     if (isinmathopener(substr(i, 2)) || isinmathcloser(substr(i, 2))) {
       mathmode = !mathmode;
-      mathmode ? ++mathdepth : --mathdepth;
+      // 開
       if (mathmode) {
-        const needspacer = (i > 0 && !rspacedchars.includes(result.substring(result.length - 1, 1)))
-        if (mathdepth == 1)
-          result += openinlinemath
-        result += "$";
-        if (needspacer)
-          result += spacer;
+        ++mathdepth;
+        if (mathdepth <= 1) closemdblock("text");
+        mdblock += "$";
+        // rspacedchars は " " を含む前提
+        if (i == 1 && !rspacedchars.includes(substr(i - 1, 1)) || i >= 2 && !rspacedchars.includes(substr(topresmashed(i) ? i - 2 : i - 1, 1)))
+          mdblock += spacer;
       }
-      if (substr(i, 1) != "$")
-        ++i;
+      // \( or \) ならあらかじめ1文字分進めておく
+      if (substr(i, 1) != "$") ++i;
+      // 閉
       if (!mathmode) {
-        if (i + 1 < text.length && !lspacedchars.includes(result.substring(result.length + 1, 1)))
-          result += spacer;
-        result += "$";
-        if (mathdepth == 0)
-          result += closeinlinemath;
+        --mathdepth;
+        if (i + 2 == text.length && !lspacedchars.includes(substr(i + 1, 1)) || i + 3 <= text.length && !lspacedchars.includes(substr(topostsmashed(i) ? i + 2 : i + 1, 1)))
+          mdblock += spacer;
+        mdblock += "$";
+        if (mathdepth <= 0) closemdblock("inmath");
       }
       continue;
     }
 
+    // 別行立て数式開
     if (substr(i, 2) == "\\[" || substr(i, 6) == "\\begin") {
+      closemdblock("text");
       ++mathdepth;
       mathmode = true;
       if (mathdepth == 1) {
-        result += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
-        mathbegin = result.length;
+        mdblock += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
+        mathbegin = mdblock.length;
       }
     }
 
+    // 別行立て数式閉
     if (substr(i, 2) == "\\]" || substr(i, 4) == "\\end") {
       --mathdepth;
       mathmode = false;
       if (mathdepth == 0) {
         if (substr(i, 2) == "\\]") {
-          const mathend = result.length + 2;
+          const mathend = mdblock.length + 2;
 
-          result += "\\]" + closedisplaymath;
+          mdblock += "\\]" + closedisplaymath;
           ++i;
 
-          const mathblock = result.substring(mathbegin, mathend);
+          const mathblock = mdblock.substring(mathbegin, mathend);
           const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
-          labels?.forEach(label => mathblocks[label] && (mathblocks[label] = mathblock.replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}')));
+          labels?.forEach(label => {
+            label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
+          });
+
+          closemdblock("dispmath");
           continue;
         }
+        // 環境名が分からないので \end{} の終わり際が分からない
         endsymbol = true;
       }
     }
 
+    // 別行立て数式開閉（$$ バージョン）
     if (substr(i, 2) == "$$") {
       // mathdepth == 0 or 1 のはず
       mathdepth = 1 - mathdepth;
       mathmode = !mathmode;
-      result += (mathdepth == 1 ? opendisplaymath + "\\[" : "\\]" + closedisplaymath);
+      if (mathmode) closemdblock("text");
+      mdblock += (mathmode ? opendisplaymath + "\\[" : "\\]" + closedisplaymath);
+      if (!mathmode) closemdblock("dispmath");
       ++i;
       continue;
     }
 
+    // \text{} 中は数式モードじゃない（けど数式の中なのでHTMLタグは使えない）
     if (mathmode && substr(i, 5) == "\\text") {
       mathmode = false;
     }
 
     if (substr(i, 1) == "}") {
+      // \end{} の終わり
       if (endsymbol) {
-        const mathend = result.length + 1;
+        const mathend = mdblock.length + 1;
 
         endsymbol = false;
-        result += "}" + closedisplaymath;
+        mdblock += "}" + closedisplaymath;
 
-        const mathblock = result.substring(mathbegin, mathend);
+        const mathblock = mdblock.substring(mathbegin, mathend);
+        // console.log(mdblock);
         const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
         labels?.forEach(label => {
-          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
+          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
         });
+
+        closemdblock("dispmath");
         continue;
       }
-      if (!mathmode && mathdepth > 0) // \text の閉じ括弧のはず
+      // \text の閉じ括弧のはず
+      if (!mathmode && mathdepth > 0)
         mathmode = true;
     }
 
+    // 斜体化け回避
     if (substr(i, 1) == '_' && mathmode) {
       if (i + 1 >= text.length) // あってはならない
         continue;
-      result += "\\underscore";
+      mdblock += "\\underscore";
       if (substr(i, 2) == '_\\' || substr(i, 2) == '_{')
         continue;
       ++i;
-      result += "{" + substr(i, 1) + "}";
+      mdblock += "{" + substr(i, 1) + "}";
       continue;
     }
 
-    result += substr(i, 1);
+    mdblock += substr(i, 1);
   }
+  mdblocks.push(["text", mdblock]);
+  let result = "";
+  mdblocks.forEach(([mode, _block]) => {
+    let block = _block;
+    if (mode == "text") {
+      block = _block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
+    }
+    result += block;
+  });
   Object.entries(mathblocks).forEach(([key, value]) => {
     result += `
 <p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
 ${value}
 </p>
-    `
+`
   });
+  // console.log(result);
   return [result, Object.keys(mathblocks)];
 }
 

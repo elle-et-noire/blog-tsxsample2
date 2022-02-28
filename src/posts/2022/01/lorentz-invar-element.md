@@ -24,7 +24,6 @@ tags:
   f(x)=f'(\alpha_i)(x-\alpha_i)+\order{(x-\alpha_i)^2}
 \end{align}
 と展開でき、\eqref{eq:delta}に代入すると
-<address class='xscroll'>
 $$
 \begin{aligned}
   \eval{\delta(f(x))}_{x\simeq\alpha_i}&=\lim_{\ve\to 0}\dfrac{1}{\sqrt{2\pi\ve}}\exp\qty[-\dfrac{(x-\alpha_i)^2\abs{f'(\alpha_i)}^2}{2\ve}\qty[1+\order{x-\alpha_i}]]\\
@@ -32,7 +31,6 @@ $$
   &=\dfrac{\delta(x-\alpha_i)}{\abs{f'(\alpha_i)}}
 \end{aligned}
 $$
-</address>
 となる。全ての$\alpha_i$について和を取れば\eqref{eq:delta-compose}となる。
 
 ## デルタ函数の性質

@@ -22,7 +22,7 @@
     @apply text-lg font-medium;
   }
 
-  p {
+  address {
     @apply overflow-x-auto round-scrollbar;
   }
 

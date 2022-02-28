@@ -67,13 +67,9 @@ export default function View(props: Props) {
             typesettingOptions={{ fn: "tex2chtml" }}
             text={`\\eqref{eq:ua}`}
             inline
-      />
+      />うおんぐえ
       <article>
-        <MathJax hideUntilTypeset={"first"}>
-          <MathJaxTypeset mathlabels={props.mathlabels}>
-            <PostContent content={props.intro} />
-          </MathJaxTypeset>
-        </MathJax>
+        <PostContent content={props.intro} mathlabels={props.mathlabels}/>
       </article>
       <h2 className="mb-5">Tags</h2>
       <Tags tags={props.tags} className="mb-14" />

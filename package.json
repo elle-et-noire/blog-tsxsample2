@@ -51,9 +51,11 @@
   },
   "dependencies": {
     "better-react-mathjax": "^1.0.3",
+    "mermaid.cli": "^0.3.6",
     "rehype-external-links": "^1.0.1",
     "rehype-format": "^4.0.1",
     "rehype-stringify": "^9.0.2",
+    "remark-mermaid": "^0.2.0",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "unified": "^10.1.1"

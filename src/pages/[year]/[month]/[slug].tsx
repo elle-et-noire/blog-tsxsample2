@@ -10,6 +10,7 @@ import { markdownToHtml } from "~/utils/convert";
 import { description } from "~/utils/meta";
 import { MathJaxTypeset } from "~/components/mathjaxtypeset";
 import { MathJax } from "better-react-mathjax";
+import { useEffect } from 'react';
 
 type Props = {
   post: Post;
@@ -71,12 +72,8 @@ export default function View(props: Props) {
         />
       </Head>
       <article>
-        <MathJax hideUntilTypeset={"first"}>
-          <MathJaxTypeset mathlabels={props.mathlabels}>
-            <PostHeader title={props.post.title} date={props.post.date} />
-            <div className="post" dangerouslySetInnerHTML={{ __html: props.post.content }} />
-          </MathJaxTypeset>
-        </MathJax>
+        <PostHeader title={props.post.title} date={props.post.date} />
+        <PostContent content={props.post.content} mathlabels={props.mathlabels}/>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>

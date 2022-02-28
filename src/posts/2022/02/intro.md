@@ -12,12 +12,7 @@ tags:
 
 <span class="text-pink-400">uoo</span>
 
-<span class='has-tooltip relative items-center'>
-  <span class='flex tooltip balloon'>
-    uoo
-  </span>
-  uoo
-</span>
+<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>uoo</span>uoo</span>
 
 うおうお\eqref{eq:1}なのです～
 
