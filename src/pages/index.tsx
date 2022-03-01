@@ -68,6 +68,16 @@ export default function View(props: Props) {
             text={`\\eqref{eq:ua}`}
             inline
       />うおんぐえ
+      <MathJax hideUntilTypeset={"first"}>
+          {`Inside a MathJax block element, one might use both Latex inline math, such
+          as \\(x\\) or \\(\\frac{25x}{10} = 2^{10}\\), but then also switch
+          to Latex display math, like
+          \\[\\sum_{n = 100}^{1000}\\left(\\frac{10\\sqrt{n}}{n}\\right)\\]
+          ... and then continue with inline math.\\(x\\)\\(\\pdv{f}{x}\\)
+          \\begin{align}f(x)=y\\label{eq:a}\\tag{a}\\end{align}\\eqref{eq:a}
+          \\begin{xy}*[white]\\xymatrix{G \\ar[d]_\\pi \\ar[r]^\\phi & H  \\\\G/\\operatorname{Ker}\\,\\phi \\ar@{.>}[ur]_\\psi}\\end{xy}
+          `}
+        </MathJax>
       <article>
         <PostContent content={props.intro} mathlabels={props.mathlabels}/>
       </article>

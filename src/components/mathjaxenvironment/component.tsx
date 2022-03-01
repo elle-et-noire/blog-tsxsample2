@@ -3,9 +3,12 @@ import { MathJaxContext } from "better-react-mathjax";
 
 export const Component: React.VFC<_Props> = (props) => {
   const config = {
-    loader: { load: ["[tex]/html", '[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot'] },
+    loader: {
+      load: ['[tex]/html', '[tex]/physics', '[tex]/mathtools', '[tex]/color', '[tex]/upgreek', '[tex]/centernot', '[custom]/xypic.js'],
+      paths: { custom: 'https://cdn.jsdelivr.net/gh/sonoisa/XyJax-v3@3.0.1/build/' }
+    },
     tex: {
-      packages: { "[+]": ["html", 'physics', 'mathtools', 'color', 'upgreek', 'centernot'] },
+      packages: { "[+]": ["html", 'physics', 'mathtools', 'color', 'upgreek', 'centernot', 'xypic'] },
       inlineMath: [
         ["$", "$"],
         ["\\(", "\\)"]

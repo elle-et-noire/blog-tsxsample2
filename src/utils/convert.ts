@@ -8,7 +8,10 @@ import remarkParse from "remark-parse"
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
-function decorateMath(text: string): [string, string[]] {
+export const markdownToHtml = async (text: string): Promise<[string, string[]]> => {
+
+  // const text = file;
+
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
@@ -19,6 +22,9 @@ function decorateMath(text: string): [string, string[]] {
   const lspacedchars = ["（"];
   const mdcontrolls = [">", ".", "*", "-", ":"];
   const mathblocks: { [label: string]: string } = {};
+  let inmathcounter = 0;
+  let dispmathcounter = 0;
+  let textcounter = 0;
   // 参照される式ラベルを調べておく。matchAll を使わせろ！
   text.match(/\\(eq)?ref\{([^}]+)\}/g)?.forEach(label => {
     const l = label.match(/\\(eq)?ref\{([^}]+)\}/);
@@ -27,9 +33,9 @@ function decorateMath(text: string): [string, string[]] {
   // tooltip に表示するために数式を切り出す開始位置
   let mathbegin = 0;
 
-  const mdblocks: [string, string][] = [];
+  const mdblocks: { [label: string]: string } = {};
   let mdblock = "";
-  const closemdblock = (mode: string) => { mdblocks.push([mode, mdblock]); mdblock = ""; }
+  const closemdblock = (mode: string) => { mdblocks[mode] = mdblock; mdblock = ""; }
 
   for (let i = 0; i < text.length; i++) {
     const substr = (pos: number, n: number) => pos > 0 ? (pos < text.length ? pos + n - 1 < text.length ? text.substring(pos, pos + n) : text[pos] : text[text.length - 1]) : text[0]
@@ -49,7 +55,7 @@ function decorateMath(text: string): [string, string[]] {
       // 開
       if (mathmode) {
         ++mathdepth;
-        if (mathdepth <= 1) closemdblock("text");
+        if (mathdepth <= 1) closemdblock("text" + textcounter++);
         mdblock += "$";
         // rspacedchars は " " を含む前提
         if (i == 1 && !rspacedchars.includes(substr(i - 1, 1)) || i >= 2 && !rspacedchars.includes(substr(topresmashed(i) ? i - 2 : i - 1, 1)))
@@ -63,17 +69,17 @@ function decorateMath(text: string): [string, string[]] {
         if (i + 2 == text.length && !lspacedchars.includes(substr(i + 1, 1)) || i + 3 <= text.length && !lspacedchars.includes(substr(topostsmashed(i) ? i + 2 : i + 1, 1)))
           mdblock += spacer;
         mdblock += "$";
-        if (mathdepth <= 0) closemdblock("inmath");
+        if (mathdepth <= 0) closemdblock("inmath" + inmathcounter++);
       }
       continue;
     }
 
     // 別行立て数式開
     if (substr(i, 2) == "\\[" || substr(i, 6) == "\\begin") {
-      closemdblock("text");
       ++mathdepth;
       mathmode = true;
       if (mathdepth == 1) {
+        closemdblock("text" + textcounter++);
         mdblock += opendisplaymath; // \begin{} の場合終わり際が非確定なのでcontinueせずそのままにしておく
         mathbegin = mdblock.length;
       }
@@ -96,7 +102,7 @@ function decorateMath(text: string): [string, string[]] {
             label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
           });
 
-          closemdblock("dispmath");
+          closemdblock("dispmath" + dispmathcounter++);
           continue;
         }
         // 環境名が分からないので \end{} の終わり際が分からない
@@ -109,9 +115,9 @@ function decorateMath(text: string): [string, string[]] {
       // mathdepth == 0 or 1 のはず
       mathdepth = 1 - mathdepth;
       mathmode = !mathmode;
-      if (mathmode) closemdblock("text");
+      if (mathmode) closemdblock("text" + textcounter++);
       mdblock += (mathmode ? opendisplaymath + "\\[" : "\\]" + closedisplaymath);
-      if (!mathmode) closemdblock("dispmath");
+      if (!mathmode) closemdblock("dispmath" + dispmathcounter++);
       ++i;
       continue;
     }
@@ -130,13 +136,12 @@ function decorateMath(text: string): [string, string[]] {
         mdblock += "}" + closedisplaymath;
 
         const mathblock = mdblock.substring(mathbegin, mathend);
-        // console.log(mdblock);
         const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
         labels?.forEach(label => {
           label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
         });
 
-        closemdblock("dispmath");
+        closemdblock("dispmath" + dispmathcounter++);
         continue;
       }
       // \text の閉じ括弧のはず
@@ -145,42 +150,39 @@ function decorateMath(text: string): [string, string[]] {
     }
 
     // 斜体化け回避
-    if (substr(i, 1) == '_' && mathmode) {
-      if (i + 1 >= text.length) // あってはならない
-        continue;
-      mdblock += "\\underscore";
-      if (substr(i, 2) == '_\\' || substr(i, 2) == '_{')
-        continue;
-      ++i;
-      mdblock += "{" + substr(i, 1) + "}";
-      continue;
-    }
+    // if (substr(i, 1) == '_' && mathmode) {
+    //   if (i + 1 >= text.length) // あってはならない
+    //     continue;
+    //   mdblock += "\\underscore";
+    //   if (substr(i, 2) == '_\\' || substr(i, 2) == '_{')
+    //     continue;
+    //   ++i;
+    //   mdblock += "{" + substr(i, 1) + "}";
+    //   continue;
+    // }
 
     mdblock += substr(i, 1);
   }
-  mdblocks.push(["text", mdblock]);
-  let result = "";
-  mdblocks.forEach(([mode, _block]) => {
-    let block = _block;
-    if (mode == "text") {
-      block = _block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
-    }
-    result += block;
-  });
-  Object.entries(mathblocks).forEach(([key, value]) => {
-    result += `
-<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
-${value}
-</p>
-`
-  });
-  // console.log(result);
-  return [result, Object.keys(mathblocks)];
-}
+  // mdblocks.push(["text" + textcounter++, mdblock]);
+  closemdblock("text" + textcounter++);
 
-export const markdownToHtml = async (file: string): Promise<[string, string[]]> => {
-  const [text, labels] = decorateMath(file);
-  const result = await unified()
+  let decoratedText = "";
+  Object.entries(mdblocks).forEach(([mode, block]) => {
+    if (mode.substring(0, 4) == "text") {
+      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
+    }
+    if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath") {
+      decoratedText += `<${mode}/>`;
+    }
+    // decoratedText += block;
+  });
+
+  // console.log(result);
+  // return [result, Object.keys(mathblocks)];
+
+
+  // const [text, labels] = decorateMath(file);
+  const undoneHtml = await unified()
     .use(remarkParse)
     .use(gfm)
     .use(require("remark-prism")) // eslint-disable-line
@@ -195,6 +197,17 @@ export const markdownToHtml = async (file: string): Promise<[string, string[]]> 
       indent: 2,
       indentInitial: true
     })
-  .process(text);
-  return [result.toString(), labels];
+    .process(decoratedText);
+  
+  let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
+  Object.entries(mathblocks).forEach(([key, value]) => {
+    result += `
+<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
+${value}
+</p>
+`
+  });
+  // console.log(result.toString());
+  console.log(result)
+  return [result, Object.keys(mathblocks)];
 };
