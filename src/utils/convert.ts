@@ -198,7 +198,7 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
       indentInitial: true
     })
     .process(decoratedText);
-  
+
   let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
   Object.entries(mathblocks).forEach(([key, value]) => {
     result += `

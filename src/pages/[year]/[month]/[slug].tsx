@@ -8,9 +8,6 @@ import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
 import { description } from "~/utils/meta";
-import { MathJaxTypeset } from "~/components/mathjaxtypeset";
-import { MathJax } from "better-react-mathjax";
-import { useEffect } from 'react';
 
 type Props = {
   post: Post;

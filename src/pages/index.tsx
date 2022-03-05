@@ -68,6 +68,7 @@ export default function View(props: Props) {
             text={`\\eqref{eq:ua}`}
             inline
       />うおんぐえ
+      <div>
       <MathJax hideUntilTypeset={"first"}>
           {`Inside a MathJax block element, one might use both Latex inline math, such
           as \\(x\\) or \\(\\frac{25x}{10} = 2^{10}\\), but then also switch
@@ -78,6 +79,7 @@ export default function View(props: Props) {
           \\begin{xy}*[white]\\xymatrix{G \\ar[d]_\\pi \\ar[r]^\\phi & H  \\\\G/\\operatorname{Ker}\\,\\phi \\ar@{.>}[ur]_\\psi}\\end{xy}
           `}
         </MathJax>
+        </div>
       <article>
         <PostContent content={props.intro} mathlabels={props.mathlabels}/>
       </article>

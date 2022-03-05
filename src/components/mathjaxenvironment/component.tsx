@@ -65,7 +65,7 @@ export const Component: React.VFC<_Props> = (props) => {
       mtextInheritFont: true,
     },
     startup: {
-      typeset: false
+      // typeset: false
     }
   };
 
