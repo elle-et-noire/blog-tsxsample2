@@ -80,12 +80,7 @@ $$
 うおお
 
 # 注釈
-脚注の例<span class='has-tooltip relative items-center'>
-  <span class='flex tooltip balloon'>
-    脚注の内容その1
-  </span>
-  [^1]
-</span>です。インライン^[脚注の内容その2]で書くこともできます。脚注[^2]の中に数式も書けます。
+脚注の例<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>脚注の内容その1</span>[^1]</span>です。インライン^[脚注の内容その2]で書くこともできます。脚注[^2]の中に数式も書けます。
 
 [^1]: 脚注の内容その1
 [^2]: $\ds\int\dd{x}=x+C$
@@ -99,7 +94,6 @@ $$
 **太字**
 ~~打ち消し線~~
 インラインで`code`を挿入する
-<!-- TODO: ◯◯について追記する -->
 
 # Mermaid
 ```mermaid

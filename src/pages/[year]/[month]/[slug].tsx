@@ -25,13 +25,13 @@ type Params = {
 export const getStaticProps = async ({ params }: Params) => {
   const path = `${params.year}/${params.month}/${params.slug}.md`;
   const post = getPostByPath(path);
-  const [content, mathlabels] = await markdownToHtml(post.content || "");
+  const [mdxSource, mathlabels] = await markdownToHtml(post.content || "");
 
   return {
     props: {
       post: {
         ...post.data,
-        content,
+        mdxSource,
       },
       mathlabels
     },
@@ -52,7 +52,7 @@ export const getStaticPaths = () => {
 };
 
 export default function View(props: Props) {
-  const _description = description(props.post.content);
+  const _description = description(props.post.mdxSource.compiledSource);
 
   return (
     <Page title={props.post.title}>
@@ -70,7 +70,7 @@ export default function View(props: Props) {
       </Head>
       <article>
         <PostHeader title={props.post.title} date={props.post.date} />
-        <PostContent content={props.post.content} mathlabels={props.mathlabels}/>
+        <PostContent content={props.post.mdxSource} mathlabels={props.mathlabels}/>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>

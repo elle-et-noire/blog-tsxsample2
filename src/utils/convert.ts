@@ -5,18 +5,18 @@ import rehypeStringify from "rehype-stringify"
 import rehypeFormat from "rehype-format"
 import { unified } from "unified"
 import remarkParse from "remark-parse"
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { BlockList } from 'net';
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
-export const markdownToHtml = async (text: string): Promise<[string, string[]]> => {
-
-  // const text = file;
-
+export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]>  => {
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
-  const opendisplaymath = "\n<address>";
-  const closedisplaymath = "</address>\n";
+  const opendisplaymath = "";
+  const closedisplaymath = "";
   const spacer = "\\hspace{0.2em}";
   const rspacedchars = ["。", "、", "）", "，", "．", " ", "　"];
   const lspacedchars = ["（"];
@@ -25,6 +25,7 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
   let inmathcounter = 0;
   let dispmathcounter = 0;
   let textcounter = 0;
+  let aloneref = false;
   // 参照される式ラベルを調べておく。matchAll を使わせろ！
   text.match(/\\(eq)?ref\{([^}]+)\}/g)?.forEach(label => {
     const l = label.match(/\\(eq)?ref\{([^}]+)\}/);
@@ -127,6 +128,11 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
       mathmode = false;
     }
 
+    if (mathdepth == 0 && substr(i, 6) == "\\eqref" || substr(i, 4) == "\\ref") {
+      closemdblock("text" + textcounter++);
+      aloneref = true;
+    }
+
     if (substr(i, 1) == "}") {
       // \end{} の終わり
       if (endsymbol) {
@@ -147,23 +153,17 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
       // \text の閉じ括弧のはず
       if (!mathmode && mathdepth > 0)
         mathmode = true;
-    }
 
-    // 斜体化け回避
-    // if (substr(i, 1) == '_' && mathmode) {
-    //   if (i + 1 >= text.length) // あってはならない
-    //     continue;
-    //   mdblock += "\\underscore";
-    //   if (substr(i, 2) == '_\\' || substr(i, 2) == '_{')
-    //     continue;
-    //   ++i;
-    //   mdblock += "{" + substr(i, 1) + "}";
-    //   continue;
-    // }
+      if (aloneref) {
+        mdblock += "}";
+        closemdblock("inmath" + inmathcounter++);
+        aloneref = false;
+        continue;
+      }
+    }
 
     mdblock += substr(i, 1);
   }
-  // mdblocks.push(["text" + textcounter++, mdblock]);
   closemdblock("text" + textcounter++);
 
   let decoratedText = "";
@@ -171,17 +171,15 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
     if (mode.substring(0, 4) == "text") {
       decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
     }
-    if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath") {
-      decoratedText += `<${mode}/>`;
+    if (mode.substring(0, 6) == "inmath") {
+      decoratedText += "{' '}<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
     }
-    // decoratedText += block;
+    if (mode.substring(0, 8) == "dispmath") {
+      // decoratedText += `<${mode}/>`;
+      decoratedText += "{' '}<address>{`" + block.replace(/\\/g, "\\\\") + "`}</address>";
+    }
   });
 
-  // console.log(result);
-  // return [result, Object.keys(mathblocks)];
-
-
-  // const [text, labels] = decorateMath(file);
   const undoneHtml = await unified()
     .use(remarkParse)
     .use(gfm)
@@ -199,15 +197,25 @@ export const markdownToHtml = async (text: string): Promise<[string, string[]]> 
     })
     .process(decoratedText);
 
-  let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
-  Object.entries(mathblocks).forEach(([key, value]) => {
-    result += `
-<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
-${value}
-</p>
-`
+  const mdxSource = await serialize(decoratedText, {
+    mdxOptions: {
+      remarkPlugins: [],
+      rehypePlugins: [
+        [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],
+        // [imageSize, { dir: 'public' }],
+      ],
+    },
   });
-  // console.log(result.toString());
-  console.log(result)
-  return [result, Object.keys(mathblocks)];
+  console.log(mdxSource.compiledSource);
+  return [mdxSource, Object.keys(mathblocks)];
+
+//   let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
+//   Object.entries(mathblocks).forEach(([key, value]) => {
+//     result += `
+// <p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
+// ${value}
+// </p>
+// `
+//   });
+//   return [result, Object.keys(mathblocks)];
 };
