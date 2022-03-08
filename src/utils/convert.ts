@@ -165,10 +165,10 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
     }
     if (mode.substring(0, 6) == "inmath") {
-      decoratedText += "{' '}<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
+      decoratedText += "<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
     }
     if (mode.substring(0, 8) == "dispmath") {
-      decoratedText += "{' '}<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
+      decoratedText += "<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
     }
   });
   Object.entries(mathblocks).forEach(([key, value]) => {
