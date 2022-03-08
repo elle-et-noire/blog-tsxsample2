@@ -12,24 +12,25 @@ import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
 import { MathJaxTypeset } from "~/components/mathjaxtypeset";
 import { MathJax } from "better-react-mathjax";
+import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 
 
 type Props = {
   tags: string[];
   latestPosts: Post[];
   oldPosts: Post[];
-  intro: string;
+  intro: MDXRemoteSerializeResult;
   mathlabels: string[];
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const [content, mathlabels] = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
+  const [mdxSource, mathlabels] = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
   return {
     props: {
       tags: getTags(),
       latestPosts: getLatestPosts(),
       oldPosts: getOldPosts(),
-      intro: content,
+      intro: mdxSource,
       mathlabels: mathlabels
     },
   };
