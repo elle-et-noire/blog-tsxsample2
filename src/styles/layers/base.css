@@ -22,7 +22,7 @@
     @apply text-lg font-medium;
   }
 
-  address {
+  .scroll, .window {
     @apply overflow-x-auto round-scrollbar;
   }
 

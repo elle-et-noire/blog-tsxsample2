@@ -1,7 +1,7 @@
 import type { _Props } from "./types";
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef, useEffect, ReactNode, ReactChildren } from "react";
 import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathjax";
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MDXRemote } from 'next-mdx-remote'
 
 const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
   return !!(mjObject as MathJax3Object)?.startup
@@ -43,12 +43,12 @@ export const Component: React.VFC<_Props> = (props) => {
       });
     }
   });
+
   const MDXComponents = {};
 
   return (
     <MathJax hideUntilTypeset={"first"}>
       <div ref={mathBlock} className="post">
-        {/* <div className="post" dangerouslySetInnerHTML={{ __html: props.content }} /> */}
         <MDXRemote {...props.content} components={MDXComponents} />
       </div>
     </MathJax>

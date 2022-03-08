@@ -1,13 +1,6 @@
 import rehypeExternalLinks from 'rehype-external-links'
-import remarkRehype from 'remark-rehype'
-import gfm from "remark-gfm";
-import rehypeStringify from "rehype-stringify"
-import rehypeFormat from "rehype-format"
-import { unified } from "unified"
-import remarkParse from "remark-parse"
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { BlockList } from 'net';
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
@@ -175,8 +168,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       decoratedText += "{' '}<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
     }
     if (mode.substring(0, 8) == "dispmath") {
-      // decoratedText += `<${mode}/>`;
-      decoratedText += "{' '}<p>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
+      decoratedText += "{' '}<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
     }
   });
   Object.entries(mathblocks).forEach(([key, value]) => {
@@ -191,14 +183,9 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       remarkPlugins: [],
       rehypePlugins: [
         [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],
-        // [imageSize, { dir: 'public' }],
       ],
     },
   });
-  console.log(mdxSource.compiledSource);
+  // console.log(mdxSource.compiledSource);
   return [mdxSource, Object.keys(mathblocks)];
-
-//   let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
-//   
-//   return [result, Object.keys(mathblocks)];
 };
