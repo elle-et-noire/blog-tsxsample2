@@ -176,26 +176,15 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     }
     if (mode.substring(0, 8) == "dispmath") {
       // decoratedText += `<${mode}/>`;
-      decoratedText += "{' '}<address>{`" + block.replace(/\\/g, "\\\\") + "`}</address>";
+      decoratedText += "{' '}<p>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
     }
   });
-
-  const undoneHtml = await unified()
-    .use(remarkParse)
-    .use(gfm)
-    .use(require("remark-prism")) // eslint-disable-line
-    .use(remarkRehype, {
-      allowDangerousHtml: true
-    })
-    .use(rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] })
-    .use(rehypeStringify, {
-      allowDangerousHtml: true
-    })
-    .use(rehypeFormat, {
-      indent: 2,
-      indentInitial: true
-    })
-    .process(decoratedText);
+  Object.entries(mathblocks).forEach(([key, value]) => {
+    decoratedText += `
+<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style={{position:'fixed'}}>
+{\`${value.replace(/\\/g, "\\\\")}\`}
+</p>
+`});
 
   const mdxSource = await serialize(decoratedText, {
     mdxOptions: {
@@ -210,12 +199,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   return [mdxSource, Object.keys(mathblocks)];
 
 //   let result = undoneHtml.toString().replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string) => mdblocks[mode])
-//   Object.entries(mathblocks).forEach(([key, value]) => {
-//     result += `
-// <p id="preview-mjx-${encodeURIComponent(key)}" class="window" style="position:fixed">
-// ${value}
-// </p>
-// `
-//   });
+//   
 //   return [result, Object.keys(mathblocks)];
 };

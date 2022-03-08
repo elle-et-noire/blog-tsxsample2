@@ -34,6 +34,10 @@ export const Component: React.VFC<_Props> = (props) => {
                 }
               }
             });
+            document.querySelectorAll<HTMLElement>(`mjx-container[jax="SVG"] > svg a`).forEach(ref => {
+              ref.style.fill = '#f0f6fc';
+              ref.style.stroke = '#f0f6fc';
+            })
           });
         }
       });

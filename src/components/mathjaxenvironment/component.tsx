@@ -57,7 +57,10 @@ export const Component: React.VFC<_Props> = (props) => {
       processRefs: true,
     },
     svg: {
-      fontCache: 'global'
+      fontCache: 'global',
+      displayAlign: 'left',
+      displayIndent: '2em',
+      mtextInheritFont: true,
     },
     chtml: {
       displayAlign: 'left',
@@ -70,7 +73,7 @@ export const Component: React.VFC<_Props> = (props) => {
   };
 
   return (
-    <MathJaxContext version={3} config={config}>
+    <MathJaxContext version={3} config={config} src='https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-svg.js'>
       {props.children}
     </MathJaxContext>
   );
