@@ -4,7 +4,7 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
-export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]>  => {
+export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, { [label: string]: string }]>  => {
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
@@ -162,7 +162,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   let decoratedText = "";
   Object.entries(mdblocks).forEach(([mode, block]) => {
     if (mode.substring(0, 4) == "text") {
-      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span class='has-tooltip relative items-center'><span class='flex tooltip balloon'>$2</span>$1</span>");
+      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='flex tooltip balloon'>$2</span>$1</span>");
     }
     if (mode.substring(0, 6) == "inmath") {
       decoratedText += "<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
@@ -171,12 +171,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       decoratedText += "<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
     }
   });
-  Object.entries(mathblocks).forEach(([key, value]) => {
-    decoratedText += `
-<p id="preview-mjx-${encodeURIComponent(key)}" class="window" style={{position:'fixed'}}>
-{\`${value.replace(/\\/g, "\\\\")}\`}
-</p>
-`});
 
   const mdxSource = await serialize(decoratedText, {
     mdxOptions: {
@@ -186,6 +180,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       ],
     },
   });
-  // console.log(mdxSource.compiledSource);
-  return [mdxSource, Object.keys(mathblocks)];
+  
+  return [mdxSource, mathblocks];
 };

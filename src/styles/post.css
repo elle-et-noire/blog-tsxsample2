@@ -16,9 +16,9 @@
   @apply ml-3 mb-5 list-inside list-decimal;
 }
 
-/* .post a {
-  @apply underline decoration-[0.05em] underline-offset-[0.25em] text-pink-400;
-} */
+.post p {
+  @apply indent-4;
+}
 
 .post code {
   @apply block font-mono text-xs md:text-sm leading-5 md:leading-6;

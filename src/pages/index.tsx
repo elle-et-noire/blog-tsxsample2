@@ -10,7 +10,6 @@ import { getLatestPosts, getOldPosts, getTags, getPostByPath } from "~/utils/api
 import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
-import { MathJaxTypeset } from "~/components/mathjaxtypeset";
 import { MathJax } from "better-react-mathjax";
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 
@@ -20,18 +19,18 @@ type Props = {
   latestPosts: Post[];
   oldPosts: Post[];
   intro: MDXRemoteSerializeResult;
-  mathlabels: string[];
+  mathblocks: { [label: string]: string };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const [mdxSource, mathlabels] = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
+  const [mdxSource, mathblocks] = await markdownToHtml(getPostByPath(`/2022/02/intro.md`).content);
   return {
     props: {
       tags: getTags(),
       latestPosts: getLatestPosts(),
       oldPosts: getOldPosts(),
       intro: mdxSource,
-      mathlabels: mathlabels
+      mathblocks: mathblocks
     },
   };
 };
@@ -82,7 +81,7 @@ export default function View(props: Props) {
         </MathJax>
         </div>
       <article>
-        <PostContent content={props.intro} mathlabels={props.mathlabels}/>
+        <PostContent content={props.intro} mathblocks={props.mathblocks}/>
       </article>
       <h2 className="mb-5">Tags</h2>
       <Tags tags={props.tags} className="mb-14" />

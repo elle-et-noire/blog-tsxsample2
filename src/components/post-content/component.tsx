@@ -1,5 +1,5 @@
 import type { _Props } from "./types";
-import React, { useContext, useRef, useEffect, ReactNode, ReactChildren } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathjax";
 import { MDXRemote } from 'next-mdx-remote'
 
@@ -16,7 +16,7 @@ export const Component: React.VFC<_Props> = (props) => {
         if (isMathJax3Object(mathJax)) {
           mathJax.startup.promise.then(() => {
             mathJax.texReset();
-            props.mathlabels.forEach(mathlabel => {
+            Object.keys(props.mathblocks).forEach(mathlabel => {
               const mathlinks = Array.from(document.querySelectorAll(`a[href="#mjx-eqn%3A${encodeURIComponent(mathlabel)}"]`));
               const modal = document.getElementById(`preview-mjx-${encodeURIComponent(mathlabel)}`);
               if (modal != null) {
@@ -50,6 +50,11 @@ export const Component: React.VFC<_Props> = (props) => {
     <MathJax hideUntilTypeset={"first"}>
       <div ref={mathBlock} className="post">
         <MDXRemote {...props.content} components={MDXComponents} />
+        {Object.entries(props.mathblocks).map(([key, value]) => (
+          <div key={key} id={`preview-mjx-${encodeURIComponent(key)}`} className="window">
+            {value}
+          </div>
+        ))}
       </div>
     </MathJax>
   );

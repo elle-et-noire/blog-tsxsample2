@@ -11,7 +11,7 @@ import { description } from "~/utils/meta";
 
 type Props = {
   post: Post;
-  mathlabels: string[];
+  mathblocks: { [label: string]: string };
 };
 
 type Params = {
@@ -25,7 +25,7 @@ type Params = {
 export const getStaticProps = async ({ params }: Params) => {
   const path = `${params.year}/${params.month}/${params.slug}.md`;
   const post = getPostByPath(path);
-  const [mdxSource, mathlabels] = await markdownToHtml(post.content || "");
+  const [mdxSource, mathblocks] = await markdownToHtml(post.content || "");
 
   return {
     props: {
@@ -33,7 +33,7 @@ export const getStaticProps = async ({ params }: Params) => {
         ...post.data,
         mdxSource,
       },
-      mathlabels
+      mathblocks
     },
   };
 };
@@ -70,7 +70,7 @@ export default function View(props: Props) {
       </Head>
       <article>
         <PostHeader title={props.post.title} date={props.post.date} />
-        <PostContent content={props.post.mdxSource} mathlabels={props.mathlabels}/>
+        <PostContent content={props.post.mdxSource} mathblocks={props.mathblocks}/>
         <p className="mt-16 text-center">
           <HomeLink />
         </p>

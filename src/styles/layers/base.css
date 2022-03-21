@@ -22,12 +22,12 @@
     @apply text-lg font-medium;
   }
 
-  .scroll, .window {
-    @apply overflow-x-auto round-scrollbar;
+  a {
+    @apply underline decoration-[0.05em] underline-offset-[0.25em];
   }
 
-  a:not([href^="#mjx-eqn%3A"]) {
-    @apply underline decoration-[0.05em] underline-offset-[0.25em];
+  a[href^="#mjx-eqn%3A"] {
+    @apply no-underline;
   }
 
   .tooltip {

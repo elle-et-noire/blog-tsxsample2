@@ -1,5 +1,5 @@
 import type { _Props } from "./types";
-import { memo, useRef } from "react";
+import { useRef } from "react";
 
 export const Component: React.VFC<_Props> = (props) => {
   // ツールチップの文言自体のためのref
