@@ -1,17 +1,18 @@
 import rehypeExternalLinks from 'rehype-external-links'
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
+import gfm from 'remark-gfm'
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
-export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, { [label: string]: string }]>  => {
+export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, { [label: string]: string }]> => {
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
   const opendisplaymath = "";
   const closedisplaymath = "";
   const spacer = "\\hspace{0.2em}";
-  const rspacedchars = ["。", "、", "）", "，", "．", " ", "　"];
+  const rspacedchars = ["。", "、", "）", "，", "．", " ", "　", "-"];
   const lspacedchars = ["（"];
   const mdcontrolls = [">", ".", "*", "-", ":"];
   const mathblocks: { [label: string]: string } = {};
@@ -24,7 +25,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     const l = label.match(/\\(eq)?ref\{([^}]+)\}/);
     if (l != null && l.length >= 3) mathblocks[l[2]] = "";
   });
-  // tooltip に表示するために数式を切り出す開始位置
+  // mathpreview に表示するために数式を切り出す開始位置
   let mathbegin = 0;
 
   const mdblocks: { [label: string]: string } = {};
@@ -160,26 +161,44 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   closemdblock("text" + textcounter++);
 
   let decoratedText = "";
+  let footnotes = "";
+  let footnum = 0;
   Object.entries(mdblocks).forEach(([mode, block]) => {
     if (mode.substring(0, 4) == "text") {
-      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='flex tooltip balloon'>$2</span>$1</span>");
+      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='flex tooltip balloon no-underline'>$2</span>$1</span>")
+        .replace(/<br>/g, "<br/>");
     }
-    if (mode.substring(0, 6) == "inmath") {
-      decoratedText += "<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
+    // if (mode.substring(0, 6) == "inmath") {
+    //   decoratedText += "<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
+    // }
+    // if (mode.substring(0, 8) == "dispmath") {
+    //   decoratedText += "<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
+    // }
+    if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath") {
+      decoratedText += `<${mode}/>`;
     }
-    if (mode.substring(0, 8) == "dispmath") {
-      decoratedText += "<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
-    }
+  });
+  decoratedText = decoratedText.replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
+    footnotes += `[^${++footnum}]: <span>${p1}</span>\n\n`;
+    return `<span className='has-tooltip relative items-center no-underline'><span className='flex tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
+  });
+  decoratedText += footnotes;
+  decoratedText = decoratedText.replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
+    if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
+    if (mode.substring(0, 8) == "dispmath") return "<p className='scroll'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
+    return "";
   });
 
   const mdxSource = await serialize(decoratedText, {
     mdxOptions: {
-      remarkPlugins: [],
+      remarkPlugins: [
+        gfm
+      ],
       rehypePlugins: [
         [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],
       ],
     },
   });
-  
+
   return [mdxSource, mathblocks];
 };

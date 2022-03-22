@@ -78,7 +78,8 @@ module.exports = {
             height: "10px"
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "#666666",
+            background: "#64748b",
+            // background: "#006666",
             "border-radius": "5px"
           },
           "&::-webkit-scrollbar-track": {
@@ -92,7 +93,4 @@ module.exports = {
       })
     })
   ],
-  // variants: {
-  //   scrollbar: ['dark']
-  // }
 };

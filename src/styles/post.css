@@ -13,7 +13,7 @@
 }
 
 .post ol {
-  @apply ml-3 mb-5 list-inside list-decimal;
+  @apply px-5 ml-3 mb-5 list-outside list-decimal;
 }
 
 .post p {
@@ -41,5 +41,5 @@
 }
 
 blockquote {
-  @apply bg-black border-l-8 border border-emerald rounded-md p-3 m-3 text-gray-400
+  @apply bg-slate-900 bg-opacity-60 rounded-md p-3 m-3 text-slate-400;
 }
