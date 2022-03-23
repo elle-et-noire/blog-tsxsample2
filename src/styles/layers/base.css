@@ -6,9 +6,9 @@
   }
 
   @font-face {
-    font-family: SFMono-Regular;
+    font-family: 'SFMono-Regular';
     font-weight: 400;
-    src: url(/fonts/FontsFree-Net-SFMono-Regular.ttf) format("truetype");
+    src: url('/fonts/FontsFree-Net-SFMono-Regular.ttf') format("truetype");
   }
 
   html,

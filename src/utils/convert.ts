@@ -12,9 +12,8 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   const opendisplaymath = "";
   const closedisplaymath = "";
   const spacer = "\\hspace{0.2em}";
-  const rspacedchars = ["。", "、", "）", "，", "．", " ", "　", "-"];
-  const lspacedchars = ["（"];
-  const mdcontrolls = [">", ".", "*", "-", ":"];
+  const rsmashers = ["。", "、", "）", "，", "．", " ", "　", "-", "："];
+  const lsmashers = ["（", "-"];
   const mathblocks: { [label: string]: string } = {};
   let inmathcounter = 0;
   let dispmathcounter = 0;
@@ -37,13 +36,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     const isinmathopener = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\("
     const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
 
-    // pos の前に1つ空白があってかつ詰めるべき
-    const topresmashed = (pos: number) => pos == 0 || substr(pos - 1, 1) == " " && (pos == 1 || !mdcontrolls.includes(substr(i - 2, 1)))
-    const topostsmashed = (pos: number) => pos == text.length - 1 || substr(pos + 1, 1) == " "
-    // 文中数式前後の空白を1つ吸収する
-    if (!mathmode && (i + 1 < text.length && isinmathopener(substr(i + 1, 1)) && topresmashed(i + 1) || i > 0 && isinmathcloser(substr(i - 1, 1)) && topostsmashed(i - 1)))
-      continue;
-
     // 文中数式開閉
     if (isinmathopener(substr(i, 2)) || isinmathcloser(substr(i, 2))) {
       mathmode = !mathmode;
@@ -52,8 +44,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
         ++mathdepth;
         if (mathdepth <= 1) closemdblock("text" + textcounter++);
         mdblock += "$";
-        // rspacedchars は " " を含む前提
-        if (i == 1 && !rspacedchars.includes(substr(i - 1, 1)) || i >= 2 && !rspacedchars.includes(substr(topresmashed(i) ? i - 2 : i - 1, 1)))
+        if (i >= 1 && !rsmashers.includes(substr(i - 1, 1)))
           mdblock += spacer;
       }
       // \( or \) ならあらかじめ1文字分進めておく
@@ -61,7 +52,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       // 閉
       if (!mathmode) {
         --mathdepth;
-        if (i + 2 == text.length && !lspacedchars.includes(substr(i + 1, 1)) || i + 3 <= text.length && !lspacedchars.includes(substr(topostsmashed(i) ? i + 2 : i + 1, 1)))
+        if (i + 2 <= text.length && !lsmashers.includes(substr(i + 1, 1)))
           mdblock += spacer;
         mdblock += "$";
         if (mathdepth <= 0) closemdblock("inmath" + inmathcounter++);
@@ -188,17 +179,17 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       return `<span className='has-tooltip relative items-center no-underline'><div className='tooltip balloon'>${p1}</div>[^${footnum}]</span>`;
     });
   decoratedText += footnotes;
-  decoratedText = decoratedText.replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
-    if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
-    if (mode.substring(0, 8) == "dispmath") return "<p className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
-    return "";
-  });
+  decoratedText = decoratedText.replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1")
+    .replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
+      if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
+      if (mode.substring(0, 8) == "dispmath") return "<p className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
+      return "";
+    });
 
   const mdxSource = await serialize(decoratedText, {
     mdxOptions: {
       remarkPlugins: [
         gfm,
-        // require('remark-code-titles'),
         [require('remark-prism'), {
           plugins: [
             'autolinker',

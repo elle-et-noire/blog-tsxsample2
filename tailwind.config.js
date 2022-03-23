@@ -65,7 +65,7 @@ module.exports = {
     },
     fontFamily: {
       'applimincho': ['"AppliMincho"'],
-      'mono': ['SFMono-Regular', 'ui-monospace']
+      'mono': ["'SFMono-Regular'", 'ui-monospace']
     }
   },
   // darkMode: 'media',  // or darkMode: 'class'
@@ -74,17 +74,18 @@ module.exports = {
       addUtilities({
         ".round-scrollbar": {
           "&::-webkit-scrollbar": {
-            width: "10px",
-            height: "10px"
+            width: "8px",
+            height: "8px"
           },
           "&::-webkit-scrollbar-thumb": {
             background: "#64748b",
-            // background: "#006666",
             "border-radius": "5px"
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "#94a3b8"
           },
           "&::-webkit-scrollbar-track": {
             background: "transparent"
-            // background: "#002b36"
           }
         },
         ".overflow-overlay": {

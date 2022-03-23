@@ -58,9 +58,9 @@ $K$系内で速さ$v$で動く質量$m$の粒子について、粒子の進む�
 
 # 証明
 
-ここでは計量を $(+,-,-,-)$ とする。$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$ は、$E(\bm{p})=c\sqrt{\bm{p}^2+m^2c^2}$ より3次元空間内の回転で不変であることは明らかである。よって\eqref{eq:lorentz-standard}の変換で不変であることを示せばよい。
+ここでは計量を$(+,-,-,-)$とする。$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$は、$E(\bm{p})=c\sqrt{\bm{p}^2+m^2c^2}$より3次元空間内の回転で不変であることは明らかである。よって\eqref{eq:lorentz-standard}の変換で不変であることを示せばよい。
 
-まず$K'$系で考える（全体での式中の$\prime$の数を減らしたいので）。$\bm{p}'$ を固定し、$p'^0$ の関数として見ると
+まず$K'$系で考える（全体での式中の$\prime$の数を減らしたいので）。$\bm{p}'$を固定し、$p'^0$の関数として見ると
 \begin{align}
 \theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)&=\theta(p'^0)\delta((p'^0)^2-E^2(\bm{p}')/c^2)\\
 &=\dfrac{c}{2E(\bm{p}')}\theta(p'^0)\qty\big[\delta(p'^0-E(\bm{p}')/c)+\underbrace{\delta(p'^0+E(\bm{p}')/c)}_{=0\ \text{due to}\theta(p'^0)}]
@@ -85,7 +85,7 @@ p'^0&=\gamma p^0+\gamma\beta p^1
 &\qquad+\underbrace{\theta(-\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=0}\:\underbrace{\delta(p^0+E(\bm{p})/c)}_{=0}]\dd[4]{p}\ (\eqref{eq:delta-convolute}\text{を用いた})\\
 &=\dfrac{c}{2E(\bm{p})}\delta(p^0-E(\bm{p})/c)\dd[4]{p}
 \end{align}
-となる。こちらもLorentz不変な量 $A(\bm{p})$ をかけて全時空 $p'^\mu\in(-\infty,\infty)^4$（$\iff p^\mu\in(-\infty,\infty)^4$）で積分すれば
+となる。こちらもLorentz不変な量$A(\bm{p})$をかけて全時空$p'^\mu\in(-\infty,\infty)^4$（$\iff p^\mu\in(-\infty,\infty)^4$）で積分すれば
 \begin{align}
 \int_{\mathbb{M}^{1,3}} \dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p})&=\int_{\mathbb{R}^3}A(\bm{p})\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}\label{eq:comp2}
 \end{align}

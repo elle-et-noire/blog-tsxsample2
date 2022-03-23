@@ -5,19 +5,27 @@
 }
 
 .post ul {
-  @apply ml-3 list-inside list-disc;
+  @apply px-5 ml-3 list-outside list-disc;
 }
 
-.post ul+p {
+/* .post ul+p {
   @apply mt-5;
-}
+} */
 
 .post ol {
-  @apply px-5 ml-3 mb-5 list-outside list-decimal;
+  @apply px-5 ml-3 list-outside list-decimal;
 }
 
 .post p {
-  @apply indent-4;
+  @apply indent-0 whitespace-pre-wrap;
+}
+
+.post p+p {
+  @apply mt-5;
+}
+
+.post pre {
+  @apply round-scrollbar;
 }
 
 .post pre code {
@@ -42,7 +50,7 @@
 }
 
 .post .scrollable {
-  @apply overflow-x-auto round-scrollbar;
+  @apply overflow-x-auto round-scrollbar p-0 m-0 indent-0 whitespace-nowrap;
 }
 
 /* blockquote {
@@ -51,4 +59,12 @@
 
 blockquote {
   @apply p-2 m-2 text-slate-400 border-l-4 border-slate-400;
+}
+
+.crlf .prefix {
+  @apply hidden;
+}
+
+.post hr {
+  @apply my-5;
 }
