@@ -2,6 +2,7 @@ import type { _Props } from "./types";
 import React, { useContext, useRef, useEffect } from "react";
 import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathjax";
 import { MDXRemote } from 'next-mdx-remote'
+import mermaid from 'mermaid'
 
 const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
   return !!(mjObject as MathJax3Object)?.startup
@@ -42,6 +43,7 @@ export const Component: React.VFC<_Props> = (props) => {
         }
       });
     }
+    mermaid.init('.mermaid');
   });
 
   const MDXComponents = {};

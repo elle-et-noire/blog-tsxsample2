@@ -161,38 +161,36 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   closemdblock("text" + textcounter++);
 
   let decoratedText = "";
-  let footnotes = "";
-  let footnum = 0;
   Object.entries(mdblocks).forEach(([mode, block]) => {
     if (mode.substring(0, 4) == "text") {
-      decoratedText += block.replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='flex tooltip balloon no-underline'>$2</span>$1</span>")
-        .replace(/<br>/g, "<br/>");
+      decoratedText += block;
     }
-    // if (mode.substring(0, 6) == "inmath") {
-    //   decoratedText += "<span>{`" + block.replace(/\\/g, "\\\\") + "`}</span>";
-    // }
-    // if (mode.substring(0, 8) == "dispmath") {
-    //   decoratedText += "<p className='scroll'>{`" + block.replace(/\\/g, "\\\\") + "`}</p>";
-    // }
     if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath") {
       decoratedText += `<${mode}/>`;
     }
   });
-  decoratedText = decoratedText.replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
-    footnotes += `[^${++footnum}]: <span>${p1}</span>\n\n`;
-    return `<span className='has-tooltip relative items-center no-underline'><span className='flex tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
-  });
+
+  let footnotes = "";
+  let footnum = 0;
+  decoratedText = decoratedText.replace(/<br>/g, "<br/>")
+    .replace(/```mermaid([^`]+)```/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$1`}</div>\n")
+    .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><div className='flex tooltip balloon no-underline'>$2</div>$1</span>")
+    .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
+    footnotes += `[^${++footnum}]: ${p1}\n\n`;
+    return `<span className='has-tooltip relative items-center no-underline'><div className='tooltip balloon'>${p1}</div>[^${footnum}]</span>`;
+    });
   decoratedText += footnotes;
   decoratedText = decoratedText.replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
     if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
-    if (mode.substring(0, 8) == "dispmath") return "<p className='scroll'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
+    if (mode.substring(0, 8) == "dispmath") return "<p className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
     return "";
   });
 
   const mdxSource = await serialize(decoratedText, {
     mdxOptions: {
       remarkPlugins: [
-        gfm
+        gfm,
+        require('remark-prism')
       ],
       rehypePlugins: [
         [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],

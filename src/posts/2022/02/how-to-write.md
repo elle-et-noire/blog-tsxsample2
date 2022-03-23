@@ -69,7 +69,8 @@ const great = () => {
 
 # 数式
 $$
-e^{i\theta} = \cos\theta + i\sin\theta
+e^{i\theta} = \cos\theta + i\sin\theta\\
+=\operatorname{cis}\theta
 $$
 インライン：$a=0$
 
@@ -80,7 +81,7 @@ $$
 うおお
 
 # 注釈
-脚注の例^[脚注の内容その1。*うおおお*おおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおうおうおうおうおうおうおうお]です。インライン^[脚注の内容その2]で書くこともできます。脚注^[$\ds\int\dd{x}=x+C$]の中に数式も書けます。別行立て数式^[うおおおお<br/>\begin{align}a\\b\end{align}<br/>うおん]も書けます。
+脚注の例^[脚注の内容その1。*うおおお*おおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおうおうおうおうおうおうおうお]です。インライン^[脚注の内容その2]で書くこともできます。脚注^[$\ds\int\dd{x}=x+C$]の中に数式も書けます。別行立て数式^[\begin{align}a\\b\end{align}]も書けます。うおお^[うおお$$\begin{aligned}a\\b\end{aligned}$$ぐえ]
 
 
 # 区切り線
@@ -94,6 +95,7 @@ $$
 インラインで`code`を挿入する
 
 # Mermaid
+
 ```mermaid
 graph TB
     A[Hard edge] -->|Link text| B(Round edge)
@@ -101,13 +103,43 @@ graph TB
     C -->|One| D[Result one]
     C -->|Two| E[Result two]
 ```
-<div class="mermaid">
+
+うおうお
+
+```mermaid
 graph LR
     A --- B
     B-->C[あいうえお]
     B-->D(かきくけこ)
-</div>
+```
+
 うお
 
 # ツールチップ
 文章中で[うおうお]{gueee}というようにツールチップを付けられる。
+
+```mermaid
+graph TB
+    A[Hard edge] -->|Link text| B(Round edge)
+    B --> C{Decision}
+    C -->|One| D[Result one]
+    C -->|Two| E[Result two]
+```
+
+```mermaid
+sequenceDiagram
+    participant bss as boot-shim.S
+    participant bsc as boot-shim.c
+    participant zbi as zbi.c
+    participant dt as devicetree.c
+    Note over bss: QEMU から起動
+    activate bss
+    bss ->> bsc: boot_shim()
+    activate bsc
+    bsc ->> dt: dt_walk()
+    bsc ->> zbi: zbi_check()
+    bsc ->> zbi: zbi_create_entry_with_payload()
+    deactivate bsc
+    deactivate bss
+    Note over bss: physboot へジャンプ
+```
