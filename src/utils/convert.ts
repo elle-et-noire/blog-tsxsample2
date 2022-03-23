@@ -170,14 +170,22 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     }
   });
 
-  let footnotes = "";
+  let footnotes = "\n";
   let footnum = 0;
   decoratedText = decoratedText.replace(/<br>/g, "<br/>")
     .replace(/```mermaid([^`]+)```/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$1`}</div>\n")
+    // .replace(/```([^`\n]+)/g, (_, p1: string): string => {
+    //   const titles = p1.split(':');
+    //   return (titles.length > 1 ? `<div className='code-title'>{\`${titles[1]}\`}</div>\n\n` : '') + '```' + titles[0];
+    // })
+    .replace(/```(.+)/g, (_, p1: string): string => {
+      const titles = p1.split(':');
+      return '```' + titles[0] + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
+    })
     .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><div className='flex tooltip balloon no-underline'>$2</div>$1</span>")
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
-    footnotes += `[^${++footnum}]: ${p1}\n\n`;
-    return `<span className='has-tooltip relative items-center no-underline'><div className='tooltip balloon'>${p1}</div>[^${footnum}]</span>`;
+      footnotes += `\n[^${++footnum}]: ${p1}\n`;
+      return `<span className='has-tooltip relative items-center no-underline'><div className='tooltip balloon'>${p1}</div>[^${footnum}]</span>`;
     });
   decoratedText += footnotes;
   decoratedText = decoratedText.replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
@@ -190,7 +198,20 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     mdxOptions: {
       remarkPlugins: [
         gfm,
-        require('remark-prism')
+        // require('remark-code-titles'),
+        [require('remark-prism'), {
+          plugins: [
+            'autolinker',
+            'command-line',
+            'data-uri-highlight',
+            'diff-highlight',
+            'inline-color',
+            'keep-markup',
+            'line-numbers',
+            'show-invisibles',
+            'treeview',
+          ]
+        }]
       ],
       rehypePlugins: [
         [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],

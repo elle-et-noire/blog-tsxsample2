@@ -41,23 +41,41 @@ tags:
 | Text | Text | Text |
 | Text | Text | Text |
 
-# コードブロック
-```js
-const great = () => {
-  console.log("Awesome");
-};
-```
 
+| Left align | Right align | Center align |
+|:-----------|------------:|:------------:|
+| This       | This        | This         |
+| column     | column      | column       |
+| will       | will        | will         |
+| be         | be          | be           |
+| left       | right       | center       |
+| aligned    | aligned     | aligned      |
+
+# コードブロック
 ```js:fooBar.js
 const great = () => {
   console.log("Awesome");
 };
 ```
 
-```diff js
+```cpp:main.cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+  cout << "hello world" << endl;
+  return 0;
+}
+```
+
+```diff-javascript[class="diff-highlight"]
 @@ -4,6 +4,5 @@
-+    const foo = bar.baz([1, 2, 3]) + 1;
--    let foo = bar.baz([1, 2, 3]);
++const foo = bar.baz([1, 2, 3]) + 1;
+-let foo = bar.baz([1, 2, 3]);
++const foo = bar.baz([1, 2, 3]) + 1;
+-let foo = bar.baz([1, 2, 3]);
+ uouo;
+ uouo;
 ```
 
 
@@ -78,9 +96,14 @@ $$
 うおお
 > 引用文
 >> 引用文
+
 うおお
 
+> More is different.
+>               P. W. Anderson
+
 # 注釈
+
 脚注の例^[脚注の内容その1。*うおおお*おおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおうおうおうおうおうおうおうお]です。インライン^[脚注の内容その2]で書くこともできます。脚注^[$\ds\int\dd{x}=x+C$]の中に数式も書けます。別行立て数式^[\begin{align}a\\b\end{align}]も書けます。うおお^[うおお$$\begin{aligned}a\\b\end{aligned}$$ぐえ]
 
 
@@ -93,6 +116,10 @@ $$
 **太字**
 ~~打ち消し線~~
 インラインで`code`を挿入する
+
+## チェックボックス
+- [ ] タスク1
+- [x] タスク2
 
 # Mermaid
 
@@ -114,9 +141,6 @@ graph LR
 ```
 
 うお
-
-# ツールチップ
-文章中で[うおうお]{gueee}というようにツールチップを付けられる。
 
 ```mermaid
 graph TB
@@ -143,3 +167,6 @@ sequenceDiagram
     deactivate bss
     Note over bss: physboot へジャンプ
 ```
+
+# ツールチップ
+文章中で[うおうお]{gueee}というようにツールチップを付けられる。

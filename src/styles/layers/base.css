@@ -5,6 +5,12 @@
     src: url(/fonts/AppliMincho.otf) format("opentype");
   }
 
+  @font-face {
+    font-family: SFMono-Regular;
+    font-weight: 400;
+    src: url(/fonts/FontsFree-Net-SFMono-Regular.ttf) format("truetype");
+  }
+
   html,
   body {
     @apply text-white text-base bg-gradient-to-tr from-darkgreen to-black bg-[length:400%_400%] animate-gradient-background font-applimincho scroll-smooth scroll-pt-20 round-scrollbar overflow-overlay selection:bg-emerald overflow-visible;
