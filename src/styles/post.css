@@ -61,10 +61,6 @@ blockquote {
   @apply p-2 m-2 text-slate-400 border-l-4 border-slate-400;
 }
 
-.crlf .prefix {
-  @apply hidden;
-}
-
 .post hr {
   @apply my-5;
 }

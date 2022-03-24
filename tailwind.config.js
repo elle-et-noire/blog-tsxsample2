@@ -65,7 +65,7 @@ module.exports = {
     },
     fontFamily: {
       'applimincho': ['"AppliMincho"'],
-      'mono': ["'SFMono-Regular'", 'ui-monospace']
+      'mono': ["'SFMono-Regular'", 'consolas', 'ui-monospace']
     }
   },
   // darkMode: 'media',  // or darkMode: 'class'

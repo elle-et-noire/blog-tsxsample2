@@ -192,15 +192,15 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
         gfm,
         [require('remark-prism'), {
           plugins: [
-            'autolinker',
-            'command-line',
-            'data-uri-highlight',
+            // 'autolinker',
+            // 'command-line',
+            // 'data-uri-highlight',
             'diff-highlight',
-            'inline-color',
-            'keep-markup',
-            'line-numbers',
-            'show-invisibles',
-            'treeview',
+            // 'inline-color',
+            // 'keep-markup',
+            // 'line-numbers',
+            // 'show-invisibles',
+            // 'treeview',
           ]
         }]
       ],
