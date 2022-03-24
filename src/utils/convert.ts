@@ -5,7 +5,7 @@ import gfm from 'remark-gfm'
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
-export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, { [label: string]: string }]> => {
+export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]> => {
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
@@ -14,7 +14,8 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   const spacer = "\\hspace{0.2em}";
   const rsmashers = ["。", "、", "）", "，", "．", " ", "　", "-", "："];
   const lsmashers = ["（", "-"];
-  const mathblocks: { [label: string]: string } = {};
+  const mathblocks: string[] = [];
+  const labelsinuse = new Set<string>();
   let inmathcounter = 0;
   let dispmathcounter = 0;
   let textcounter = 0;
@@ -22,7 +23,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   // 参照される式ラベルを調べておく。matchAll を使わせろ！
   text.match(/\\(eq)?ref\{([^}]+)\}/g)?.forEach(label => {
     const l = label.match(/\\(eq)?ref\{([^}]+)\}/);
-    if (l != null && l.length >= 3) mathblocks[l[2]] = "";
+    if (l != null && l.length >= 3) labelsinuse.add(l[2]);
   });
   // mathpreview に表示するために数式を切り出す開始位置
   let mathbegin = 0;
@@ -84,8 +85,12 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
 
           const mathblock = mdblock.substring(mathbegin, mathend);
           const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
+          let added = false;
           labels?.forEach(label => {
-            label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
+            if (!added && labelsinuse.has(label)) {
+              mathblocks.push(mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'));
+              added = true;
+            }
           });
 
           closemdblock("dispmath" + dispmathcounter++);
@@ -128,8 +133,12 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
 
         const mathblock = mdblock.substring(mathbegin, mathend);
         const labels = mathblock.match(/\\label\{[^}]+\}/g)?.map(label => label.substring(7, label.length - 1));
+        let added = false;
         labels?.forEach(label => {
-          label in mathblocks && (mathblocks[label] = mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'))
+          if (!added && labelsinuse.has(label)) {
+            mathblocks.push(mathblock.replace(/\\tag\{([^}]+)\}/g, '').replace(/\\label\{([^}]+)\}/g, '\\tag*{\\eqref{$1}}'));
+            added = true;
+          }
         });
 
         closemdblock("dispmath" + dispmathcounter++);

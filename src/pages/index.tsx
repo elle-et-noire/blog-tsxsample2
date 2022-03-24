@@ -12,13 +12,12 @@ import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 
-
 type Props = {
   tags: string[];
   latestPosts: Post[];
   oldPosts: Post[];
   intro: MDXRemoteSerializeResult;
-  mathblocks: { [label: string]: string };
+  mathblocks: string[];
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {

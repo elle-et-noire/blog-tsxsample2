@@ -11,7 +11,7 @@ import { description } from "~/utils/meta";
 
 type Props = {
   post: Post;
-  mathblocks: { [label: string]: string };
+  mathblocks: string[];
 };
 
 type Params = {
