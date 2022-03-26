@@ -67,7 +67,7 @@ $K$系内で速さ$v$で動く質量$m$の粒子について、粒子の進む�
 \end{align}
 である（$\theta(p'^0)$がかかっているのは、物理的には$p'^0>0$であることを反映させるため）。$\dd[4]{p'}$ およびLorentz不変な量 $A(\bm{p}')$ をかけて全時空 $p'^\mu\in(-\infty,\infty)^4$ で積分すれば
 \begin{align}
-  \int_{\mathbb{M}^{1,3}}\dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p}')&=\int_{\mathbb{R}^3}\dfrac{c\dd[3]{\bm{p}'}}{2E(\bm{p}')}A(\bm{p}').\label{eq:original}
+  \int_{\mathbb{M}^{1,3}}\dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p}')&=\int_{\mathbb{R}^3}\href{#mjx-eqn%3Aeq%3Aoriginal}{\dfrac{c\dd[3]{\bm{p}'}}{2E(\bm{p}')}}A(\bm{p}').\label{eq:original}
 \end{align}
 
 ローレンツ変換\eqref{eq:lorentz-standard}によって\eqref{eq:original}の左辺の各々は
@@ -83,13 +83,13 @@ p'^0&=\gamma p^0+\gamma\beta p^1
 &=\theta(\gamma p^0+\gamma\beta p^1)\dfrac{c}{2E(\bm{p})}\qty[\delta(p^0-E(\bm{p})/c))+\delta(p^0+E(\bm{p})/c))]\dd[4]{p}\\
 &=\dfrac{c}{2E(\bm{p})}[\underbrace{\theta(\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=1\ \because E/c=\sqrt{\bm{p}^2+m^2c^2}>\abs{p^1}}\delta(p^0-E(\bm{p})/c)\notag\\
 &\qquad+\underbrace{\theta(-\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=0}\:\underbrace{\delta(p^0+E(\bm{p})/c)}_{=0}]\dd[4]{p}\ (\eqref{eq:delta-convolute}\text{を用いた})\\
-&=\dfrac{c}{2E(\bm{p})}\delta(p^0-E(\bm{p})/c)\dd[4]{p}
+&=\dfrac{c}{2E(\bm{p})}\delta(p^0-E(\bm{p})/c)\dd[4]{p}\label{eq:uooo}
 \end{align}
 となる。こちらもLorentz不変な量$A(\bm{p})$をかけて全時空$p'^\mu\in(-\infty,\infty)^4$（$\iff p^\mu\in(-\infty,\infty)^4$）で積分すれば
 \begin{align}
 \int_{\mathbb{M}^{1,3}} \dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p})&=\int_{\mathbb{R}^3}A(\bm{p})\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}\label{eq:comp2}
 \end{align}
-となる。\eqref{eq:original}と\eqref{eq:comp2}を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。
+となる。\eqref{eq:original}と\eqref{eq:comp2}を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。\eqref{eq:uooo}
 
 # 参考文献
 

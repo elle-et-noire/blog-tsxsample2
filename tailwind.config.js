@@ -47,7 +47,9 @@ module.exports = {
         // 'raspberry': '#ff0099'
       },
       animation: {
-        'gradient-background': 'gradient-ackground 10s ease infinite'
+        'gradient-background': 'gradient-ackground 10s ease infinite',
+        appear: "appear 0.3s ease 1.5s 1 forwards",
+        disappear: "disappear 3s ease 0s 1 forwards"
       },
       keyframes: {
         'gradient-background': {
@@ -60,6 +62,14 @@ module.exports = {
           "100%": {
             'background-position': '0% 50%'
           }
+        },
+        appear: {
+          "0%": { opacity: 0, visibility: 'hidden' },
+          "100%": { opacity: 1, visibility: 'visible' },
+        },
+        disappear: {
+          "0%": { opacity: 1 },
+          "100%": { opacity: 0 },
         },
       },
     },

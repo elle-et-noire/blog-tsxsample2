@@ -139,9 +139,19 @@ $$
 \begin{align}
   \eval{\delta(f(x))}_{x\simeq\alpha_i}&=\lim_{\ve\to 0}\dfrac{1}{\sqrt{2\pi\ve}}\exp\qty[-\dfrac{(x-\alpha_i)^2\abs{f'(\alpha_i)}^2}{2\ve}\qty[1+\order{x-\alpha_i}]]\label{eq:a}\\
   &=\lim_{\ve'\to 0}\dfrac{1}{\sqrt{2\pi\ve'}\abs{f'(\alpha_i)}}\exp\qty[-\dfrac{(x-\alpha_i)^2}{2\ve'}\qty[1+\order{x-\alpha_i}]]\ \qty(\ve'=\dfrac{\ve}{\abs{f'(\alpha_i)}^2})\label{eq:b}\\
-  &=\dfrac{\delta(x-\alpha_i)}{\abs{f'(\alpha_i)}}
+  &=\dfrac{\delta(x-\alpha_i)}{\abs{f'(\alpha_i)}}\\
+  f(x)\delta(x-a)&=f(a)\delta(x-a)\label{eq:delta-convolute}
 \end{align}
 と式番号も打てるし、\eqref{eq:a}のように参照し、マウスオーバーでプレビューウィンドウも現れる。1つの数式の塊で1つのプレビューウィンドウなので\eqref{eq:b}でも同じウィンドウになる。
+\begin{align}
+&\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)\dd[4]{p'}\\
+&=\theta(\gamma p^0+\gamma\beta p^1)\delta(p^\mu p_\mu-m^2c^2)\dd[4]{p}\\
+&=\theta(\gamma p^0+\gamma\beta p^1)\dfrac{c}{2E(\bm{p})}\qty[\delta(p^0-E(\bm{p})/c))+\delta(p^0+E(\bm{p})/c))]\dd[4]{p}\\
+&=\dfrac{c}{2E(\bm{p})}[\underbrace{\theta(\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=1\ \because E/c=\sqrt{\bm{p}^2+m^2c^2}>\abs{p^1}}\delta(p^0-E(\bm{p})/c)\notag\\
+&\qquad+\underbrace{\theta(-\gamma E(\bm{p})/c+\gamma\beta p^1)}_{=0}\:\underbrace{\delta(p^0+E(\bm{p})/c)}_{=0}]\dd[4]{p}\ (\eqref{eq:delta-convolute}\text{を用いた})\\
+&=\dfrac{c}{2E(\bm{p})}\delta(p^0-E(\bm{p})/c)\dd[4]{p}\label{eq:uooo}
+\end{align}
+\eqref{eq:uooo}を見ればわかるように、ウィンドウ中の式番号をマウスオーバーしても新たなウィンドウは現れない。
 
 インライン：$a=0$のように書ける。
 * うおお。$a=0$。
