@@ -89,7 +89,7 @@ p'^0&=\gamma p^0+\gamma\beta p^1
 \begin{align}
 \int_{\mathbb{M}^{1,3}} \dd[4]{p'}\theta(p'^0)\delta(p'^\mu p'_\mu-m^2c^2)A(\bm{p})&=\int_{\mathbb{R}^3}A(\bm{p})\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}\label{eq:comp2}
 \end{align}
-となる。\eqref{eq:original}と\eqref{eq:comp2}を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。\eqref{eq:uooo}
+となる。\eqref{eq:original}と\eqref{eq:comp2}を見比べて、$A(\bm{p})=A(\bm{p}')$なので体積要素$\dfrac{c\dd[3]{\bm{p}}}{2E(\bm{p})}$も空間$\mathbb{R}^3$全体での積分という意味でLorentz不変である。Minkowski時空のうちどの部分が空間となるかはLorentz変換によって変わることに注意。
 
 # 参考文献
 

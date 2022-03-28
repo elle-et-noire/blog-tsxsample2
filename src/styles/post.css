@@ -69,3 +69,7 @@ blockquote {
   @apply my-5;
 }
 
+.post img, .post table {
+  @apply mx-auto;
+}
+
