@@ -1,5 +1,5 @@
 ---
-title: ℤとℤ⊕ℤが同型でない証明
+title: $\Z$と$\Z\oplus\Z$が同型でない証明
 date: "2022-02-28"
 tags: algebra
 ---

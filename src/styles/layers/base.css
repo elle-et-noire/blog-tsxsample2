@@ -30,6 +30,7 @@
 
   a {
     @apply underline decoration-[0.05em] underline-offset-[0.25em];
+    /* @apply border-b; */
   }
 
   a[href^="#mjx-eqn%3A"] {

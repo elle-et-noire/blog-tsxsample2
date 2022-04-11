@@ -182,10 +182,10 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       const titles = p1.split(':');
       return '```' + titles[0] + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
     })
-    .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><div className='flex tooltip balloon no-underline'>$2</div>$1</span>")
+    .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
       footnotes += `\n[^${++footnum}]: ${p1}\n`;
-      return `<span className='has-tooltip relative items-center no-underline'><div className='tooltip balloon'>${p1}</div>[^${footnum}]</span>`;
+      return `<span className='has-tooltip relative items-center no-underline'><span className='inline-block tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
     });
   decoratedText += footnotes;
   decoratedText = decoratedText.replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1")

@@ -25,7 +25,7 @@ $$
 参考：[幾何学A 多様体上の楕円型微分作用素 -Hodge theorem-](http://www.f.waseda.jp/homma_yasushi/homma2/download/hodge-kougi.pdf)
 全射性は言えていないが、$E_{p-1}$,$E_p$,$E_{p+1}$のファイバー次元が等しければ、表象がfull rankの行列になるので楕円型作用素と言えよう。
 
-と書いたけれど、\eqref{eq:adjoint-oplus}が危うい。$\dim \Ker D^\ast = \dim\Ker D$なら次元定理$\dim \Ker D_{p-1}+\dim\Im D_{p-1}=C^\infty(E_{p-1})$および各ファイバーの次元が等しいという仮定の下直和分解が言えるが、$\operatorname{ind}D=\dim\Ker D-\dim\Ker D^\ast$などもあることから一般には一致しなさそう。でも正則行列ならエルミート転置を取っても階数は変わらないから一致する気もする。
+と書いたけれど、\eqref{eq:adjoint-oplus}が危うい。$\dim \Ker D^\ast = \dim\Ker D$なら次元定理$\dim \Ker D_{p-1}+\dim\Im D_{p-1}=C^\infty(E_{p-1})$および各ファイバーの次元が等しいという仮定の下直和分解が言えるが、$\operatorname{ind}D=\dim\Ker D-\dim\Ker D^\ast$などもあることから一般には一致しなさそう。でも正方行列ならエルミート転置を取っても階数は変わらないから一致する気もする。
 
 ## 捻れDolbeault複体
 

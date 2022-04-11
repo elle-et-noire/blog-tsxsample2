@@ -11,6 +11,7 @@ import { formatDate } from "~/utils/format";
 import { markdownToHtml } from "~/utils/convert";
 import { PostContent } from "~/components/post-content";
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { MathJax } from "better-react-mathjax"
 
 type Props = {
   tags: string[];
@@ -68,7 +69,11 @@ export default function View(props: Props) {
               {formatDate(post.date)}
             </div>
             <Link href={`/${post.year}/${post.month}/${post.slug}`}>
-              <a className="font-semibold">{post.title}</a>
+              <a className="font-semibold">
+                <MathJax hideUntilTypeset="first">
+                  {post.title}
+                </MathJax>
+              </a>
             </Link>
           </li>
         ))}
