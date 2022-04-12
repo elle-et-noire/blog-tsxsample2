@@ -10,12 +10,12 @@ tags: algebra
 　理論物理学のための幾何学とトポロジー（通称『中トポ』）I[原著第2版]の7.8.4節で、計量の両立性からRicci回転係数は
 
 > \begin{align*}
-  \varGamma_{\alpha\beta\gamma}&=\delta_{\alpha_delta}e^\delta{}_\lambda e_\beta{}^\mu\nabla_\mu e_\gamma{}^\lambda=-\delta_{\alpha\delta}e_\gamma{}^\lambda e_\beta{}^\mu\nabla_\mu e^\delta{}_\lambda\\
+  \varGamma_{\alpha\beta\gamma}&=\delta_{\alpha\delta}e^\delta{}_\lambda e_\beta{}^\mu\nabla_\mu e_\gamma{}^\lambda=-\delta_{\alpha\delta}e_\gamma{}^\lambda e_\beta{}^\mu\nabla_\mu e^\delta{}_\lambda\\
   &=-\delta_{\gamma\delta}e^\delta{}_\lambda e_\beta{}^\mu \nabla_\mu e_\alpha{}^\lambda=-\varGamma_{\gamma\beta\alpha}.\tag{7.154}
 \end{align*}
 ここで$\nabla_\mu g=0$を使った。
 
-と、$\alpha,\gamma$について反対称になることが言及されている。しかし簡単に書かれているこの式変形は（少なくとも自分には）簡単には埋まらない行間をはらんでいる。そもそも、$\nabla_\mu e_\gamma{}^\lambda$という記法は7.8.2節で定義されている一方で$\nabla_\mu e^\delta{}_\lambda$なる記法はここまでで定義されていないはずである。
+と、$\alpha,\gamma$について反対称になることが言及されている。しかし簡単に書かれているこの式変形は（少なくとも自分には）簡単には埋まらない行間をはらんでいる。そもそも、$\nabla_\mu e_\gamma{}^\lambda$という記法は7.8.2節で定義されている一方で~$\nabla_\mu e^\delta{}_\lambda$なる記法はここまでで定義されていないはずである。~テンソルの成分の微分が定義されていたのでこれも定義されているとも言える。
 
 # ここまでのあらすじ（抄）
 
@@ -139,4 +139,25 @@ tags: algebra
   &=\delta_{\gamma\lambda}e^\lambda{}_\kappa(\nabla_\beta\hat{e}_\alpha)^\kappa\\
   &=\varGamma_{\gamma\beta\alpha}
 \end{align}
-となり、計量接続から得られるRicci回転係数は1つ目と3つ目の添字について反対称であることが示せた。なんとなく添字を下げるためだけに掛けているかに見えた$\delta_{\alpha\delta}$が多脚場と反応して計量$g$を登場させる様子は激アツでしたね。
+となり、計量接続から得られるRicci回転係数は1つ目と3つ目の添字について反対称であることが示せた。なんとなく添字を下げるためだけに掛けているかに見えた$\delta_{\alpha\delta}$が多脚場と反応して計量$g$を登場させる様子は激アツでしたね。また、\eqref{eq:nabla-g-zero}で$g_{\mu\nu}\equiv\delta_{\mu\nu}$の場合が示したい式であることを考えれば、計量接続としての自然な性質だと言えそうです。
+
+# 追記(2022/04/12) - 簡単な計算
+
+結局は同じことですが見通しのいい書き方が降ってきたので追記します。
+
+\begin{align}
+  e_\alpha{}^\mu g_{\mu\nu}=e^\beta{}_\nu\delta_{\alpha\beta}
+\end{align}
+の両辺を共偏微分して
+\begin{align}
+  g_{\mu\nu}\nabla_\kappa e_\alpha{}^\mu=\delta_{\alpha\beta}\nabla_\kappa e^\beta{}_\nu.
+\end{align}
+\eqref{eq:g-is-eedelta}を代入して
+\begin{align}
+  \delta_{\gamma\delta}e^\gamma{}_\mu e^\delta{}_\nu\nabla_\kappa e_\alpha{}^\mu=\delta_{\alpha\beta}\nabla_\kappa e^\beta{}_\nu
+\end{align}
+となり、$e_\delta{}^\nu$をかけて
+\begin{align}
+  \delta_{\gamma\delta}e^\gamma{}_\mu\nabla_\kappa e_\alpha{}^\mu=\delta_{\alpha\beta}e_\delta{}^\nu \nabla_\kappa e^\beta{}_\nu
+\end{align}
+が得られる。

@@ -191,7 +191,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   decoratedText = decoratedText.replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1")
     .replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
       if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
-      if (mode.substring(0, 8) == "dispmath") return "<p className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</p>";
+      if (mode.substring(0, 8) == "dispmath") return "<div className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</div>";
       return "";
     });
 
