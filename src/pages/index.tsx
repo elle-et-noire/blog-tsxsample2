@@ -45,6 +45,12 @@ export default function View(props: Props) {
         <meta property="og:title" content={APP_NAME} />
         <meta property="og:description" content={APP_DESCRIPTION} />
         <meta property="og:url" content={APP_URL} />
+        <meta property="og:image" content="https://user-images.githubusercontent.com/51241098/139921229-151ff350-13df-40c0-8709-b575bb6fdc6a.png" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@L48610" />
+        <link rel="shortcut icon"
+          href="https://user-images.githubusercontent.com/51241098/139574778-08c0d89e-b88e-4faa-baf5-4ee2af007b81.png"
+          type="image/png" />
       </Head>
       <div>
       <span className='has-tooltip relative items-center'>
