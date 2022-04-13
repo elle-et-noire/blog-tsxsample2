@@ -8,4 +8,5 @@ export type Post = {
   slug: string;
   mdxSource: MDXRemoteSerializeResult;
   tags: string[];
+  description: string;
 };

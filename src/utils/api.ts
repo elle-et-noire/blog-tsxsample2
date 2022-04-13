@@ -3,6 +3,7 @@ import glob from "glob";
 import matter from "gray-matter";
 import { basename, join } from "path";
 import type { Post } from "~/types/post";
+import { APP_DESCRIPTION } from "~/constants/app";
 
 const baseDir = join(process.cwd(), "src/posts");
 const files = glob.sync(`${baseDir}/**/*.md`);
@@ -14,9 +15,10 @@ const contents = (path: string) => {
 export const getTags = (): string[] => {
   let tags = files.map((path) => {
     const { data } = matter(contents(path));
-    return data.tags;
+    if ("tags" in data) return data.tags;
+    else return "";
   });
-  tags = tags.flat();
+  tags = tags.flat().filter(Boolean);
   return Array.from(new Set(tags)).sort();
 };
 
@@ -25,6 +27,7 @@ export const getPosts = () => {
     const { data } = matter(contents(path));
     [data.year, data.month] = data.date.split("-");
     data.slug = basename(path).replace(/\.md$/, "");
+    if ("description" in data) data["description"] = APP_DESCRIPTION;
     return data;
   }) as Post[];
 
@@ -47,6 +50,7 @@ export const getPostByPath = (path: string) => {
 
 export const getPostsByTag = (tag: string) => {
   return getPosts().filter((post) => {
-    return post.tags.includes(tag);
+    if ("tags" in post) return post.tags.includes(tag);
+    else return false;
   });
 };

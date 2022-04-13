@@ -7,7 +7,6 @@ import { Page } from "~/layouts/page";
 import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
-import { description } from "~/utils/meta";
 
 type Props = {
   post: Post;
@@ -52,17 +51,15 @@ export const getStaticPaths = () => {
 };
 
 export default function View(props: Props) {
-  const _description = description(props.post.mdxSource.compiledSource);
-
   return (
     <Page title={props.post.title}>
       <Head>
-        <meta name="description" content={_description} />
+        <meta name="description" content={props.post.description} />
         <meta
           property="og:title"
           content={`${props.post.title} ･ ${APP_NAME}`}
         />
-        <meta property="og:description" content={_description} />
+        <meta property="og:description" content={props.post.description} />
         <meta
           property="og:url"
           content={`${APP_URL}${props.post.year}/${props.post.month}/${props.post.slug}`}
