@@ -2,11 +2,12 @@ import Head from "next/head";
 import { HomeLink } from "~/components/home-link";
 import { PostContent } from "~/components/post-content";
 import { PostHeader } from "~/components/post-header";
-import { APP_NAME, APP_URL } from "~/constants/app";
+import { APP_NAME, APP_URL, APP_DESCRIPTION } from "~/constants/app";
 import { Page } from "~/layouts/page";
 import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
+// import { APP_DESCRIPTION } from "~/constants/app";
 
 type Props = {
   post: Post;
@@ -23,7 +24,8 @@ type Params = {
 
 export const getStaticProps = async ({ params }: Params) => {
   const path = `${params.year}/${params.month}/${params.slug}.md`;
-  const post = getPostByPath(path);
+  let post = getPostByPath(path);
+  if (!post.data.description) post.data.description = APP_DESCRIPTION;
   const [mdxSource, mathblocks] = await markdownToHtml(post.content || "");
 
   return {

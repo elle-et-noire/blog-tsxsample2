@@ -3,7 +3,6 @@ import glob from "glob";
 import matter from "gray-matter";
 import { basename, join } from "path";
 import type { Post } from "~/types/post";
-import { APP_DESCRIPTION } from "~/constants/app";
 
 const baseDir = join(process.cwd(), "src/posts");
 const files = glob.sync(`${baseDir}/**/*.md`);
@@ -27,7 +26,7 @@ export const getPosts = () => {
     const { data } = matter(contents(path));
     [data.year, data.month] = data.date.split("-");
     data.slug = basename(path).replace(/\.md$/, "");
-    if ("description" in data) data["description"] = APP_DESCRIPTION;
+    if (!("description" in data)) data["description"] = "";
     return data;
   }) as Post[];
 
