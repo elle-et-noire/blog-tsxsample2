@@ -1,6 +1,7 @@
 ---
 title: Lorentz変換
 date: "2022-02-01"
+description: Lorentz変換に関する基本的なあれこれをまとめています。
 tags:
     - phys
 ---
@@ -27,7 +28,7 @@ $K$系に対する$K'$系の速さを$V$、方向を$x$軸にとる。Minkowski�
 \end{align}
 なるLorentzパラメータを導入すれば$\sinh=\beta\gamma$となり、
 \begin{align}
-  \mqty[ct\\x\\y\\z]&=\mqty[\dmat{\gamma & \gamma\beta \\ \gamma\beta & \gamma, 1, 1}]\mqty[ct'\\x'\\y'\\z']
+  \mqty[ct\\x\\y\\z]&=\mqty[\dmat{\gamma & \gamma\beta \\ \gamma\beta & \gamma, 1, 1}]\mqty[ct'\\x'\\y'\\z']\label{eq:x-lorentz}
 \end{align}
 とLorentz変換が行列にまとまる。$\gamma^2(1-\beta^2)=1$より
 \begin{align}
@@ -68,11 +69,49 @@ Minkowski時空内の粒子の運動を表す4元ベクトル
 と4元速度が表せる。さらに
 \begin{align}
   \dv{\gamma_v}{t}&=\dfrac{\bm{v}/c^2}{(1-v^2/c^2)^{3/2}}\cdot\dv{\bm{v}}{t}=(\gamma_v^3/c^2)\bm{v}\cdot\bm{a}\\
-  \dv{v}{t}&=\dfrac{1}{2v}\dv{v^2}{t}=\dv{\bm{v}}{t}\cdot\dfrac{\bm{v}}{v}=\bm{a}\cdot\dfrac{\bm{v}}{v}\quad(\text{ほんと？})\\
   \dv{u^i}{s}&=\dfrac{\gamma_v}{c}\dv{(v^i\gamma_v/c)}{t}=\dfrac{\gamma_v^4v^i}{c^4}\bm{v}\cdot\bm{a}+\dfrac{\gamma_v^2}{c^2}a^i
 \end{align}
 に気を付けると4元加速度
 \begin{align}
-  w^\mu\coloneqq \dv[2]{x^\mu}{s}=\dv{u^\mu}{s}=\dfrac{\gamma_v^4}{c^3}\bm{v}\cdot\bm{a}\mqty[1\\\bm{v}/c]+\dfrac{\gamma_v^2}{c^2}\mqty[0\\\bm{a}]
+  w^\mu\coloneqq \dv[2]{x^\mu}{s}=\dv{u^\mu}{s}=\dfrac{\gamma_v^4}{c^3}\bm{v}\cdot\bm{a}\mqty[1\\\bm{v}/c]+\dfrac{\gamma_v^2}{c^2}\mqty[0\\\bm{a}]\label{eq:w-general}
 \end{align}
-の表式が分かる（ほんと？）。$\dd{x^\mu}\dd{x_\mu}=\dd{s^2}$より$u^\mu u_\mu=1$であり、さらに微分して$u_\mu w^\mu=0$も分かる（成分で内積を計算しても確かめられる）。
+の表式が分かる（ほんと？）。$\dd{x^\mu}\dd{x_\mu}=\dd{s^2}$より$u^\mu u_\mu=1$であり、さらに微分して$u^\mu w_\mu=0$も分かる（成分で内積を計算しても確かめられる）。
+
+# 等加速度運動
+
+等加速度運動する粒子の速度$v=0$の慣性系（各瞬間ごとに与えられる）において4元加速度は、$x$軸を上手く（加速度のかかる向きに）取れば
+\begin{align}
+  w^\mu=\mqty[0&w/c^2&0&0]^\mathrm{T}\quad(w\ge 0)\label{eq:w-special}
+\end{align}
+と表せる。このとき
+\begin{align}
+  w^\mu w_\mu=-w^2/c^4\label{eq:w-invariant}
+\end{align}
+となり、これはLorentz不変な条件になっている（逆にこの条件をみたすどんな4元加速度ベクトルにもLorentz変換によって移れることはLorentz変換が$\eta$を保つという条件のみで定義されることから明らか）。粒子に対して$x$軸方向に動く慣性系における4元加速度は、\eqref{eq:w-special}に\eqref{eq:x-lorentz}と同じLorentz変換を施して得られ、\eqref{eq:w-general}の$y,z$成分が$0$となった形を持つ。それが\eqref{eq:w-invariant}の条件を満たすことから、
+\begin{align}
+  -\dfrac{w^2}{c^4}&=(w^0)^2-(w^1)^2\label{eq:w-scalar-equalize}\\
+  &=\qty(\dfrac{\gamma_v^4vw'}{c^3})^2-\qty(\dfrac{\gamma_v^4v^2w'}{c^4}+\dfrac{\gamma_v^2w'}{c^2})^2\\
+  &=\qty(\dfrac{\gamma_v^2w'}{c^2})^2\qty[\qty(\dfrac{\gamma_v^2v}{c})^2-\qty(\dfrac{\gamma_v^2v^2}{c^2}+1)^2]\\
+  &=\qty(\dfrac{\gamma_v^2w'}{c^2})^2\qty[\qty(\dfrac{\gamma_v^2v}{c})^2\dfrac{1}{\gamma_v^2}-2\dfrac{\gamma_v^2v^2}{c^2}-1]\\
+  &=-\qty(\dfrac{\gamma_v^2w'}{c^2})^2\qty[\dfrac{\gamma_v^2v^2}{c^2}+1]\\
+  &=-\dfrac{\gamma_v^6w'^2}{c^4}\\
+  \therefore \abs{w}&=\gamma_v^3\abs{w'}\quad(\text{慣性系の$x$軸の向きを揃えれば絶対値が外れる})\label{eq:wlen-lorentz-change}
+\end{align}
+と、3次元の加速度がLorentz変換によってどのように変化するかが分かる（これは等加速度運動でなくとも成り立つ？）。
+　ここで
+\begin{align}
+  \bigstar\coloneqq \dv{t}(\gamma_vv)
+\end{align}
+と置き、再び\eqref{eq:w-scalar-equalize}を、今度は4元加速度の定義に（一部）戻って計算すると
+\begin{align}
+  -\dfrac{w^2}{c^4}&=(w^0)^2-\qty\bigg[\dfrac{\gamma_v}{c^2}\underbrace{\dv{(\gamma_vv)}{t}}_{\bigstar}]^2=\underbrace{\mqty(\dfrac{\gamma_v^4vw'}{c^3})^2}_{\substack{\ds=\gamma_v^8v^2w'^2/c^6\\\ds=\gamma_v^2v^2w^2/c^6\eqref{eq:wlen-lorentz-change}}}-\dfrac{\gamma_v^2}{c^4}\bigstar^2\\
+  \therefore \bigstar^2&=\dfrac{w^2}{\gamma_v^2}\qty(1+\gamma_v^2\dfrac{v^2}{c^2})=w^2\\
+  \therefore \dv{t}(\gamma_vv)&=\bigstar=w\quad(\text{慣性系の$x$軸の向きを揃えたものとする})
+\end{align}
+となる。積分して
+\begin{align}
+  wt&=\dfrac{v}{\sqrt{1-v^2/c^2}}\\
+  \therefore v^2&=w^2t^2(1-v^2/c^2)\\
+  \therefore v&=\dfrac{wt}{\sqrt{1+w^2t^2/c^2}}
+\end{align}
+
