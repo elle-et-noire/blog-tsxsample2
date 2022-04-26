@@ -2,6 +2,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import gfm from 'remark-gfm'
+import remarkUnwrapImages from 'remark-unwrap-images'
 
 // TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
 
@@ -221,7 +222,8 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
             // 'show-invisibles',
             // 'treeview',
           ]
-        }]
+        },
+        remarkUnwrapImages]
       ],
       rehypePlugins: [
         [rehypeExternalLinks, { target: '_blank', rel: ['nofollow', 'noopener', 'noreferrer'] }],

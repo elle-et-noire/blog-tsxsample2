@@ -1,10 +1,11 @@
-import type { _Props } from "./types";
-import React, { useContext, useRef, useEffect } from "react";
-import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathjax";
+import type { _Props } from "./types"
+import React, { useContext, useRef, useEffect } from "react"
+import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathjax"
 import { MDXRemote } from 'next-mdx-remote'
 import mermaid from 'mermaid'
-import CustomLink from "../customLink";
-import CustomImage from "../customImage";
+import CustomLink from "../customLink"
+import CustomImage from "../customImage"
+import Image from 'next/image'
 
 const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
   return !!(mjObject as MathJax3Object)?.startup

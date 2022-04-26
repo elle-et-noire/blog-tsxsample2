@@ -64,6 +64,7 @@
     "remark-mermaid": "^0.2.0",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
+    "remark-unwrap-images": "^3.0.1",
     "unified": "^10.1.1"
   }
 }

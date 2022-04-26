@@ -6,6 +6,8 @@ tags:
   - next
 ---
 
+<a href="#user-content-fnref-1">うお</a>
+
 # 見出し
 ## 見出し2
 ### 見出し3
@@ -59,17 +61,6 @@ tags:
 
 ページ内リンク：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
 
-# 画像
-![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
-
-![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
-*C.C.はしっているか*
-
-[![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
-
-![mc-diamond](/images/mc-diamond.gif)
-<img src="/images/mc-diamond.gif" width="400"></img>
-<img src="/images/mc-diamond.gif" width="400" />
 
 # テーブル
 | Head | Head | Head |
@@ -283,3 +274,17 @@ sequenceDiagram
 
 # ツールチップ
 文章中で[うおうお]{gueee}というようにツールチップを付けられる。
+
+
+# 画像
+![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
+
+![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
+*C.C.はしっているか*
+
+[![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
+
+![mc-diamond](/images/mc-diamond.gif)
+[![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif)
+<p><img src="/images/mc-diamond.gif" width="400" height="400" alt="mc-diamond"></img></p>
+

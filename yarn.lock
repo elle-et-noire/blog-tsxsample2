@@ -13557,6 +13557,16 @@
     "mdast-util-to-markdown" "^1.0.0"
     "unified" "^10.0.0"
 
+"remark-unwrap-images@^3.0.1":
+  "integrity" "sha512-5VUY0n+J9lPTPfkct5S3/SbutryBjp8J/4mbgtlkDrOk3h8jde0hyqdYUJOoJKherZezS08tjd6i4+nnQ+wl5w=="
+  "resolved" "https://registry.npmjs.org/remark-unwrap-images/-/remark-unwrap-images-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "@types/mdast" "^3.0.0"
+    "hast-util-whitespace" "^2.0.0"
+    "unified" "^10.0.0"
+    "unist-util-visit" "^4.0.0"
+
 "remark@^14.0.2":
   "integrity" "sha512-A3ARm2V4BgiRXaUo5K0dRvJ1lbogrbXnhkJRmD0yw092/Yl0kOCZt1k9ZeElEwkZsWGsMumz6qL5MfNJH9nOBA=="
   "resolved" "https://registry.npmjs.org/remark/-/remark-14.0.2.tgz"
