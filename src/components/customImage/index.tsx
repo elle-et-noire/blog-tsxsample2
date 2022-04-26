@@ -14,7 +14,6 @@ const CustomImage = ({
   width?: string;
   height?: string;
   }): JSX.Element => {
-  console.log(src);
   const match = src.match(/#(\d*)_(\d*)/);
   if (match != null) {
     width ||= match[1];

@@ -41,6 +41,13 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
 
     if (substr(i, 3) == "```") {
       quotemode = !quotemode;
+      mdblock += "```";
+      i += 2;
+      continue;
+    } else if (substr(i, 1) == "`") {
+      quotemode = !quotemode;
+      mdblock += "`";
+      continue;
     }
 
     if (quotemode) {

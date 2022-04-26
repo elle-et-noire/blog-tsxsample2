@@ -6,8 +6,6 @@ tags:
   - next
 ---
 
-<a href="#user-content-fnref-1">うお</a>
-
 # 見出し
 ## 見出し2
 ### 見出し3
@@ -60,6 +58,8 @@ tags:
 [Markdown文法まとめ](https://qiita.com/higuma/items/3344387e0f2cce7f2cfe "よくまとまっている")
 
 ページ内リンク：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
+
+ページ内リンク：<a href="/2022/02/embrace-me/">「みんな抱きしめて、銀河の果てまで！」は何がすごいのか</a>
 
 
 # テーブル
@@ -137,6 +137,19 @@ e^x-e^{-x}
 &=2i\sin x.
 \end{align*}
 ```
+
+```latex
+Campbell-Baker-Hausdorff の公式は，演算子 $\hat{A},\hat{B}$ を用いて次のように書ける：
+\begin{equation}
+e^{\hat{A}}\hat{B}e^{-\hat{A}}
+=\hat{B}+[\hat{A},\hat{B}]+\frac{1}{2}[\hat{A},[\hat{A},\hat{B}]]+\cdots.
+\label{eq1}
+\end{equation}
+
+式\eqref{eq1}を用いて，演算子 $\hat{V}$ の相互作用表示は次のように書くことができる．
+```
+
+`$abc$`, `\eqref{eq:a}`
 
 
 # 数式
