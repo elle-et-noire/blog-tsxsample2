@@ -6,4 +6,8 @@ module.exports = {
   },
   reactStrictMode: true,
   trailingSlash: true,
+  images: {
+    loader: 'imgix',
+    path: 'https://elle-et-noire.github.io/lumieres-legeres/',
+  },
 };

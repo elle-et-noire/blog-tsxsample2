@@ -62,14 +62,13 @@ tags:
 # 画像
 ![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
 
-![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small =250x)
-
 ![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
 *C.C.はしっているか*
 
 [![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
 
 ![mc-diamond](/images/mc-diamond.gif)
+<img src="/images/mc-diamond.gif" width="400"/>
 
 # テーブル
 | Head | Head | Head |
