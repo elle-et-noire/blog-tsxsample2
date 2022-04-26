@@ -8,6 +8,6 @@ module.exports = {
   trailingSlash: true,
   images: {
     loader: 'imgix',
-    path: 'https://elle-et-noire.github.io/lumieres-legeres/',
+    path: 'https://elle-et-noire.github.io/lumieres-legeres',
   },
 };

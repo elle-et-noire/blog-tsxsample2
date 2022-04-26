@@ -68,7 +68,8 @@ tags:
 [![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
 
 ![mc-diamond](/images/mc-diamond.gif)
-<img src="/images/mc-diamond.gif" width="400"/>
+<img src="/images/mc-diamond.gif" width="400"></img>
+<img src="/images/mc-diamond.gif" width="400" />
 
 # テーブル
 | Head | Head | Head |
