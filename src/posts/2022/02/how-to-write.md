@@ -57,6 +57,8 @@ tags:
 
 [Markdown文法まとめ](https://qiita.com/higuma/items/3344387e0f2cce7f2cfe "よくまとまっている")
 
+ページ内リンク：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
+
 # 画像
 ![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
 
@@ -66,6 +68,8 @@ tags:
 *C.C.はしっているか*
 
 [![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
+
+![mc-diamond](/images/mc-diamond.gif)
 
 # テーブル
 | Head | Head | Head |
@@ -128,6 +132,21 @@ int main() {
 ```
    return shell_exec("echo input | markdown_script");
 ```
+
+```latex
+\begin{align*}
+e^x-e^{-x}
+&=\qty(\cancel{1}+x
+		+\bcancel{\frac{x^2}{2}}+\frac{x^3}{3!}
+		+\xcancel{\frac{x^4}{4!}}+\cdots)
+	-\qty(\cancel{1}-x
+			+\bcancel{\frac{x^2}{2}}-\frac{x^3}{3!}
+			+\xcancel{\frac{x^4}{4!}}+\cdots)\\
+&=2\qty(x+\frac{x^3}{3!}+\cdots)\\
+&=2i\sin x.
+\end{align*}
+```
+
 
 # 数式
 $$

@@ -9,6 +9,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
+  let quotemode = false;
   const opendisplaymath = "";
   const closedisplaymath = "";
   const spacer = "\\hspace{0.2em}";
@@ -36,6 +37,15 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     const substr = (pos: number, n: number) => pos > 0 ? (pos < text.length ? pos + n - 1 < text.length ? text.substring(pos, pos + n) : text[pos] : text[text.length - 1]) : text[0]
     const isinmathopener = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\("
     const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
+
+    if (substr(i, 3) == "```") {
+      quotemode = !quotemode;
+    }
+
+    if (quotemode) {
+      mdblock += substr(i, 1);
+      continue;
+    }
 
     // 文中数式開閉
     if (isinmathopener(substr(i, 2)) || isinmathcloser(substr(i, 2))) {
