@@ -18,7 +18,7 @@ export default function View() {
       <p>
         また、このウェブサイトはオープンソースなプロジェクトです。詳細については{" "}
         <LinkExternal
-          href={`https://github.com/${APP_NAME}`}
+          href={`https://github.com/elle-et-noire/lumieres-legeres`}
           className="inline-flex items-center"
         >
           GitHub: {APP_NAME}

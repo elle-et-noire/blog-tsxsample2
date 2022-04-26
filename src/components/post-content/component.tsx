@@ -58,7 +58,7 @@ export const Component: React.VFC<_Props> = (props) => {
   });
 
   const MDXComponents: any = {
-    // a: CustomLink
+    a: CustomLink
   };
 
   return (
