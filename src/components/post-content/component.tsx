@@ -4,6 +4,7 @@ import { MathJaxBaseContext, MathJax3Object, MathJax } from "better-react-mathja
 import { MDXRemote } from 'next-mdx-remote'
 import mermaid from 'mermaid'
 import CustomLink from "../customLink";
+import CustomImage from "../customImage";
 
 const isMathJax3Object = (mjObject: any): mjObject is MathJax3Object => {
   return !!(mjObject as MathJax3Object)?.startup
@@ -58,7 +59,8 @@ export const Component: React.VFC<_Props> = (props) => {
   });
 
   const MDXComponents: any = {
-    a: CustomLink
+    a: CustomLink,
+    img: CustomImage
   };
 
   return (

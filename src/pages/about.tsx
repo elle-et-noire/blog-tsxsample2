@@ -21,7 +21,7 @@ export default function View() {
           href={`https://github.com/elle-et-noire/lumieres-legeres`}
           className="inline-flex items-center"
         >
-          GitHub: {APP_NAME}
+          GitHub: elle-et-noire/lumieres-legeres
           <IconExternalLink className="ml-0.5 h-4 w-4" />
         </LinkExternal>{" "}
         をご覧ください。
