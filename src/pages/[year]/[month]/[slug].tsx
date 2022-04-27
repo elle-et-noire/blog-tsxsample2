@@ -7,7 +7,6 @@ import { Page } from "~/layouts/page";
 import type { Post } from "~/types/post";
 import { getPosts, getPostByPath } from "~/utils/api";
 import { markdownToHtml } from "~/utils/convert";
-// import { APP_DESCRIPTION } from "~/constants/app";
 
 type Props = {
   post: Post;
@@ -71,7 +70,7 @@ export default function View(props: Props) {
         <meta name="twitter:site" content="@L48610" />
         <link rel="shortcut icon"
           // href="https://user-images.githubusercontent.com/51241098/139574778-08c0d89e-b88e-4faa-baf5-4ee2af007b81.png"
-          href="/images/L.png"
+          href={`${process.env.SITE_URL}/images/L.png`}
           type="image/png" />
       </Head>
       <article>
