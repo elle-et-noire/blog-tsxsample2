@@ -50,18 +50,18 @@ tags:
 # 番号付きリスト
 1. First
 1. Second
-  1. うお
+   1. うお
 
 # リンク
 [ZennのMarkdown記法一覧](https://zenn.dev/zenn/articles/markdown-guide)
 
 [Markdown文法まとめ](https://qiita.com/higuma/items/3344387e0f2cce7f2cfe "よくまとまっている")
 
-ページ内リンク：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
-
-ページ内リンク：<a href="/2022/02/embrace-me/">「みんな抱きしめて、銀河の果てまで！」は何がすごいのか</a>
-
-ページ内リンク：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element/)
+Markdown記法：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
+aタグ：<a href="/2022/02/embrace-me/">「みんな抱きしめて、銀河の果てまで！」は何がすごいのか</a>
+Markdown記法：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element)
+`#a`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#a)
+`#blank`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#blank)
 
 
 # テーブル
@@ -84,7 +84,7 @@ tags:
 
 This is a normal paragraph:
 
-    This is a code block.
+    This is not a code block.
 
 ```js:fooBar.js
 const great = () => {
@@ -178,7 +178,7 @@ $$
 \end{align}
 \eqref{eq:uooo}を見ればわかるように、ウィンドウ中の式番号をマウスオーバーしても新たなウィンドウは現れない。
 
-インライン：$a=0$のように書ける。
+インラインでも$a=0$のように書ける。
 * うおお。$a=0$。
 * うおおお$a=0$。
 
@@ -300,6 +300,6 @@ sequenceDiagram
 [![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
 
 ![mc-diamond](/images/mc-diamond.gif)
-[![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif)
+[![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif#blank)
 <p><img src="/images/mc-diamond.gif" width="400" height="400" alt="mc-diamond"></img></p>
 

@@ -10,7 +10,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   let mathdepth = 0; // 数式の中の数式の深さ（\text{}中の$はclosemdblockしてはいけないので文中数式中でも必要）
   let endsymbol = false; // \end{hoge} の中
   let mathmode = false; // mathdepth > 0 でも \text{} の中なら false
-  let quotemode = false;
   const opendisplaymath = "";
   const closedisplaymath = "";
   const spacer = "\\hspace{0.2em}";
@@ -21,6 +20,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   let inmathcounter = 0;
   let dispmathcounter = 0;
   let textcounter = 0;
+  let quotecounter = 0;
   let aloneref = false;
   // 参照される式ラベルを調べておく。matchAll を使わせろ！
   text.match(/\\(eq)?ref\{([^}]+)\}/g)?.forEach(label => {
@@ -40,18 +40,30 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
 
     if (substr(i, 3) == "```") {
-      quotemode = !quotemode;
-      mdblock += "```";
-      i += 2;
-      continue;
-    } else if (substr(i, 1) == "`") {
-      quotemode = !quotemode;
-      mdblock += "`";
+      const j = text.indexOf("```", i + 1);
+      if (j > i) {
+        closemdblock("text" + textcounter++);
+        mdblocks["quote" + quotecounter++] = text.substring(i, j + 3);
+        i = j + 2;
+      }
       continue;
     }
-
-    if (quotemode) {
-      mdblock += substr(i, 1);
+    if (substr(i, 2) == "``") {
+      const j = text.indexOf("``", i + 1);
+      if (j > i) {
+        closemdblock("text" + textcounter++);
+        mdblocks["quote" + quotecounter++] = text.substring(i, j + 2);
+        i = j + 1;
+      }
+      continue;
+    }
+    if (substr(i, 1) == "`") {
+      const j = text.indexOf("`", i + 1);
+      if (j > i) {
+        closemdblock("text" + textcounter++);
+        mdblocks["quote" + quotecounter++] = text.substring(i, j + 1);
+        i = j;
+      }
       continue;
     }
 
@@ -183,7 +195,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     if (mode.substring(0, 4) == "text") {
       decoratedText += block;
     }
-    if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath") {
+    if (mode.substring(0, 6) == "inmath" || mode.substring(0, 8) == "dispmath" || mode.substring(0,5) == "quote") {
       decoratedText += `<${mode}/>`;
     }
   });
@@ -191,6 +203,19 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   let footnotes = "\n";
   let footnum = 0;
   decoratedText = decoratedText.replace(/<br>/g, "<br/>")
+    .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
+    .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
+      footnotes += `\n[^${++footnum}]: ${p1}\n`;
+      return `<span className='has-tooltip relative items-center no-underline'><span className='inline-block tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
+    });
+  decoratedText += footnotes;
+  decoratedText = decoratedText.replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1") // 数式と文章の間の改行による隙間を消す
+    .replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
+      if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
+      if (mode.substring(0, 8) == "dispmath") return "<div className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</div>";
+      return "";
+    })
+    .replace(/<(quote\d+)\/>/g, (_, mode: string) => mdblocks[mode])
     .replace(/```mermaid([^`]+)```/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$1`}</div>\n")
     // .replace(/```([^`\n]+)/g, (_, p1: string): string => {
     //   const titles = p1.split(':');
@@ -199,18 +224,6 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     .replace(/```(.+)/g, (_, p1: string): string => {
       const titles = p1.split(':');
       return '```' + titles[0] + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
-    })
-    .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
-    .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
-      footnotes += `\n[^${++footnum}]: ${p1}\n`;
-      return `<span className='has-tooltip relative items-center no-underline'><span className='inline-block tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
-    });
-  decoratedText += footnotes;
-  decoratedText = decoratedText.replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1")
-    .replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
-      if (mode.substring(0, 6) == "inmath") return "<span>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</span>";
-      if (mode.substring(0, 8) == "dispmath") return "<div className='scrollable'>{`" + mdblocks[mode].replace(/\\/g, "\\\\") + "`}</div>";
-      return "";
     });
 
   const mdxSource = await serialize(decoratedText, {
