@@ -70,7 +70,8 @@ export default function View(props: Props) {
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@L48610" />
         <link rel="shortcut icon"
-          href="https://user-images.githubusercontent.com/51241098/139574778-08c0d89e-b88e-4faa-baf5-4ee2af007b81.png"
+          // href="https://user-images.githubusercontent.com/51241098/139574778-08c0d89e-b88e-4faa-baf5-4ee2af007b81.png"
+          href="/images/L.png"
           type="image/png" />
       </Head>
       <article>
