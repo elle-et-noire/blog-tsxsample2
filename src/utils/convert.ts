@@ -38,34 +38,22 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     const substr = (pos: number, n: number) => pos > 0 ? (pos < text.length ? pos + n - 1 < text.length ? text.substring(pos, pos + n) : text[pos] : text[text.length - 1]) : text[0]
     const isinmathopener = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\("
     const isinmathcloser = (str: string) => (str[0] == "$" && str[1] != "$") || str.substring(0, 2) == "\\)"
+    const quotePunc = (n: number): boolean => {
+      if (substr(i, n) != "`".repeat(n))
+        return false;
+      const j = text.indexOf("`".repeat(n), i + 1);
+      if (j > i) {
+        closemdblock("text" + textcounter++);
+        mdblocks["quote" + quotecounter++] = text.substring(i, j + n);
+        i = j + n - 1;
+      }
+      return true;
+    };
 
-    if (substr(i, 3) == "```") {
-      const j = text.indexOf("```", i + 1);
-      if (j > i) {
-        closemdblock("text" + textcounter++);
-        mdblocks["quote" + quotecounter++] = text.substring(i, j + 3);
-        i = j + 2;
-      }
-      continue;
-    }
-    if (substr(i, 2) == "``") {
-      const j = text.indexOf("``", i + 1);
-      if (j > i) {
-        closemdblock("text" + textcounter++);
-        mdblocks["quote" + quotecounter++] = text.substring(i, j + 2);
-        i = j + 1;
-      }
-      continue;
-    }
-    if (substr(i, 1) == "`") {
-      const j = text.indexOf("`", i + 1);
-      if (j > i) {
-        closemdblock("text" + textcounter++);
-        mdblocks["quote" + quotecounter++] = text.substring(i, j + 1);
-        i = j;
-      }
-      continue;
-    }
+    // 大は小を兼ねてしまうので降順
+    if (quotePunc(3)) continue;
+    if (quotePunc(2)) continue;
+    if (quotePunc(1)) continue;
 
     // 文中数式開閉
     if (isinmathopener(substr(i, 2)) || isinmathcloser(substr(i, 2))) {
