@@ -12,85 +12,88 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   const rsmashers = ["。", "、", "）", "，", "．", " ", "　", "-", "：", ""];
   const lsmashers = ["（", "-", ""];
   const mathblocks: string[] = [];
-  const labelsinuse = new Set<string>();
-  let inmathcounter = 0;
-  let dispmathcounter = 0;
-  let quotecounter = 0;
-  // 参照される式ラベルを調べておく。
-  text.replace(/\\(?:eq)?ref\{([^}]*)\}/g, (_, p1: string) => {
-    labelsinuse.add(p1);
-    return "";
-  });
+  const validlabels = new Set<string>();
+  let ord = 0;
 
   const evacuees: { [label: string]: string } = {};
-  const opener = (ln: string) => rsmashers.includes(ln) ? "$" : "$" + spacer;
-  const closer = (rn: string) => lsmashers.includes(rn) ? "$" : spacer + "$";
-
-
+  const opener = (ln: string) => rsmashers.includes(ln) ? "\\(" : "\\(" + spacer;
+  const closer = (rn: string) => lsmashers.includes(rn) ? "\\)" : spacer + "\\)";
+  // $ で挟まれた文中数式
   let opnum = 0, clnum = 0;
   let nextop = true; // 次にくる $ の開 or 閉
-
+  // 脚注
   let footnotes = "\n";
   let footnum = 0;
 
-  const processible = text.replace(/```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => {
-    evacuees["quote" + quotecounter] = match;
-    return `<quote${quotecounter++}/>`;
-  }).replace(/\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{([^\}]*)\}[\s\S]*?\\end\{\1\}/g, (match: string) => {
-    let rear = -1;  // dispmath の直下では rear = -1
-    let added = false;
-    // ここでは nextop はマッチした $ の開 or 閉
-    evacuees["dispmath" + dispmathcounter] = match.replace(/(?<=\\\\|[^\\\$]|^)\$(?!\$)/g, (_, offset: number, string: string) => {
-      if(rear == -1) {
-        rear = offset;
-        nextop = true;
-        return opener(string.substring(offset - 1, offset));
-      }
-      if (opnum == clnum && nextop) {
-        rear = -1;
-        return closer(string.substring(offset + 1, offset + 2));
-      }
-      const between = string.substring(rear, offset);
-      const op = (between.match(/(?<!\\)\{/g) || []).length;
-      const cl = (between.match(/(?<!\\)\}/g) || []).length;
-      if (op == cl) nextop = !nextop;
-      else nextop = op > cl;
-      opnum += op;
-      clnum += cl;
+  let rear = -1;  // dispmath の直下では rear = -1
+  // /(?<=\\\\|[^\\\$]|^)\$(?!\$)/g と組み合わせる replacer。数式チャンク中で $ のスペーシングを行う
+  const dollarspacer = (_: string, offset: number, string: string) => {
+    if (rear == -1) {
       rear = offset;
-      return (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2)));
-    }).replace(/\\label\{([^}]*)\}/g, (ret: string, label: string, _, string: string) => {
-      if (!added && labelsinuse.has(label))
-        mathblocks.push(string.replace(/(?:\\tag\{[^}]+\})?\\label\{([^}]*)\}(?:\\tag\{[^}]+\})?/g, "\\tag*{\\eqref{$1}}"));
-      return ret;
-    });
-    opnum = clnum = 0;
-    nextop = true;
-    return `<dispmath${dispmathcounter++}/>`;
-  }).replace(/\\\(([\s\S]*?)\\\)/g, (match: string, p1: string, offset: number, string: string) => {
-    evacuees["inmath" + inmathcounter] = opener(string.substring(offset - 1, offset)) + p1 + closer(string.substring(offset + match.length, offset + match.length + 1));
-    return `<inmath${inmathcounter++}/>`;
-  }).concat(" $").replace(/(?<=\\\\|[^\\]|^)\$([\s\S]*?(?:\\\\|[^\\]))(?=\$)/g, (match: string, p1: string, offset: number, string: string) => {
-    if (opnum == clnum) {
-      if (!nextop) {
-        evacuees[`inmath${inmathcounter++}`] += closer(string.substring(offset + 1, offset + 2));
-        nextop = true;
-        return p1;
-      } else
-        evacuees[`inmath${inmathcounter}`] = "";
+      nextop = true;
+      return opener(string.substring(offset - 1, offset));
     }
-    const op = (match.match(/(?<!\\)\{/g) || []).length;
-    const cl = (match.match(/(?<!\\)\}/g) || []).length;
-    evacuees[`inmath${inmathcounter}`] += (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2))) + p1;
+    if (opnum == clnum && nextop) {
+      rear = -1;
+      return closer(string.substring(offset + 1, offset + 2));
+    }
+    const between = string.substring(rear, offset);
+    const op = (between.match(/(?<!\\)\{/g) || []).length;
+    const cl = (between.match(/(?<!\\)\}/g) || []).length;
     if (op == cl) nextop = !nextop;
     else nextop = op > cl;
     opnum += op;
     clnum += cl;
-    return (opnum > clnum ? "" : `<inmath${inmathcounter}/>`);
-  }).replace(/\s\$/, "").replace(/\\(eq)?ref\{[^}]*\}/g, (match: string) => {
-    evacuees[`inmath${inmathcounter}`] = match;
-    return `<inmath${inmathcounter++}/>`;
-  })
+    rear = offset;
+    return (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2)));
+  }
+
+  const processible = text.replace(/\\(?:eq)?ref\{([^}]*)\}/g, (match: string, p1: string) => { // 参照される式ラベルを調べておく。
+    validlabels.add(p1);
+    return match;
+  }).replace(/```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => { // pre > code
+    evacuees["quote" + ord] = match;
+    return `<quote${ord++}/>`;
+  }).replace(/\\\(/g, (_, offset: number, string: string) => opener(string.substring(offset - 1, offset)))
+    .replace(/\\\)/g, (_, offset: number, string: string) => closer(string.substring(offset + 2, offset + 3)))
+    .replace(/\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{([^\}]*)\}[\s\S]*?\\end\{\1\}/g, (math: string) => {
+      rear = -1;  // dispmath の直下では rear = -1
+      let added = false;
+      // ここでは nextop はマッチした $ の開 or 閉
+      evacuees["dispmath" + ord] = math.replace(/(?<=\\\\|[^\\\$]|^)\$(?!\$)/g, dollarspacer)
+        .replace(/\\label\{([^}]*)\}/g, (ret: string, label: string, _, string: string) => { // prev-window
+          if (!added && validlabels.has(label))
+            mathblocks.push(string.replace(/(?:\\tag\{[^}]+\})?\\label\{([^}]*)\}(?:\\tag\{[^}]+\})?/g, "\\tag*{\\eqref{$1}}"));
+          return ret;
+        });
+      opnum = clnum = 0;
+      nextop = true;
+      return `<dispmath${ord++}/>`;
+    }).replace(/\\\([\s\S]*?\\\)/g, (match: string) => { // \( \) のスペーシングは既に行われている
+      rear = -1;
+      evacuees["inmath" + ord] = match.replace(/(?<=\\\\|[^\\\$]|^)\$(?!\$)/g, dollarspacer);
+      return `<inmath${ord++}/>`;
+    }).concat(" $").replace(/(?<=\\\\|[^\\]|^)\$([\s\S]*?(?:\\\\|[^\\]))(?=\$)/g, (match: string, p1: string, offset: number, string: string) => {
+      if (opnum == clnum) {
+        if (!nextop) {
+          evacuees[`inmath${ord++}`] += closer(string.substring(offset + 1, offset + 2));
+          nextop = true;
+          return p1;
+        } else
+          evacuees[`inmath${ord}`] = "";
+      }
+      const op = (match.match(/(?<!\\)\{/g) || []).length;
+      const cl = (match.match(/(?<!\\)\}/g) || []).length;
+      evacuees[`inmath${ord}`] += (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2))) + p1;
+      if (op == cl) nextop = !nextop;
+      else nextop = op > cl;
+      opnum += op;
+      clnum += cl;
+      return (opnum > clnum ? "" : `<inmath${ord}/>`);
+    }).replace(/\s\$/, "").replace(/\\(eq)?ref\{[^}]*\}/g, (match: string) => {
+      evacuees[`inmath${ord}`] = match;
+      return `<inmath${ord++}/>`;
+    })
     .replace(/<br>/g, "<br/>")
     .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
