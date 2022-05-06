@@ -4,20 +4,19 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import gfm from 'remark-gfm'
 import remarkUnwrapImages from 'remark-unwrap-images'
 
-// TODO:\text{}以外にテキストモードになる命令なかったっけ？（\mathrm, \substack）
-// ↑ textモードの判定を中括弧だけで行うので解決
-
 export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]> => {
   const spacer = "\\hspace{0.2em}";
-  const rsmashers = ["。", "、", "）", "，", "．", " ", "　", "-", "：", ""];
-  const lsmashers = ["（", "-", ""];
+  const rsmashers = ["。", "、", "）", "，", "．", " ", "　", "-", "：", "", "(", "（"];
+  const lsmashers = ["（", "-", "", ")", "）"];
   const mathblocks: string[] = [];
   const validlabels = new Set<string>();
   let ord = 0;
 
   const evacuees: { [label: string]: string } = {};
-  const opener = (ln: string) => rsmashers.includes(ln) ? "\\(" : "\\(" + spacer;
-  const closer = (rn: string) => lsmashers.includes(rn) ? "\\)" : spacer + "\\)";
+  // offset は $ 基準
+  const opener = (string: string, offset: number) => rsmashers.includes(string.substring(offset - 1, offset)) ? "\\(" : "\\(" + spacer;
+  const closer = (string: string, offset: number) => lsmashers.includes(string.substring(offset + 1, offset + 2)) ? "\\)" : spacer + "\\)";
+
   // $ で挟まれた文中数式
   let opnum = 0, clnum = 0;
   let nextop = true; // 次にくる $ の開 or 閉
@@ -31,11 +30,11 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     if (rear == -1) {
       rear = offset;
       nextop = true;
-      return opener(string.substring(offset - 1, offset));
+      return opener(string, offset);
     }
     if (opnum == clnum && nextop) {
       rear = -1;
-      return closer(string.substring(offset + 1, offset + 2));
+      return closer(string, offset);
     }
     const between = string.substring(rear, offset);
     const op = (between.match(/(?<!\\)\{/g) || []).length;
@@ -45,7 +44,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     opnum += op;
     clnum += cl;
     rear = offset;
-    return (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2)));
+    return (nextop ? opener(string, offset) : closer(string, offset));
   }
 
   const processible = text.replace(/\\(?:eq)?ref\{([^}]*)\}/g, (match: string, p1: string) => { // 参照される式ラベルを調べておく。
@@ -54,8 +53,8 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   }).replace(/```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => { // pre > code
     evacuees["quote" + ord] = match;
     return `<quote${ord++}/>`;
-  }).replace(/\\\(/g, (_, offset: number, string: string) => opener(string.substring(offset - 1, offset)))
-    .replace(/\\\)/g, (_, offset: number, string: string) => closer(string.substring(offset + 2, offset + 3)))
+  }).replace(/\\\(/g, (_, offset: number, string: string) => opener(string, offset))
+    .replace(/\\\)/g, (_, offset: number, string: string) => closer(string, offset + 1))
     .replace(/\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{([^\}]*)\}[\s\S]*?\\end\{\1\}/g, (math: string) => {
       rear = -1;  // dispmath の直下では rear = -1
       let added = false;
@@ -76,7 +75,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     }).concat(" $").replace(/(?<=\\\\|[^\\]|^)\$([\s\S]*?(?:\\\\|[^\\]))(?=\$)/g, (match: string, p1: string, offset: number, string: string) => {
       if (opnum == clnum) {
         if (!nextop) {
-          evacuees[`inmath${ord++}`] += closer(string.substring(offset + 1, offset + 2));
+          evacuees[`inmath${ord++}`] += closer(string, offset);
           nextop = true;
           return p1;
         } else
@@ -84,7 +83,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       }
       const op = (match.match(/(?<!\\)\{/g) || []).length;
       const cl = (match.match(/(?<!\\)\}/g) || []).length;
-      evacuees[`inmath${ord}`] += (nextop ? opener(string.substring(offset - 1, offset)) : closer(string.substring(offset + 1, offset + 2))) + p1;
+      evacuees[`inmath${ord}`] += (nextop ? opener(string, offset) : closer(string, offset)) + p1;
       if (op == cl) nextop = !nextop;
       else nextop = op > cl;
       opnum += op;
@@ -121,17 +120,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       remarkPlugins: [
         gfm,
         [require('remark-prism'), {
-          plugins: [
-            // 'autolinker',
-            // 'command-line',
-            // 'data-uri-highlight',
-            'diff-highlight',
-            // 'inline-color',
-            // 'keep-markup',
-            // 'line-numbers',
-            // 'show-invisibles',
-            // 'treeview',
-          ]
+          plugins: ['diff-highlight']
         },
         remarkUnwrapImages]
       ],

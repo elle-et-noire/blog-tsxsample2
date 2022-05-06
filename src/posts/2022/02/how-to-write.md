@@ -113,7 +113,7 @@ int main() {
 ```
 
 
-```diff js:fooBar.js
+```diff-js:fooBar.js
 @@ -4,6 +4,5 @@
 +    const foo = bar.baz([1, 2, 3]) + 1;
 -    let foo = bar.baz([1, 2, 3]);
