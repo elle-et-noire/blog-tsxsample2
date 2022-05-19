@@ -23,7 +23,7 @@ type Params = {
 
 export const getStaticProps = async ({ params }: Params) => {
   const path = `${params.year}/${params.month}/${params.slug}.md`;
-  let post = getPostByPath(path);
+  const post = getPostByPath(path);
   if (!post.data.description) post.data.description = APP_DESCRIPTION;
   const [mdxSource, mathblocks] = await markdownToHtml(post.content || "");
 
