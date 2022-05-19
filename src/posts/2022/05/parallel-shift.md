@@ -61,10 +61,10 @@ $$
 
 　平行移動の条件\eqref{eq:parallel-cond-real}より
 \begin{align}
-\ee_3\cross \dd{\bm{v}}=0\iff \dd{\bm{w}}=\dd{\ee_3}\cross\bm{v}\stackrel{\cssId{parallel-iff}{(\ast)}}{\implies} \bm{v}\cdot \dd{\bm{w}}=0\stackrel{\bm{v}\cdot\bm{w}=0}{\iff} \bm{w}\cdot \dd{\bm{v}}=0\label{eq:parallel-cond-iff}
+\ee_3\cross \dd{\bm{v}}=0\iff \dd{\bm{w}}=\dd{\ee_3}\cross\bm{v}\stackrel{\cssId{parallel-iff}{(\ast)}}{\iff} \bm{v}\cdot \dd{\bm{w}}=0\stackrel{\bm{v}\cdot\bm{w}=0}{\iff} \bm{w}\cdot \dd{\bm{v}}=0\label{eq:parallel-cond-iff}
 % \ee_3\cross \dd{\bm{v}}\implies 0=\bm{w}\cross(\ee_3\cross \dd{\bm{v}})=(\bm{w}\cdot\dd{\bm{v}})\ee_3\iff \bm{w}\cdot \dd{\bm{v}}=0
 \end{align}
-という条件が得られる。一方で、$\href{#parallel-iff}{(\ast)}$は同値条件である。つまり、まず\eqref{eq:w-def}に左から$\bm{v}\cross$をかけて
+という同値条件が得られる。$\href{#parallel-iff}{(\ast)}$について、$\implies$はstraight-forwardだが、$\impliedby$は自明ではないので以下で説明する。まず\eqref{eq:w-def}に左から$\bm{v}\cross$をかけて
 \begin{align}
   \ee_3=\bm{v}\cross\bm{w}
 \end{align}
@@ -76,11 +76,7 @@ $$
 \begin{align}
   \bm{v}\cdot\dd{\bm{w}}=0\implies \bm{v}\cross\dd{\ee_3}&=0+\bm{v}\cross(\bm{v}\cross\dd{\bm{w}})=-\dd{\bm{w}}
 \end{align}
-となる。つまり、実は\eqref{eq:parallel-cond-iff}で
-\begin{align}
-  \dd{\ee_3}\cross\bm{v}\implies \bm{v}\cdot \dd{\bm{w}}=0
-\end{align}
-は同値条件だったのだ。
+となる。こうして、$\href{#parallel-iff}{(\ast)}$が同値条件であることが確かめられた。
 
 \eqref{eq:parallel-cond-iff}より平行移動の条件を
 \begin{align}

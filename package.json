@@ -47,24 +47,14 @@
     "remark-prism": "^1.3.6",
     "stylelint": "^14.3.0",
     "stylelint-config-standard": "^24.0.0",
-    "tailwind-scrollbar": "^1.3.1",
     "tailwindcss": "^3.0.16",
     "typescript": "^4.5.5"
   },
   "dependencies": {
     "better-react-mathjax": "^1.0.3",
     "mermaid": "^8.14.0",
-    "mermaid.cli": "^0.3.6",
     "next-mdx-remote": "^4.0.0",
-    "react-mermaid2": "^0.1.4",
     "rehype-external-links": "^1.0.1",
-    "rehype-format": "^4.0.1",
-    "rehype-stringify": "^9.0.2",
-    "remark-code-titles": "^0.1.2",
-    "remark-mermaid": "^0.2.0",
-    "remark-parse": "^10.0.1",
-    "remark-rehype": "^10.1.0",
-    "remark-unwrap-images": "^3.0.1",
-    "unified": "^10.1.1"
+    "remark-unwrap-images": "^3.0.1"
   }
 }

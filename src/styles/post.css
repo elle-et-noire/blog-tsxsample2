@@ -65,9 +65,9 @@
   @apply fixed translate-y-[-50%] translate-x-[-50%] top-[50%] left-[50%] text-center invisible opacity-0 hover:visible hover:opacity-100 ease-in-out duration-300 bg-black backdrop-filter backdrop-blur-sm bg-opacity-90 rounded-md shadow-[0_0_8px_0_rgba(0,0,0,0.5)] pr-[2em] w-11/12 md:w-[704px] overflow-x-auto round-scrollbar;
 }
 
-.post .window:hover ~ .window {
+/* .post .window:hover ~ .window {
   @apply hidden;
-}
+} */
 
 .post .scrollable {
   @apply overflow-x-auto round-scrollbar p-0 m-0 indent-0 whitespace-nowrap;
