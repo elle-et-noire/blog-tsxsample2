@@ -43,6 +43,6 @@ $A$を整域とし、$a\in A\setminus(A^\times \cup\zero)$とする。
 > (2)$A$がUFD$\iff {}^\forall a\in A\setminus(A^\times\cup\zero)$は①既約元の積に分解できる。②既約元の積への分解は同伴を除いて一意。
 > すなわち、①既約元$q_i$たちがあって$a=q_1\dots q_l$。②$a=q_1\dots q_l =q_1'\dots q_l' \implies l=l'$かつ番号を付け替えれば$u_i\in A^\times$があって$q_i'=q_i u_i$。
 
-**$\implies$**：①$A$がUFDであること、素元は既約元であることから言える。②既約元$q_i,q_i'$があって$a=q_1\dots q_l =q_1'\dots q'_{l'}$と分解できるとする。$A$がUFDなので$q_i,q'_i$は素元でもある。すると$(q_1)\ni q_1\dots q_l =q_1'\dots q'_{l'}$が言える。$(q_1)が素イデアルであることから（添字を付け替えて）${}^\exists q_1'\in(q_1)$が言える。すなわち${}^\exists u_1\in A, q_1'=q_1u_1$。また$q_1'$が既約元でかつ$q_1\notin A^\times$より$u_1\in A^\times$が分かる。$q_1\neq 0$かつ$A$が整域であることから$q_2\dots q_l=(u_1 q_2')\dots q'_{l'}$が言え、（$l=1$の場合は既約元の定義そのものなので）$l$についての帰納法から$l=l'$が言え、以降も添字を付け替えることによって${}^\exists u_i\in A^\times, q_i'=q_iu_i$が成り立つ。
+**$\implies$**：①$A$がUFDであること、素元は既約元であることから言える。②既約元$q_i,q_i'$があって$a=q_1\dots q_l =q_1'\dots q'_{l'}$と分解できるとする。$A$がUFDなので$q_i,q'_i$は素元でもある。すると$(q_1)\ni q_1\dots q_l =q_1'\dots q'_{l'}$が言える。$(q_1)$が素イデアルであることから（添字を付け替えて）${}^\exists q_1'\in(q_1)$が言える。すなわち${}^\exists u_1\in A, q_1'=q_1u_1$。また$q_1'$が既約元でかつ$q_1\notin A^\times$より$u_1\in A^\times$が分かる。$q_1\neq 0$かつ$A$が整域であることから$q_2\dots q_l=(u_1 q_2')\dots q'_{l'}$が言え、（$l=1$の場合は既約元の定義そのものなので）$l$についての帰納法から$l=l'$が言え、以降も添字を付け替えることによって${}^\exists u_i\in A^\times, q_i'=q_iu_i$が成り立つ。
 
-**$\impliedby$**：$a$を$Aの既約元とする。$a$が素元であると言いたい。${}^\exists b,c,y\in A, bc=ay$と書けるとする（つまり$bc\in(a)$）。①より既約元$q_i,q'_i,q''_i$があって$y=q''_1\dots q''_n, b=q_1\dots q_l, c=q_1'\dots q_m'$とそれぞれ分解できる（？$b,c$は単元でもありうるのでは）。
+**$\impliedby$**：$a$を$A$の既約元とする。$a$が素元であると言いたい。${}^\exists b,c,y\in A, bc=ay$と書けるとする（つまり$bc\in(a)$）。①より既約元$q_i,q'_i,q''_i$があって$y=q''_1\dots q''_n, b=q_1\dots q_l, c=q_1'\dots q_m'$とそれぞれ分解できる（？$b,c$は単元でもありうるのでは）。
