@@ -7,84 +7,102 @@ tags:
 ---
 
 # 見出し
+
+```
+# 見出し
 ## 見出し2
 ### 見出し3
 #### 見出し4
-
 見出し
 =
-
 見出し2
 ---
+```
+
 
 # リスト
+
+```markdown
+- Hello!
+- Hola!
+  - Bonjour!
+  * Hi!
+    - 3rd
+```
 
 - Hello!
 - Hola!
   - Bonjour!
   * Hi!
     - 3rd
-- Red
-+ Green
-+ Blue
 
-*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
-    viverra nec, fringilla in, laoreet vitae, risus.
-*   Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    Suspendisse id sem consectetuer libero luctus adipiscing.
-
-1.  This is a list item with two paragraphs. Lorem ipsum dolor
-    sit amet, consectetuer adipiscing elit. Aliquam hendrerit
-    mi posuere lectus.
-
-    Vestibulum enim wisi, viverra nec, fringilla in, laoreet
-    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
-    sit amet velit.
-
-2.  Suspendisse id sem consectetuer libero luctus adipiscing.
-
-
-1986\. What a great season. ← olキャンセル
-
-# 番号付きリスト
+## 番号付きリスト
+```markdown
 1. First
 1. Second
    1. うお
 
-# リンク
+1986\. What a great season. ← olキャンセル
+```
+1. First
+1. Second
+   1. うお
+
+1986\. What a great season. ← olキャンセル
+
+# テキストリンク
+```markdown
 [ZennのMarkdown記法一覧](https://zenn.dev/zenn/articles/markdown-guide)
-
 [Markdown文法まとめ](https://qiita.com/higuma/items/3344387e0f2cce7f2cfe "よくまとまっている")
-
 Markdown記法：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
-aタグ：<a href="/2022/02/embrace-me/">「みんな抱きしめて、銀河の果てまで！」は何がすごいのか</a>
-Markdown記法：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element)
+`#a`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#a)
+`#blank`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#blank)
+```
+
+[ZennのMarkdown記法一覧](https://zenn.dev/zenn/articles/markdown-guide)
+[Markdown文法まとめ](https://qiita.com/higuma/items/3344387e0f2cce7f2cfe "よくまとまっている")
+Markdown記法：[「みんな抱きしめて、銀河の果てまで！」は何がすごいのか](/2022/02/embrace-me/)
 `#a`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#a)
 `#blank`を指定：[ローレンツ不変な体積要素](/2022/01/lorentz-invar-element#blank)
 
 
+# 画像
+![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
+
+
+![C.C.はしっているか](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small#450_150)[Do you know, **C.C.**?$\int \dd{x}$]
+
+
+
+[![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
+
+![mc-diamond](/images/mc-diamond.gif)
+[![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif#blank)
+<p><img src="/images/mc-diamond.gif" width="400" height="400" alt="mc-diamond"></img></p>
+
+
 # テーブル
+```markdown
 | Head | Head | Head |
 | ---- | ---- | ---- |
 | Text | Text | Text |
 | Text | Text | Text |
 
+| Left align | Right align | Center align |
+|:-----------|------------:|:------------:|
+| Left       | Right       | Center       |
+```
+
+| Head | Head | Head |
+| ---- | ---- | ---- |
+| Text | Text | Text |
+| Text | Text | Text |
 
 | Left align | Right align | Center align |
 |:-----------|------------:|:------------:|
-| This       | This        | This         |
-| column     | column      | column       |
-| will       | will        | will         |
-| be         | be          | be           |
-| left       | right       | center       |
-| aligned    | aligned     | aligned      |
+| Left       | Right       | Center       |
 
 # コードブロック
-
-This is a normal paragraph:
-
-    This is not a code block.
 
 ```js:fooBar.js
 const great = () => {
@@ -92,17 +110,7 @@ const great = () => {
 };
 ```
 
-```cpp:main.cpp
-#include <iostream>
-using namespace std;
-
-int main() {
-  cout << "hello world" << endl;
-  return 0;
-}
-```
-
-```diff-javascript[class="diff-highlight"]
+```diff js
 @@ -4,6 +4,5 @@
 +  const foo = bar.baz([1, 2, 3]) + 1;
 -  let foo = bar.baz([1, 2, 3]);
@@ -113,7 +121,7 @@ int main() {
 ```
 
 
-```diff-js:fooBar.js
+```diff js:fooBar.js
 @@ -4,6 +4,5 @@
 +    const foo = bar.baz([1, 2, 3]) + 1;
 -    let foo = bar.baz([1, 2, 3]);
@@ -127,25 +135,9 @@ int main() {
 ```
 
 ```latex
-\begin{align*}
-e^x-e^{-x}
-&=\qty(\cancel{1}+x
-		+\bcancel{\frac{x^2}{2}}+\frac{x^3}{3!}
-		+\xcancel{\frac{x^4}{4!}}+\cdots)
-	-\qty(\cancel{1}-x
-			+\bcancel{\frac{x^2}{2}}-\frac{x^3}{3!}
-			+\xcancel{\frac{x^4}{4!}}+\cdots)\\
-&=2\qty(x+\frac{x^3}{3!}+\cdots)\\
-&=2i\sin x.
-\end{align*}
-```
-
-```latex
 Campbell-Baker-Hausdorff の公式は，演算子 $\hat{A},\hat{B}$ を用いて次のように書ける：
 \begin{equation}
-e^{\hat{A}}\hat{B}e^{-\hat{A}}
-=\hat{B}+[\hat{A},\hat{B}]+\frac{1}{2}[\hat{A},[\hat{A},\hat{B}]]+\cdots.
-\label{eq1}
+e^{\hat{A}}\hat{B}e^{-\hat{A}}=\hat{B}+[\hat{A},\hat{B}]+\frac{1}{2}[\hat{A},[\hat{A},\hat{B}]]+\cdots.\label{eq1}
 \end{equation}
 
 式\eqref{eq1}を用いて，演算子 $\hat{V}$ の相互作用表示は次のように書くことができる．
@@ -291,15 +283,4 @@ sequenceDiagram
 文章中で[うおうお]{gueee}というようにツールチップを付けられる。
 
 
-# 画像
-![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
-
-![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
-*C.C.はしっているか*
-
-[![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
-
-![mc-diamond](/images/mc-diamond.gif)
-[![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif#blank)
-<p><img src="/images/mc-diamond.gif" width="400" height="400" alt="mc-diamond"></img></p>
 

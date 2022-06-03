@@ -8,11 +8,11 @@ const CustomImage = ({
   height,
   ...props
 }: {
-  src: string;
-  alt?: string;
-  title?: string;
-  width?: string;
-  height?: string;
+    src: string;
+    alt?: string;
+    title?: string;
+    width?: string;
+    height?: string;
   }): JSX.Element => {
   const match = src.match(/#(\d*)_(\d*)/);
   if (match != null) {

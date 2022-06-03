@@ -53,7 +53,10 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   }).replace(/```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => { // pre > code
     evacuees["quote" + ord] = match;
     return `<quote${ord++}/>`;
-  }).replace(/\\\(/g, (_, offset: number, string: string) => opener(string, offset))
+  }).replace(/(!\[[\s\S]*?\]\([\s\S]*?\))\[([\s\S]*?)(?<!\\)\]/g, (_, p1: string, p2: string) => {
+    return `${p1}<p className="text-center mt-0">${p2}</p>`;
+  })
+    .replace(/\\\(/g, (_, offset: number, string: string) => opener(string, offset))
     .replace(/\\\)/g, (_, offset: number, string: string) => closer(string, offset + 1))
     .replace(/\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{([^\}]*)\}[\s\S]*?\\end\{\1\}/g, (math: string) => {
       rear = -1;  // dispmath の直下では rear = -1
@@ -112,7 +115,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     // })
     .replace(/```(.+)/g, (_, p1: string): string => {
       const titles = p1.split(':');
-      return '```' + titles[0] + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
+      return '```' + titles[0].replace(/diff\s/, "diff-") + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
     });
 
   const mdxSource = await serialize(processible, {

@@ -89,3 +89,7 @@ blockquote {
   @apply mx-auto;
 }
 
+.post .img-caption + .post p {
+  @apply text-center;
+}
+
