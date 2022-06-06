@@ -98,6 +98,17 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       return `<inmath${ord++}/>`;
     }).replace(/:::details\s(.*)\r?\n([\s\S]*?):::/g, (_, title: string, content: string) => {
       return `<details><summary>${title}</summary>${content.replace(/\r?\n/g, "<br/>")}</details>`;
+    }).replace(/:::(def|thm)\s(.*)\r?\n([\s\S]*?):::/g, (_, env: string, title: string, content: string) => {
+      return `<div className="box ${env}">
+      <div className="title-container">
+      <span className="box-title">${title}</span>
+      </div>
+      <div className="box-content">
+      ${content}
+      </div>
+      </div>`;
+    }).replace(/:::proof\s(.*)\r?\n([\s\S]*?):::/g, (_, title: string, content: string) => {
+      return `<details className="proof"><summary>**証明**${title}</summary><div>${content.replace(/\r?\n/g, "<br/>")}</div></details>`;
     }).replace(/<br>/g, "<br/>")
     .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {

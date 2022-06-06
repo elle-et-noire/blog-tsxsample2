@@ -295,44 +295,43 @@ $$
 
 # アコーディオン（トグル）
 
-<details><summary>うおうお</summary>Something small enough to escape casual notice.<br>
-\begin{align}
-  \int\dd{x}
-\end{align}
-</details>
-
+```markdown
 :::details sample
-$A$ の相異なる固有値を $\qty{a_i}_i$ とし、$a_i$ に対応する固有空間への射影演算子を $\mathcal{P}_i$ とする。同様に $B$ の相異なる固有値 $\qty{b_j}_j$ および対応する射影演算子 $\qty{\mathcal{Q}_j}_j$ も定める。すると
-\begin{align}
-  A&=\sum_i a_i\mathcal{P}_i,& \sum_i\mathcal{P}_i&=I,&\mathcal{P}_i\mathcal{P}_{i'}&=\delta_{ii'}\mathcal{P}_i\\
-  B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j'}&=\delta_{jj'}\mathcal{Q}_j
-\end{align}
-より
-\begin{align}
-  \mathcal{P}_i&=\dfrac{\prod_{l\neq i}(A-a_lI)}{\prod_{l\neq i}(a_i-a_l)}\\
-  \mathcal{Q}_j&=\dfrac{\prod_{m\neq j}(B-b_mI)}{\prod_{m\neq j}(b_j-b_m)}
-\end{align}
-と表せる。
+ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ
+:::
+
+:::proof （選択公理は認めない）
+うおうおうおうお
+ぐえぐえぐえぐえ
+:::
+```
+:::details sample
+ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ
+:::
+
+:::proof （選択公理は認めない）
+うおうおうおうお
+ぐえぐえぐえぐえ
 :::
 
 # 囲み
-<div className="def">
-<div className="title-container">
-<span className="box-title">要請I：平衡状態</span>
-</div>
-<div className="box-content">
+```markdown
+:::def 要請I:平衡状態
 1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
-</div>
-</div>
+:::
 
-<div className="thm">
-<div className="title-container">
-<span className="box-title">要請I：平衡状態</span>
-</div>
-<div className="box-content">
+:::thm 要請I:平衡状態
 1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
-</div>
-</div>
+:::
+```
+:::def 要請I:平衡状態
+1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
+:::
+
+:::thm 要請I:平衡状態
+1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
+:::
+
 
 # Mermaid
 

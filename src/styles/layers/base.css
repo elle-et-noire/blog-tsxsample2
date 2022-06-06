@@ -67,15 +67,21 @@
     @apply bg-emerald;
   }
   details {
-    @apply border border-solid rounded pt-2 px-2 pb-0 my-2 duration-100;
+    @apply relative rounded pt-2 px-2 pb-0 my-2 duration-100 ease-in-out;
+  }
+  details:before {
+    @apply border-l-2 border-l-cyan-500 border-t-2 border-t-cyan-500 border-b-2 border-b-cyan-500 border-dotted rounded-l content-[''] absolute left-0 top-0 w-4 box-border h-full;
+  }
+  details:after {
+    @apply border-r-2 border-r-cyan-500 border-t-2 border-t-cyan-500 border-b-2 border-b-cyan-500 border-dotted rounded-r content-[''] absolute right-0 top-0 w-4 box-border h-full;
   }
   summary {
-    @apply font-bold -mt-2 -mx-2 p-2 cursor-pointer;
+    @apply -mt-2 -mx-2 p-2 cursor-pointer;
   }
   details[open] {
     @apply p-2;
   }
   details[open] summary {
-    @apply border-solid border-b mb-2;
+    @apply mb-2;
   }
 }
