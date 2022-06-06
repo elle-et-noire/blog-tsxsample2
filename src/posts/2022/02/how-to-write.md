@@ -317,8 +317,21 @@ $A$ の相異なる固有値を $\qty{a_i}_i$ とし、$a_i$ に対応する固�
 
 # 囲み
 <div className="def">
-<span className="def-title">要請I：平衡状態</span>
+<div className="title-container">
+<span className="box-title">要請I：平衡状態</span>
+</div>
+<div className="box-content">
 1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
+</div>
+</div>
+
+<div className="thm">
+<div className="title-container">
+<span className="box-title">要請I：平衡状態</span>
+</div>
+<div className="box-content">
+1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
+</div>
 </div>
 
 # Mermaid

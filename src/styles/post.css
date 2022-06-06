@@ -86,8 +86,17 @@ blockquote {
 }
 
 .post .def {
-  @apply border;
+  @apply rounded bg-teal-800 px-4 py-2 my-6 shadow-[0_0_7px_7px] shadow-teal-800;
 }
-.post .def-title {
-  @apply border-b;
+.post .thm {
+  @apply rounded bg-cyan-800 px-4 py-2 my-6 shadow-[0_0_7px_7px] shadow-cyan-800;
+}
+.post .title-container {
+  @apply mb-4;
+}
+.post .box-title {
+  @apply border-b-argent border-double border-b-2 pb-1 text-lg;
+}
+.post .box-container {
+
 }
