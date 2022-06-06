@@ -3,6 +3,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import gfm from 'remark-gfm'
 import remarkUnwrapImages from 'remark-unwrap-images'
+import { stringify } from 'querystring'
 
 export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]> => {
   const spacer = "\\hspace{0.2em}";
@@ -50,13 +51,13 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
   const processible = text.replace(/\\(?:eq)?ref\{([^}]*)\}/g, (match: string, p1: string) => { // 参照される式ラベルを調べておく。
     validlabels.add(p1);
     return match;
-  }).replace(/```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => { // pre > code
+  }).replace(/````[\s\S]*?````|```[\s\S]*?```|``[\s\S]*?``|`[\s\S]*?`/g, (match: string) => { // pre > code
     evacuees["quote" + ord] = match;
     return `<quote${ord++}/>`;
-  }).replace(/(!\[[\s\S]*?\]\([\s\S]*?\))\[([\s\S]*?)(?<!\\)\]/g, (_, p1: string, p2: string) => {
+  }).replace(/<!--[\s\S]*?-->/g, (match: string) => `<p className="hidden">{\`${match}\`}</p>`)
+    .replace(/(!\[[\s\S]*?\]\([\s\S]*?\))\[([\s\S]*?)(?<!\\)\]/g, (_, p1: string, p2: string) => {
     return `${p1}<p className="text-center mt-0">${p2}</p>`;
-  })
-    .replace(/\\\(/g, (_, offset: number, string: string) => opener(string, offset))
+  }).replace(/\\\(/g, (_, offset: number, string: string) => opener(string, offset))
     .replace(/\\\)/g, (_, offset: number, string: string) => closer(string, offset + 1))
     .replace(/\\\[[\s\S]*?\\\]|\$\$[\s\S]*?\$\$|\\begin\{([^\}]*)\}[\s\S]*?\\end\{\1\}/g, (math: string) => {
       rear = -1;  // dispmath の直下では rear = -1
@@ -95,8 +96,9 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     }).replace(/\s\$/, "").replace(/\\(eq)?ref\{[^}]*\}/g, (match: string) => {
       evacuees[`inmath${ord}`] = match;
       return `<inmath${ord++}/>`;
-    })
-    .replace(/<br>/g, "<br/>")
+    }).replace(/:::details\s(.*)\r?\n([\s\S]*?):::/g, (_, title: string, content: string) => {
+      return `<details><summary>${title}</summary>${content.replace(/\r?\n/g, "<br/>")}</details>`;
+    }).replace(/<br>/g, "<br/>")
     .replace(/\[([^\]]+)\]\{([^}]+)\}/g, "<span className='has-tooltip relative items-center'><span className='inline-block tooltip balloon'>$2</span>$1</span>")
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
       footnotes += `\n[^${++footnum}]: ${p1}\n`;
@@ -107,16 +109,11 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       if (mode.substring(0, 8) == "dispmath") return "<div className='scrollable'>{`" + evacuees[mode].replace(/\\/g, "\\\\") + "`}</div>";
       return "";
     })
-    .replace(/<(quote\d+)\/>/g, (_, mode: string) => evacuees[mode])
-    .replace(/```mermaid([^`]+)```/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$1`}</div>\n")
-    // .replace(/```([^`\n]+)/g, (_, p1: string): string => {
-    //   const titles = p1.split(':');
-    //   return (titles.length > 1 ? `<div className='code-title'>{\`${titles[1]}\`}</div>\n\n` : '') + '```' + titles[0];
-    // })
-    .replace(/```(.+)/g, (_, p1: string): string => {
-      const titles = p1.split(':');
-      return '```' + titles[0].replace(/diff\s/, "diff-") + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
-    });
+    .replace(/<(quote\d+)\/>/g, (_, mode: string) => evacuees[mode].replace(/(^`{3,})([^`\r\n]+)/g, (__, p1: string, p2: string): string => {
+      const titles = p2.split(':');
+      return p1 + titles[0].replace(/diff\s/, "diff-") + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
+    }).replace(/^(`{3,})mermaid([^`]+)\1/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$2`}</div>\n")
+    );
 
   const mdxSource = await serialize(processible, {
     mdxOptions: {

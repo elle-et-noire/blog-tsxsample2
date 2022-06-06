@@ -21,9 +21,11 @@ const CustomLink = ({
       );
   }
   return (
-    <a {...props} href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
+    <Link href={href}>
+      <a {...props} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    </Link>
   );
 }
 

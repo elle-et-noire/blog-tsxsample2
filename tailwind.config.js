@@ -43,8 +43,9 @@ module.exports = {
         'darkgreen': '#145055',
         'water': '#51c4d3',
         // 'raspberry': '#ff44dd'
-        'raspberry': '#d42474'
+        'raspberry': '#d42474',
         // 'raspberry': '#ff0099'
+        'argent': '#c7bc9d',
       },
       animation: {
         'gradient-background': 'gradient-ackground 10s ease infinite',

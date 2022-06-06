@@ -67,19 +67,26 @@ Markdown記法：[「みんな抱きしめて、銀河の果てまで！」は�
 
 
 # 画像
+```markdown
+![altテキスト](https://画像のURL)
+![altテキスト](/images/画像のURL)
+```
 ![C.C.png](https://pbs.twimg.com/media/EXpim-pUcAASSlH?format=png&name=900x900 "Do you know, C.C.?")
+![mc-diamond](/images/mc-diamond.gif)
 
-
+## 画像の横幅を指定する、キャプションをつける
+```markdown
+![altテキスト](画像のURL#{width}_{height})[キャプション]
+```
 ![C.C.はしっているか](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small#450_150)[Do you know, **C.C.**?$\int \dd{x}$]
 
-
-
+## 画像にリンクを貼る
+```markdown
+[![altテキスト](画像のURL)](リンクのURL)
+```
 [![C.C. knows](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)](https://pbs.twimg.com/media/D6lyI11UwAARUXm?format=png&name=small)
 
-![mc-diamond](/images/mc-diamond.gif)
 [![mc-diamond](/images/mc-diamond.gif#350_350)](/images/mc-diamond.gif#blank)
-<p><img src="/images/mc-diamond.gif" width="400" height="400" alt="mc-diamond"></img></p>
-
 
 # テーブル
 ```markdown
@@ -104,11 +111,27 @@ Markdown記法：[「みんな抱きしめて、銀河の果てまで！」は�
 
 # コードブロック
 
+## ファイル名を表示する
+
+````markdown
+```js:ファイル名
+内容
+```
+````
+
 ```js:fooBar.js
 const great = () => {
   console.log("Awesome");
 };
 ```
+
+## diffのシンタックスハイライト
+
+````markdown
+```diff js:ファイル名
+内容
+```
+````
 
 ```diff js
 @@ -4,6 +4,5 @@
@@ -127,6 +150,8 @@ const great = () => {
 -    let foo = bar.baz([1, 2, 3]);
 ```
 
+## コードの言語を指定しないとなぜか文字化けする
+
 ```js
    return shell_exec("echo input | markdown_script");
 ```
@@ -143,7 +168,6 @@ e^{\hat{A}}\hat{B}e^{-\hat{A}}=\hat{B}+[\hat{A},\hat{B}]+\frac{1}{2}[\hat{A},[\h
 式\eqref{eq1}を用いて，演算子 $\hat{V}$ の相互作用表示は次のように書くことができる．
 ```
 
-`$abc$`, `\eqref{eq:a}`
 
 
 # 数式
@@ -188,15 +212,17 @@ $$
 ```
 
 # 引用
-うおお
+
 > 引用文
 >> 引用文
 
-うおお
+ネスト出来る。
 
 > More is different.
 >
 >    P. W. Anderson
+
+空行は無視されないが冒頭のスペースは無視される。
 
 > ## This is a header.
 >
@@ -211,26 +237,89 @@ $$
 
 # 注釈
 
-脚注の例^[脚注の内容その1。*うおおお*おおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおうおうおうおうおうおうおうお]です。インライン^[脚注の内容その2]で書くこともできます。脚注^[$\ds\int\dd{x}=x+C$]の中に数式も書けます。別行立て数式^[\begin{align}a\\b\end{align}]も書けます。うおお^[うおお$$\begin{aligned}a\\b\end{aligned}$$ぐえ]
+```markdown
+脚注の例^[脚注の内容その1。*うおおお*おおおお]です。
+別の書き方[^sink]です。
+[^sink]: 艱難辛苦に身躯をやつし 真紅の海にSINKしろ！
+```
 
-別の書き方[^sink]です
+脚注の例^[脚注の内容その1。*うおおお*おおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおおうおうおうおうおうおうおうお]です。インラインで書くことによってマウスオーバーしたときにプレビューが表示されます。脚注^[$\ds\int\dd{x}=x+C$]の中に数式も書けます。別行立て数式^[\begin{align}a\\b\end{align}]も書けます。うおお^[うおお$$\begin{aligned}a\\b\end{aligned}$$ぐえ]
+
+別の書き方[^sink]です。
 
 [^sink]: 艱難辛苦に身躯をやつし 真紅の海にSINKしろ！
 
 
 # 区切り線
 
+```markdown
+---
+```
+
 ---
 
 # インラインスタイル
+
+```markdown
 *イタリック*
 **太字**
 ~~打ち消し線~~
-インラインで`code`を挿入する。``files = `ls`.split``とか`` `ps` ``とか。Please don't use any `<blink>` tags.
+インラインで`code`を挿入する。``files = `ls`.split``とか`` `ps` ``とか。
+```
+*イタリック*
+**太字**
+~~打ち消し線~~
+インラインで`code`を挿入する。``files = `ls`.split``とか`` `ps` ``とか。
 
-## チェックボックス
+# インラインのコメント
+```markdown
+<!-- TODO: ◯◯について追記する -->
+```
+<!-- TODO: ◯◯について追記する -->
+
+# チェックボックス
+```markdown
 - [ ] タスク1
 - [x] タスク2
+```
+
+- [ ] タスク1
+- [x] タスク2
+
+
+# ツールチップ
+```markdown
+文章中で[うおうお]{gueee}というようにツールチップを付けられる。
+```
+文章中で[うおうお]{gueee}というようにツールチップを付けられる。
+
+# アコーディオン（トグル）
+
+<details><summary>うおうお</summary>Something small enough to escape casual notice.<br>
+\begin{align}
+  \int\dd{x}
+\end{align}
+</details>
+
+:::details sample
+$A$ の相異なる固有値を $\qty{a_i}_i$ とし、$a_i$ に対応する固有空間への射影演算子を $\mathcal{P}_i$ とする。同様に $B$ の相異なる固有値 $\qty{b_j}_j$ および対応する射影演算子 $\qty{\mathcal{Q}_j}_j$ も定める。すると
+\begin{align}
+  A&=\sum_i a_i\mathcal{P}_i,& \sum_i\mathcal{P}_i&=I,&\mathcal{P}_i\mathcal{P}_{i'}&=\delta_{ii'}\mathcal{P}_i\\
+  B&=\sum_j b_j\mathcal{Q}_j,& \sum_j\mathcal{Q}_j&=I,&\mathcal{Q}_j\mathcal{Q}_{j'}&=\delta_{jj'}\mathcal{Q}_j
+\end{align}
+より
+\begin{align}
+  \mathcal{P}_i&=\dfrac{\prod_{l\neq i}(A-a_lI)}{\prod_{l\neq i}(a_i-a_l)}\\
+  \mathcal{Q}_j&=\dfrac{\prod_{m\neq j}(B-b_mI)}{\prod_{m\neq j}(b_j-b_m)}
+\end{align}
+と表せる。
+:::
+
+# 囲み
+<div className="def">
+<span className="def-title">要請I：平衡状態</span>
+1. [**平衡状態への移行**] 系を孤立させて（静的な外場だけはあってもよい）十分長いが有限の時間放置すれば、マクロに見て時間変化しない特別な状態へと移行する。このときの系の状態を平衡状態と呼ぶ。
+</div>
 
 # Mermaid
 
@@ -278,9 +367,4 @@ sequenceDiagram
     deactivate bss
     Note over bss: physboot へジャンプ
 ```
-
-# ツールチップ
-文章中で[うおうお]{gueee}というようにツールチップを付けられる。
-
-
 

@@ -4,7 +4,7 @@ import { MathJax } from "better-react-mathjax";
 
 export const Component: React.VFC<_Props> = (props) => (
   <header className="mb-8">
-    <h1 className="mb-10">
+    <h1 className="mb-10 border-none">
       <MathJax hideUntilTypeset="first">
         {props.title}
       </MathJax>
