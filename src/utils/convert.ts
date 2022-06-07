@@ -3,7 +3,6 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import gfm from 'remark-gfm'
 import remarkUnwrapImages from 'remark-unwrap-images'
-import { stringify } from 'querystring'
 
 export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeResult, string[]]> => {
   const spacer = "\\hspace{0.2em}";
@@ -100,13 +99,13 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       return `<details><summary>${title}</summary>${content.replace(/\r?\n/g, "<br/>")}</details>`;
     }).replace(/:::(def|thm)\s(.*)\r?\n([\s\S]*?):::/g, (_, env: string, title: string, content: string) => {
       return `<div className="box ${env}">
-      <div className="title-container">
-      <span className="box-title">${title}</span>
-      </div>
-      <div className="box-content">
-      ${content}
-      </div>
-      </div>`;
+<div className="title-container">
+<span className="box-title">${title}</span>
+</div>
+<div className="box-content">
+${content}
+</div>
+</div>`;
     }).replace(/:::proof\s(.*)\r?\n([\s\S]*?):::/g, (_, title: string, content: string) => {
       return `<details className="proof"><summary>**証明**${title}</summary><div>${content.replace(/\r?\n/g, "<br/>")}</div></details>`;
     }).replace(/<br>/g, "<br/>")
@@ -114,7 +113,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
     .replace(/\^\[([^\]]+)\]/g, (_, p1: string): string => {
       footnotes += `\n[^${++footnum}]: ${p1}\n`;
       return `<span className='has-tooltip relative items-center no-underline'><span className='inline-block tooltip balloon'>${p1}</span>[^${footnum}]</span>`;
-    }).concat(footnotes).replace(/(<(?:inmath|dispmath)\d+\/>)\r?\n/g, "$1") // 数式と文章の間の改行による隙間を消す
+    }).concat(footnotes).replace(/(<(?:inmath|dispmath)\d+\/>)(\r?\n|<br\/>)/g, "$1") // 数式と文章の間の改行による隙間を消す
     .replace(/<((?:inmath|dispmath)\d+)\/>/g, (_, mode: string): string => {
       if (mode.substring(0, 6) == "inmath") return "<span>{`" + evacuees[mode].replace(/\\/g, "\\\\") + "`}</span>";
       if (mode.substring(0, 8) == "dispmath") return "<div className='scrollable'>{`" + evacuees[mode].replace(/\\/g, "\\\\") + "`}</div>";
@@ -124,7 +123,7 @@ export const markdownToHtml = async (text: string): Promise<[MDXRemoteSerializeR
       const titles = p2.split(':');
       return p1 + titles[0].replace(/diff\s/, "diff-") + (titles.length > 1 ? ("[data-file='" + titles[1] + "']") : '');
     }).replace(/^(`{3,})mermaid([^`]+)\1/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$2`}</div>\n")
-    );
+  );
 
   const mdxSource = await serialize(processible, {
     mdxOptions: {

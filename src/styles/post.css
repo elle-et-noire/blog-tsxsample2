@@ -4,7 +4,7 @@
   @apply my-5;
 }
 
-.post ul {
+.post ul:not(.contains-task-list) {
   @apply px-5 ml-3 list-outside list-disc;
 }
 
