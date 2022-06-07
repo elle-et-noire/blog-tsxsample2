@@ -86,19 +86,28 @@ blockquote {
 }
 
 .post .box {
-  @apply rounded px-4 py-2 my-6 shadow-[0_0_7px_7px];
-}
-.post .def {
-  @apply bg-teal-800 shadow-teal-800;
+  @apply rounded px-5 py-4 my-6 bg-black;
 }
 .post .thm {
-  @apply bg-cyan-800 shadow-cyan-800;
+  @apply pt-6;
 }
+/* .post .def {
+  @apply bg-black shadow-black shadow-[0_0_7px_7px];
+}
+.post .thm {
+  @apply bg-black;
+} */
 .post .title-container {
   @apply mb-4;
 }
 .post .box-title {
-  @apply border-b-argent border-double border-b-2 pb-1 text-lg;
+  @apply py-1 text-lg;
+}
+.post .def .box-title {
+  @apply border-double border-b-argent border-b-4;
+}
+.post .thm .box-title {
+  @apply border-dashed border-b-argent border-b-2 border-t-argent border-t-2;
 }
 .post .box-container {
 }
