@@ -4,7 +4,16 @@ date: '2022-06-05'
 tags:
   - phys
   - thermodynamics
+description: "清水熱力学1章のメモ。"
 ---
+
+<div className="hidden">$$
+\definecolor{bg}{rgb}{0, 0.168, 0.212}
+\newcommand{\lointerv}{[\kern -0.32em\raise 0.1ex{\scriptsize\bullet}\kern -0.37em\raise -0.32ex{\color{bg}\Large\cdot}}
+\newcommand{\rointerv}{\kern 0.15em]\kern -0.32em\raise 0.1ex{\scriptsize\bullet}\kern -0.37em\raise -0.31ex{\color{bg}\Large\cdot}\kern -0.07em}
+\DeclarePairedDelimiters{\IntervalOO}{\lointerv}{\rointerv}
+\newcommand{\ivo}[2]{\IntervalOO{#1, #2}}
+$$</div>
 
 - [x] この本では平衡系の熱力学を扱う。
 ## 1.1 ミクロ・マクロと陥りやすい幻想
@@ -27,6 +36,7 @@ tags:
 大きく分けて2つの流儀がある。
 1. 相加変数（またの名を示量変数。エネルギー、物質量 etc.）を基本変数とする。Gibbs が創始。よさげ。
 2. 一部の変数が狭義示強変数（示量変数の密度などを除いた示強変数。温度、圧力 etc.）になったもの。一次相転移がある場合不完全。相対論的重力の効果があってもだめらしい。
+
 ここでは1.の流儀を採用する。先入観を捨てよう。
 
 ## 1.4 用語や記号に関する注意
@@ -93,9 +103,9 @@ $Z(x,y)=W(\xi,\eta)$と記号を変えれば混乱が少ない。
 
 (i) 合成関数の微分法を適用して
 \begin{align}
-  \qty(\pdv{Z}{\xi})_\eta&=\qty{\pdv{Z}{x}}_y\qty{\pdv{x}{\xi}}_\eta+\qty{\pdv{Z}{y}}_x\qty{\pdv{y}{\xi}}_\eta
+  \qty(\pdv{Z}{\xi})_\eta&=\qty(\pdv{Z}{x})_y\qty(\pdv{x}{\xi})_\eta+\qty(\pdv{Z}{y})_x\qty(\pdv{y}{\xi})_\eta
 \end{align}
-と分かる。$\ds\qty{\pdv{Z}{\eta}}_\xi$は上の式の$\xi,\eta$を入れ替えただけ。
+と分かる。$\ds\qty(\pdv{Z}{\eta})_\xi$は上の式の$\xi,\eta$を入れ替えただけ。
 
 (ii) 納得しました。
 
@@ -111,7 +121,7 @@ $Z(x,y)=W(\xi,\eta)$と記号を変えれば混乱が少ない。
 
 (iv) $Z(x_1,\dots,x_n)=W(\xi_1,\dots,\xi_n)$と表せる（拘束条件とかがなければ自由度$n$は一致していないといけない気がする）とき
 \begin{align}
-  \qty{\pdv{Z}{\xi_1}}_{\xi_2,\dots,\xi_n}&=\sum_{i=1}^n\qty(\pdv{Z}{x_i})_{\qty{x_j}_j\setminus\qty{x_i}}\qty{\pdv{x_i}{\xi_1}}_{\xi_2,\dots,\xi_n}
+  \qty(\pdv{Z}{\xi_1})_{\xi_2,\dots,\xi_n}&=\sum_{i=1}^n\qty(\pdv{Z}{x_i})_{\qty{x_j}_j\setminus\qty{x_i}}\qty(\pdv{x_i}{\xi_1})_{\xi_2,\dots,\xi_n}
 \end{align}
 となる。
 :::
@@ -173,7 +183,7 @@ $U$が開集合であることから${}^\exists \ve>0,\,U(\bm{a},\ve)\subset U$�
   &=\sum_{i=1}^{m}\qty[f(\bm{a+h}(i))-f(\bm{a+h}(i+1))]\\
   &=\sum_{i=1}^mh_i{\pdv{f}{x_i}}(\bm{a}+\underbrace{\bm{a}+\theta_ih_i\mathbb{e}_i+\bm{h}(i+1)}_{\ds\eqqcolon\tilde{\bm{h}}(i)})
 \end{align}
-を満たす$\theta_1,\dots,\theta_m\in(0,1)$が存在することが言える。このとき
+を満たす$\theta_1,\dots,\theta_m\in\ivo{0}{1}$が存在することが言える。このとき
 \begin{align}
   &\dfrac{1}{\abs{\bm{h}}}\abs{f(\bm{a+h})-f(\bm{a})-\nabla f(\bm{a})\cdot \bm{h}}\\
   &=\dfrac{1}{\abs{\bm{h}}}\abs{\sum_{i=1}^mh_i\qty[{\pdv{f}{x_i}}(\bm{a+\tilde{h}}(i))-\pdv{f}{x_i}(\bm{a})]}\quad\mqty(\text{分子は内積の形をしているので}\\\text{Schwarzの不等式を使える})\\
@@ -204,7 +214,7 @@ $n=2$について示せば、あとは任意の置換が互換の積で書ける
   &=h(\partial_x f(a+\theta_xh,b+k)-\partial_xf(a+\theta_xh,b))\\
   &=hk\partial_y\partial_xf(a+\theta_xh,b+\theta_yk)
 \end{align}
-となる$\theta_x,\theta_y\in(0,1)$が存在することが平均値の定理から言える。$\partial_y\partial_xf$は$(a,b)$において連続なので
+となる$\theta_x,\theta_y\in\ivo{0}{1}$が存在することが平均値の定理から言える。$\partial_y\partial_xf$は$(a,b)$において連続なので
 \begin{align}
   \lim_{\substack{(h,k)\to 0\\hk\neq0}}\dfrac{\varDelta(h,k)}{hk}&=\partial_y\partial_xf(a,b)
 \end{align}
@@ -249,3 +259,9 @@ $f(x)$が$x=a$の近傍で$x-a$の収束する冪級数で展開できる$\stack
   \end{aligned}\right.
 \end{align}
 は$C^\infty$級だが解析的でない関数の例。
+
+# 参考文献
+
+1. 清水 明『熱力学の基礎 第2版 I 熱力学の基本構造』（2021、東京大学出版会）
+1. [ハミルトン系の非可積分性の証明（PDF）](https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/1827-01.pdf)
+1. 杉浦 光男『解析入門I』（1980、東京大学出版会）
