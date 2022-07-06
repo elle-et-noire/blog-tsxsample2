@@ -92,7 +92,7 @@ $\R$の開区間$I$で定義された実数値関数$f$と$a\in I$および$c\in
 $(x,y)\in\R^2$で定義された$Z=x^2\e^y$について、$\eta\coloneqq y-x$とする。
 $Z=x^2\e^{x+\eta}$に気を付けて
 \begin{align}
-  \qty(\pdv{Z}{x})_\eta&=(2x+1)\e^{x+\eta}=(2x+1)\e^y\\
+  \qty(\pdv{Z}{x})_\eta&=(2x+x^2)\e^{x+\eta}=x(x+2)\e^y\\
   \qty(\pdv{Z}{x})_y&=2x\e^y
 \end{align}
 違いますね。
