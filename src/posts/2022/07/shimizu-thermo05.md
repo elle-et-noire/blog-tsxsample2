@@ -141,6 +141,28 @@ $f$が補題1の条件をみたすことと$f$が$I$において上に凸であ�
 と変形でき、同値であることが分かる。
 :::
 
+:::thm 補題3
+実数値単調減少関数はその定義域で高々可算個の不連続点を持つ。
+:::
+:::proof
+一般に$\varphi\colon I\to \R$なる関数$\varphi$が単調減少とする。ここで
+\begin{align}
+  J_\varphi\coloneqq \qty{t\in I\mid \lim_{\ve\to +0}\varphi(t-\ve)>\lim_{\ve\to +0}\varphi(t+\ve)}
+\end{align}
+と定める。つまり$J_\varphi$は$\varphi$が不連続になる引数の集合である。また、各$t\in J_\varphi$について、有理数の稠密性より$\ds\lim_{\ve\to +0}\varphi(t-\ve)>q(t)>\lim_{\ve\to +0}\varphi(t+\ve)$を満たすように有理数$q(t)$を1つ取ることができ、そうなるように$q\colon J_\varphi\to \Q$を定める。$s<t$を満たす$s,t\in J_\varphi$を任意に取れば、$\varphi$の単調性より
+\begin{align}
+  \lim_{\ve\to +0}\varphi(s-\ve)>q(s)>\lim_{\ve\to +0}\varphi(s+\ve)>\lim_{\ve\to +0}\varphi(t-\ve)>q(t)>\lim_{\ve\to +0}\varphi(t+\ve)
+\end{align}
+より$q(s)\neq q(t)$となり、$q\colon J_\varphi\to \Q$が単射であることが言える。
+
+----
+
+そもそも$\ds\lim_{\ve\to +0}\varphi(s-\ve)$などが存在するのかという疑問について。任意の点列$\qty{x_n}_n$で$x_n<x_{n+1}<\dots<s$かつ$\ds\lim_{n\to\infty}x_n=s$なるものについて、$f(x_n)>f(s)$より$\qty{f(x_n)}_n$は下に有界な単調減少列なので収束することから$\ds\lim_{\ve\to +0}\varphi(s-\ve)$が存在すると言える（杉浦解析p.54にも書かれている。微妙に行間があるが、定理6.2の証明で$\abs{x_n-a}>\abs{x_{n+1}-a}$もっと言うと$\qty{x_n}_n$が単調列になるように取れるのがミソ）。
+
+----
+
+したがって$\varphi$の不連続点は高々可算個である。
+:::
 
 :::thm 数学の定理5.1
 区間$I$において上に凸な関数$f$について
@@ -151,45 +173,39 @@ $f$が補題1の条件をみたすことと$f$が$I$において上に凸であ�
 1. $I$の内点$a,b$について$a<b\implies \ds\lim_{\ve\to +0}f'(a+\ve)\ge \lim_{\ve\to +0}f'(b-\ve)$。
 :::
 :::proof
-1., 3., 4. $I$の内点$a$について、$x < a < y$なる$x,y\in I$を取ることができ、$f$が上に凸であることと補題2より、補題1の1.\eqref{eq:lem1_1}が成り立つ：
+$I$の内点$a$について、$x < a < y$なる$x,y\in I$を取ることができ、$f$が上に凸であることと補題2より、補題1の1.\eqref{eq:lem1_1}が成り立つ：
 \begin{align}
   \dfrac{f(a)-f(x)}{a-x}\ge \dfrac{f(y)-f(a)}{y-a}\label{eq:gue}.
 \end{align}
-補題1の2.\eqref{eq:lem1_2}は、中辺と右辺の大小から、$x\to a-0$と増やしてゆくと\eqref{eq:gue}の左辺が増加することを意味している。かつ右辺で上から抑えられているので、収束するすなわち左微分可能ということになる：
+補題1の2.\eqref{eq:lem1_2}は、中辺と右辺の大小から、$x\to a-0$と増やしてゆくと\eqref{eq:gue}の左辺が減少することを意味している。かつ右辺で上から抑えられているので収束、すなわち左微分可能ということになる：
 \begin{align}
-  D_x^-(a)\ge \dfrac{f(y)-f(a)}{y-a}.
+  D_x^-f(a)\ge \dfrac{f(y)-f(a)}{y-a}.
 \end{align}
-同様にして、補題1の2.\eqref{eq:lem1_2}の左辺と中辺の大小から$y\to a+0$と減らしてゆくと右辺が減少することが分かる。かつ下から抑えられているので収束して
+同様にして、補題1の2.\eqref{eq:lem1_2}の左辺と中辺の大小から$y\to a+0$と減らしてゆくと右辺が増加することが分かる。かつ下から抑えられているので収束して
 \begin{align}
-  D_x^-(a)\ge D_x^+(a)
+  D_x^-f(a)\ge D_x^+f(a)
 \end{align}
-が得られる。ところで
+が得られる。また左右それぞれで微分可能なので特に左右に連続、つまり$f$は$I$の内点$a$において連続である。
+
+また、$D_x^\pm(x)$はともに$x$についての減少関数であることは以下のように確かめられる。$x<a<b$について$\dfrac{f(a)-f(x)}{a-x}\ge \dfrac{f(b)-f(x)}{b-x}$が成り立っていることから、$x\to a-0$としたときにも$D_x^-f(a)\ge \dfrac{f(b)-f(a)}{b-a}$が成り立つ。かつ$\dfrac{f(b)-f(a)}{b-a}\ge D_x^-f(b)$なので$D_x^-f(a)\ge D_x^-f(b)$となる。$D_x^+f(x)$も同様。
+
+$\ve>0$を任意に取る。$D_x^-f(a)=\ds\lim_{x\to a-0}\dfrac{f(a)-f(x)}{a-x}$の定義より、$\delta_1$が存在して$\abs{a-x}<\delta_1\implies \ds\abs{\dfrac{f(a)-f(x)}{a-x}-D_x^-f(a)}<\dfrac{\ve}{2}$となる。また、$x<a$の範囲では$\dfrac{f(a)-f(x)}{a-x}$は連続な関数の商なので連続である。よって$\delta_2$が存在して$\abs{a-b}<\delta_2\implies\abs{\dfrac{f(b)-f(x)}{b-x}-\dfrac{f(a)-f(x)}{a-x}}<\dfrac{\ve}{2}$となる。このとき$\dfrac{f(b)-f(x)}{b-x}\ge D_x^-f(b)\ge D_x^-f(a)$となり、${}^\forall \ve>0,{}^\exists \delta_2>0,\abs{a-b}<\delta_2\implies \abs{D_x^-f(a)-D_x^-f(b)}<\ve$すなわち$\ds\lim_{b\to a-0}D_x^-f(b)=D_x^-f(a)$が示せた。
+
+また$D_x^-f(x)$が$x=a$において連続であるとする。このとき、任意の$\ve>0$について、$\delta>0$が存在して、$\ds\abs{a-b}<\delta\implies\abs{D_x^-f(a)-D_x(b)}<\ve$となる。特に$a<b<a+\delta$のとき$D_x^-f(a)\ge\dfrac{f(b)-f(a)}{b-a}\ge D_x^-f(b)$なので、$\ds\abs{a-b} < \delta\implies\abs{D_x^-f(a)-\dfrac{f(b)-f(a)}{b-a}} < \ve$が成り立つ。これは$D_x^-f(a)=D_x^+f(a)$を意味している。つまり$x=a$において$D_x^-f(x)$が連続なら微分可能で$D_x^-f(a)=f'(a) = D_x^+f(a)$が成り立つ。
+
+$D_x^-f(x)$は減少関数なので補題3より不連続点は高々可算個しかない。したがって、$I$から$D_x^-f(x)$の不連続点を除いた$I^\ast$は連続濃度を持ち、$I^\ast$で$D_x^-f(x)$は連続である。$I^\ast$上での極限を考えると$D_x^\pm f(x)=\ds\lim_{\substack{x\pm\ve\in I^\ast\\\ve\to +0}}D_x^\pm f(x\pm \ve)=\ds\lim_{\substack{x\pm\ve\in I^\ast\\\ve\to +0}}f'(x\pm\ve)$と表せる。
+
+ここまで左側微分について議論してきたが右側微分についても同様のことが言え、
 \begin{align}
-  D_x^-(a)&=\lim_{\ve\to +0}\lim_{\delta\to +0}\dfrac{f(a-\delta)-f(a-\delta-\ve)}{\ve}\\
-  &=\lim_{\delta\to +0}\lim_{\ve\to +0}\dfrac{f(a-\delta)-f(a-\delta-\ve)}{\ve}\label{eq:exchange}\\
-  &=\lim_{\delta\to +0}f'(a-\delta)
+  \lim_{\substack{a\pm\ve\in I^\ast\ve\to +0}}f'(a-\ve)\ge\lim_{\substack{a\pm\ve\in I^\ast\\\ve\to +0}}f'(a+\ve)
 \end{align}
-と変形できる。\eqref{eq:exchange}で極限を交換しているのは、$g(\ve,\delta)\coloneqq \dfrac{f(a-\delta)-f(a-\delta-\ve)}{\ve}$は（$a-\delta$において$f$が微分可能なら）$(0,0)$の近傍$U$が存在して$(\ve,\delta)\in U$において連続であり、$\delta,\ve$のそれぞれで極限をとった関数も存在することから交換可能であるため。右側微分についても同様のことが言え、
-\begin{align}
-  \lim_{\delta\to +0}f'(a-\delta)\ge\lim_{\delta\to +0}f'(a+\delta)
-\end{align}
-が言える。また左右微分可能なので特に左右に連続であり、つまり$f$は$I$の内点$a$において連続である。
-2\. 一般に$\varphi\colon I\to \R$なる関数$\varphi$が単調減少とする。ここで
-\begin{align}
-  J_\varphi\coloneqq \qty{t\in I\mid \lim_{\ve\to +0}\varphi(t-\ve)>\lim_{\ve\to +0}\varphi(t+\ve)}
-\end{align}
-と定める。つまり$J_\varphi$は$\varphi$が不連続になる引数の集合である。また、各$t\in J_\varphi$について、有理数の稠密性より$\lim_{\ve\to +0}\varphi(t-\ve)>q(t)>\lim_{\ve\to +0}\varphi(t+\ve)$を満たすように有理数$q(t)$を1つ取ることができ、そうなるように$q\colon J_\varphi\to \Q$を定める。$s<t$を満たす$s,t\in J_\varphi$を任意に取れば、$\varphi$の単調性より
-\begin{align}
-  \lim_{\ve\to +0}\varphi(s-\ve)>q(s)>\lim_{\ve\to +0}\varphi(s+\ve)>\lim_{\ve\to +0}\varphi(t-\ve)>q(t)>\lim_{\ve\to +0}\varphi(t+\ve)
-\end{align}
-より$q(s)\neq q(t)$となり、$q\colon J_\varphi\to \Q$が単射であることが言える。したがって$\varphi$の不連続点は高々可算個である。
-5\. \eqref{eq:lem1_2}を$a<x<b$に適用して
+が言える。
+5.についても、\eqref{eq:lem1_2}を$a<x<b$に適用して
 \begin{align}
   \dfrac{f(a)-f(x)}{a-x}\ge \dfrac{f(b)-f(a)}{b-a}\ge\dfrac{f(b)-f(x)}{b-x}
 \end{align}
 となり、$x\to a+0$および$x\to b-0$を考えれば示せる。
 :::
-可算個の点でしか微分が不連続でないにしても、たとえば任意の$x\in\Q$で不連続ならば、$\ds\lim_{\ve\to +0}f'(a-\ve)$を考えるときにどんな$a$と$a-\ve$の間にも有理数は存在するので、$f'$は連続とは言えず、\eqref{eq:exchange}の極限の交換が不安になる。
 \begin{align}
   a < b\implies f'(a-0)\ge f'(a+0)\ge f'(b-0)\ge f'(b+0)\label{eq:nya}
 \end{align}
