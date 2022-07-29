@@ -16,15 +16,17 @@ description: "形式的定義。"
 \def\defiff{\stackrel{\mathrm{def}}{\iff}}
 $$</div>
 
+ここでは双対の作用を$\ev{\bullet,\bullet}$のように書き（dual pairing）、前後の順番は区別しない（$V^{\ast\ast}\cong V$は標準的な同型であり、$V$と$V^\ast$のどちらが他方の双対であるかというのは些細な違いでしかない）。
+
 # テンソル積の定義
 
-ベクトル空間は体が係数、加群は環が係数。加群はよく知らない。
+ベクトル空間は体が係数（標数$0$でないこともある？）、加群は環が係数。加群はよく知らない。
 
-$V,W$を$\R$上有限次元ベクトル空間とする。$B\colon V\times W\to \R$が双線形形式とは、$B(v,w)$が$v$についても$w$についても線形であることである。「形式」とは実数値関数のことだろう。
-\[B_{V,W}\coloneqq \qty{B\mid B\colon V\times W\to R\text{で双線形形式であるもの}}\]
+$V,W$を$\R$上有限次元ベクトル空間とする。$B\colon V\times W\to \R$が双線形形式とは、$B(v,w)$が$v$についても$w$についても線形であることである。「形式」と書いて「実数値関数」と読むことが多いように思われる。
+\[B_{V,W}\coloneqq \qty{B\mid B\colon V\times W\to R\hspace{o.2em}\text{で双線形形式であるもの}}\]
 とすればその双対空間としてテンソル積空間
 \[V\otimes W\coloneqq (B_{V,W})^\ast\]
-を定めることができる。ここでは双対の作用を$\ev{\bullet,\bullet}$のように書き、前後の順番は区別しない（$V^{\ast\ast}\cong V$は標準的な同型であり、$V$と$V^\ast$のどちらが他方の双対であるかというのは些細な違いでしかない）。任意の$z\in V\otimes W$に対して$v\in V,w\in W$が存在して、任意の$B\in B_{V,W}$について（$\Im　B=\R$なので）$\ev{z,B}=B(v,w)$をみたす。この元を$z\eqqcolon v\otimes w$と書くことにする（したがって$z$のテンソル積への分解は一意ではなく$av\otimes(w/a)\ (a\in \R^\times)$の自由度がある）。双対空間もベクトル空間で、$\ev{c_1z_1+c_2z_2,B}=c_1\ev{z_1,B}+c_2\ev{z_2,B}$となるように和とスカラー倍が定まっている。このとき
+を定めることができる。任意の$z\in V\otimes W$に対して$v\in V,w\in W$が存在して、任意の$B\in B_{V,W}$について$\ev{z,B}=B(v,w)$をみたす（$z\colon B_{V,W}\to \R$は線形写像でなければならないが、これは$B_{V,W}$がベクトル空間であることから従う。したがって$B_{V,W}$の基底に対する$z$の作用を決めてあとは線形に拡張すれば$z$はすぐに構成できる）。この元を$z\eqqcolon v\otimes w$と書くことにする（したがって$z$のテンソル積への分解は一意ではなく$av\otimes(w/a)\ (a\in \R^\times)$の自由度がある）。双対空間もベクトル空間で、$\ev{c_1z_1+c_2z_2,B}=c_1\ev{z_1,B}+c_2\ev{z_2,B}$となるように和とスカラー倍が定まっている。このとき
 \begin{align*}
   \ev{(c_1v_1+c_2v_2)\otimes w,B}&=c_1B(v_1,w)+c_2B(v_2,w)\\
   &=c_1\ev{v_1\otimes w,B}+c_2\ev{v_2\otimes w,B}\\
@@ -36,12 +38,12 @@ $v_1,\dots,v_n,w_1,\dots,w_m$を$V,W$の基底とすると、基底における$
 
 # テンソル積の普遍性
 
-普遍性と言えば図式の可換性。圏論をやりましょう。$\R$上ベクトル空間$U$、双線形写像（形式ではない！）$B\colon V\times W\to U$について
+普遍性と言えば図式の可換性。圏論をやりましょう（自戒）。$\R$上ベクトル空間$U$、双線形写像（形式ではない！）$B\colon V\times W\to U$について
 
 \begin{xy}
 *[white]\xymatrix{V\times W \ar[r]^{\otimes} \ar[rd]_{B} & V\otimes W \ar[d]^{\beta} \\ & U}
 \end{xy}
-を可換にする$\beta\colon V\otimes W\to U$が存在する。以下説明。$B$を定めると
+を可換にする$\beta\colon V\otimes W\to U$が存在する。以下証明。$B$を定めると
 \begin{align*}
   {}^t\beta\colon U^\ast\to B_{V,W},\ \xi\mapsto \xi\circ B
 \end{align*}
@@ -49,9 +51,9 @@ $v_1,\dots,v_n,w_1,\dots,w_m$を$V,W$の基底とすると、基底における$
 \begin{align*}
   \beta\colon V\otimes W\to U,\ \phi\mapsto \phi\circ{}^t\beta
 \end{align*}
-も定まり（双対写像の存在は、基底についての行列で考えればただ線形変換の行列の転置を取るだけであることから分かる）、
+も定まり（双対写像の存在は、基底についての行列で考えればただ線形変換の行列の転置を取るだけであることから分かる）、任意の$\xi\in U^\ast$に対して
 \begin{align*}
-  \ev{\xi,\beta(v\otimes w)}=\ev{{}^t\beta(\xi),v\otimes w}=\xi\circ B(v,w)
+  \ev{\xi,\beta(v\otimes w)}=\ev{{}^t\beta(\xi),v\otimes w}=(\xi\circ B)(v,w)\equiv \ev{\xi,B(v,w)}
 \end{align*}
 となって$\beta(v\otimes w)=B(v,w)$が成り立つ。
 
@@ -84,3 +86,4 @@ $v_1,\dots,v_n,w_1,\dots,w_m$を$V,W$の基底とすると、基底における$
 # 参考文献
 
 1. 本間 泰史『スピン幾何学 ―スピノール場の数学―』（2016、森北出版株式会社）
+2. [交代テンソルと外積代数（PDF）](http://daisy.math.sci.ehime-u.ac.jp/users/tsuchiya/math/fem/exterior/section2.pdf)
