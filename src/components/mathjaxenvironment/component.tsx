@@ -45,7 +45,10 @@ export const Component: React.VFC<_Props> = (props) => {
         e: '{\\mathrm{e}}',
         ve: '{\\varepsilon}',
         slashed: ['{{#1\\!\\!\\!/}}', 1],
-        underscore: '_'
+        defiff: '{\\stackrel{\\mathrm{def}}{\\iff}}',
+        Im: '\\operatorname{Im}',
+        id: '\\operatorname{id}',
+        sgn: '\\operatorname{sgn}',
       },
       physics: {
         italicdiff: true,
