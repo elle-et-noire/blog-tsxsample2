@@ -49,6 +49,7 @@ export const Component: React.VFC<_Props> = (props) => {
         Im: '\\operatorname{Im}',
         id: '\\operatorname{id}',
         sgn: '\\operatorname{sgn}',
+        Ker: '\\operatorname{Ker}'
       },
       physics: {
         italicdiff: true,
