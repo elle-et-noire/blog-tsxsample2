@@ -57,7 +57,7 @@ $V\times W$に、まず全ての元を基底とする線形構造を入れたい
   R_3&\coloneqq \span{e_{av,w}-ae_{v,w}, e_{v,aw}-ae_{v,w}\relmiddle{|}a\in k,v\in V,w\in W}_k\\
   R&\coloneqq R_1+R_2+R_3
 \end{align*}
-とし、$V\otimes W\coloneqq k^{(V\times W)}/R$でテンソル積空間を定める。$V\otimes W$には商空間としての$k$線形構造が入っている。またテンソル積は
+とし、$V\otimes W\coloneqq k^{(V\times W)}/R$でテンソル積空間を定める（4行目の$+$は$\cup$と考えてもその線形包と考えても、商として得られる空間は同じはず）。$V\otimes W$には商空間としての$k$線形構造が入っている。またテンソル積は
 \[\otimes\colon V\times W\to V\otimes W\qst (v,w)\mapsto v\otimes w\coloneqq \overline{e_{v,w}}\]
 と、代表元で定める。$\otimes$は生成系への全射である。
 
