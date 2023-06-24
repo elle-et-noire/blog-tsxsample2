@@ -62,7 +62,7 @@
 }
 
 .post .scrollable {
-  @apply overflow-x-auto round-scrollbar p-0 m-0 indent-0 whitespace-nowrap;
+  @apply overflow-x-auto overflow-y-hidden round-scrollbar p-0 m-0 indent-0 whitespace-nowrap;
 }
 
 /* blockquote {
