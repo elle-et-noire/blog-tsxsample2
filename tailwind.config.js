@@ -75,6 +75,8 @@ module.exports = {
       },
       fontFamily: {
         'applimincho': ['"AppliMincho"'],
+        'semibold': ['"AppliMincho"'],
+        'normal': ['"AppliMincho"'],
         'mono': ["'SFMono-Regular'", 'consolas', 'ui-monospace']
       }
     },
