@@ -73,11 +73,11 @@ module.exports = {
           "100%": { opacity: 0 },
         },
       },
+      fontFamily: {
+        'applimincho': ['"AppliMincho"'],
+        'mono': ["'SFMono-Regular'", 'consolas', 'ui-monospace']
+      }
     },
-    fontFamily: {
-      'applimincho': ['"AppliMincho"'],
-      'mono': ["'SFMono-Regular'", 'consolas', 'ui-monospace']
-    }
   },
   // darkMode: 'media',  // or darkMode: 'class'
   plugins: [
