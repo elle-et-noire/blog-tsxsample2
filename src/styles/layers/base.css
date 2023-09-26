@@ -2,13 +2,13 @@
   @font-face {
     font-family: AppliMincho;
     font-weight: 400;
-    src: url(/fonts/AppliMincho.otf) format("opentype");
+    src: url(/lumieres-legeres/fonts/AppliMincho.otf) format("opentype");
   }
 
   @font-face {
     font-family: 'SFMono-Regular';
     font-weight: 400;
-    src: url(/fonts/FontsFree-Net-SFMono-Regular.ttf) format("truetype");
+    src: url(/lumieres-legeres/fonts/FontsFree-Net-SFMono-Regular.ttf) format("truetype");
   }
 
   html,
@@ -60,27 +60,36 @@
   table {
     @apply border-collapse m-2;
   }
-  td, th {
+
+  td,
+  th {
     @apply p-2 border border-slate-400 border-solid;
   }
+
   th {
     @apply bg-emerald;
   }
+
   details {
     @apply relative rounded pt-2 px-2 pb-0 my-2 duration-100 ease-in-out;
   }
+
   details:before {
     @apply border-l-2 border-l-cyan-500 border-t-2 border-t-cyan-500 border-b-2 border-b-cyan-500 border-dotted rounded-l content-[''] absolute left-0 top-0 w-4 box-border h-full;
   }
+
   details:after {
     @apply border-r-2 border-r-cyan-500 border-t-2 border-t-cyan-500 border-b-2 border-b-cyan-500 border-dotted rounded-r content-[''] absolute right-0 top-0 w-4 box-border h-full;
   }
+
   summary {
     @apply -mt-2 -mx-2 p-2 cursor-pointer;
   }
+
   details[open] {
     @apply p-2;
   }
+
   details[open] summary {
     @apply mb-2;
   }
