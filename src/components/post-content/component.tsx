@@ -60,19 +60,20 @@ export const Component: React.VFC<_Props> = (props) => {
 
   const MDXComponents: any = {
     a: CustomLink,
-    img: CustomImage
+    img: CustomImage,
+    MathJax: MathJax,
   };
 
   return (
-    <MathJax hideUntilTypeset={"first"}>
-      <div ref={mathBlock} className="post">
-        <MDXRemote {...props.content} components={MDXComponents} />
+    <div ref={mathBlock} className="post">
+      <MDXRemote {...props.content} components={MDXComponents} />
+      <MathJax hideUntilTypeset={"first"}>
         {props.mathblocks.map((value, index) => (
           <div key={index} id={`preview-mjx-${encodeURIComponent(index)}`} className="window">
             {value}
           </div>
         ))}
-      </div>
-    </MathJax>
+      </MathJax>
+    </div>
   );
 }

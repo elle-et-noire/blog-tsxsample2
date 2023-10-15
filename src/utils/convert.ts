@@ -125,7 +125,7 @@ ${content}
     }).replace(/^(`{3,})mermaid([^`]+)\1/g, "\n<div className='mermaid'>{`%%{init:{'theme':'base','themeVariables':{'primaryColor':'#007777','primaryTextColor':'#f0f6fc','primaryBorderColor':'#008888','secondaryColor':'#145055','tertiaryColor': '#fff0f0','edgeLabelBackground':'#002b3600','lineColor':'#007777CC','noteTextColor':'#e2e8f0','noteBkgColor':'#007777BB','textColor':'#f0f6fc','fontSize':'16px'},'themeCSS':'text.actor {font-size:20px !important;}'}}%%$2`}</div>\n")
   );
 
-  const mdxSource = await serialize(processible, {
+  const mdxSource = await serialize(`<MathJax hideUntilTypeset={"first"}>\n${processible}\n</MathJax>`, {
     mdxOptions: {
       remarkPlugins: [
         gfm,
